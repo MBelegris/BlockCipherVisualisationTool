@@ -34,7 +34,7 @@ will show the result of the cipher.
 ### Screenshots
 
 ---
-![DES Home Page](C:\Users\treas\Documents\UNIVERSITY\Year 3\Dissertation\Visualisation-Tool-DES-page.PNG)
+![DES Home Page](main/images/Visualisation-Tool-DES-page.PNG)
 
 ### Technologies
 
