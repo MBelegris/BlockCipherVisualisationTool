@@ -260,10 +260,12 @@ class DES_Page(Frame):
             messagebox.showwarning("Visualisation Tool", message="Reached 64 bits\nMessage too long")
             return False
         elif input.isdigit() or input == "":
+            if int(input[len(input)-1]) > 1:
+                messagebox.showwarning("Visualisation Tool", message="Can only enter digits: 0, 1")
+                return False
             return True
         else:
             messagebox.showwarning("Visualisation Tool", message="Can only enter digits: 0, 1")
-            print(input)
             return False
 
     def key_callback(self, input):
@@ -271,10 +273,12 @@ class DES_Page(Frame):
             messagebox.showwarning("Visualisation Tool", message="Reached 48 bits\nMessage too long")
             return False
         elif input.isdigit() or input == "":
+            if int(input[len(input)-1]) > 1:
+                messagebox.showwarning("Visualisation Tool", message="Can only enter digits: 0, 1")
+                return False
             return True
         else:
             messagebox.showwarning("Visualisation Tool", message="Can only enter digits")
-            print(input)
             return False
 
     def num_check(self, controller, encrypt):
