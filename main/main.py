@@ -1,10 +1,11 @@
 import os
 import random
+import string
 import tkinter
 from tkinter import *
+from tkinter import messagebox
 from PIL import Image, ImageTk
-from pathlib import Path
-
+from string import *
 import DES_logic_func as des_logic
 import AES_logic_func as aes_logic
 
@@ -203,6 +204,8 @@ class DES_Page(Frame):
         input_entry.pack(ipadx=155, ipady=10, expand=True)
         input_entry.focus()
         self.input_entry = input_entry
+        input_reg = self.register(self.input_callback)
+        input_entry.config(validate="key", validatecommand=(input_reg, '%P'))
 
         random_input = Button(self, text="Random Plaintext", bg='#cf3030', fg="white", font=("Arial", 10),
                               command=lambda: self.make_random_plaintext())
@@ -214,17 +217,19 @@ class DES_Page(Frame):
         key_entry = Entry(self, textvariable=key, bg='white', font=("Arial", 10))
         key_entry.pack(ipadx=100, ipady=10, expand=True)
         self.key_entry = key_entry
+        key_reg = self.register(self.key_callback)
+        key_entry.config(validate="key", validatecommand=(key_reg, '%P'))
 
         random_key = Button(self, text="Random Key", bg='#cf3030', fg="white", font=("Arial", 10),
                             command=lambda: self.make_random_key())
         random_key.pack(ipadx=10, ipady=10, expand=True, fill="none")
 
         encrypt_button = Button(self, text="Encrypt", font=("Arial", 20), bg="#e88a1a", fg="white",
-                                command=lambda: self.initial_perm(controller))
+                                command=lambda: self.num_check(controller, True))
         encrypt_button.pack(ipadx=10, ipady=10, expand=True, fill="none", side=LEFT)
 
         decrypt_button = Button(self, text="Decrypt", font=("Arial", 20), bg="#e88a1a", fg="white",
-                                command=lambda: controller.show_frame("DES_Decrypt_Page_1"))
+                                command=lambda: self.num_check(controller, False))
         decrypt_button.pack(ipadx=10, ipady=10, expand=True, fill="none", side=RIGHT)
 
     def initial_perm(self, controller):
@@ -249,6 +254,42 @@ class DES_Page(Frame):
             random_key += str(random.randint(0, 1))
         self.key_entry.delete(0, END)
         self.key_entry.insert(0, random_key)
+
+    def input_callback(self, input):
+        if len(input) > 64:
+            messagebox.showwarning("Visualisation Tool", message="Reached 64 bits\nMessage too long")
+            return False
+        elif input.isdigit() or input == "":
+            return True
+        else:
+            messagebox.showwarning("Visualisation Tool", message="Can only enter digits: 0, 1")
+            print(input)
+            return False
+
+    def key_callback(self, input):
+        if len(input) > 48:
+            messagebox.showwarning("Visualisation Tool", message="Reached 48 bits\nMessage too long")
+            return False
+        elif input.isdigit() or input == "":
+            return True
+        else:
+            messagebox.showwarning("Visualisation Tool", message="Can only enter digits")
+            print(input)
+            return False
+
+    def num_check(self, controller, encrypt):
+        plaintext = self.controller.shared_data["plaintext"].get()
+        key = self.controller.shared_data["key"].get()
+
+        if len(plaintext) != 64 or len(key) != 48:
+            messagebox.showwarning("Visualisation Tool", "Input lengths are wrong\nCheck inputs for length\n"
+                                                         "Plaintext/Ciphertext must be 64 bits long\n"
+                                                         "Key must be 48 bits long")
+            return False
+        if encrypt:
+            self.initial_perm(controller)
+        if not encrypt:
+            controller.show_frame("DES_Decrypt_Page_1")
 
 
 class DES_Encrypt_Page_1(Frame):
@@ -1075,6 +1116,8 @@ class AES_Page(Frame):
         Frame.__init__(self, parent)
         self.controller = controller
 
+        reg = self.register(self.callback)
+
         input = self.controller.shared_data["AES_input"]
         key_1 = self.controller.shared_data["AES_key_1"]
         key_2 = self.controller.shared_data["AES_key_2"]
@@ -1089,6 +1132,7 @@ class AES_Page(Frame):
         input_entry.pack(ipadx=155, ipady=10, expand=True)
         input_entry.focus()
         self.input_entry = input_entry
+        input_entry.config(validate="key", validatecommand=(reg, '%P'))
 
         random_input = Button(self, text="Random Plaintext", bg='#cf3030', fg="white", font=("Arial", 10),
                               command=lambda: self.make_random(input_entry))
@@ -1100,6 +1144,7 @@ class AES_Page(Frame):
         key_entry_1 = Entry(self, bg='white', textvariable=key_1, font=("Arial", 10))
         key_entry_1.pack(ipadx=100, ipady=10, expand=True)
         self.key_entry_1 = key_entry_1
+        key_entry_1.config(validate="key", validatecommand=(reg, '%P'))
 
         random_key_1 = Button(self, text="Random Key", bg='#cf3030', fg="white", font=("Arial", 10),
                               command=lambda: self.make_random(key_entry_1))
@@ -1111,17 +1156,18 @@ class AES_Page(Frame):
         key_entry_2 = Entry(self, bg='white', textvariable=key_2, font=("Arial", 10))
         key_entry_2.pack(ipadx=100, ipady=10, expand=True)
         self.key_entry_2 = key_entry_2
+        key_entry_2.config(validate="key", validatecommand=(reg, '%P'))
 
         random_key_2 = Button(self, text="Random Key", bg='#cf3030', fg="white", font=("Arial", 10),
                               command=lambda: self.make_random(key_entry_2))
         random_key_2.pack(ipadx=10, ipady=10, expand=True, fill="none")
 
         encrypt_button = Button(self, text="Encrypt", font=("Arial", 20), bg="#e88a1a", fg="white",
-                                command=lambda: controller.show_frame("AES_Encrypt_Page_1"))
+                                command=lambda: self.num_check(controller, True))
         encrypt_button.pack(ipadx=10, ipady=10, expand=True, fill="none", side=LEFT)
 
         decrypt_button = Button(self, text="Decrypt", font=("Arial", 20), bg="#e88a1a", fg="white",
-                                command=lambda: controller.show_frame("AES_Decrypt_Page_1"))
+                                command=lambda: self.num_check(controller, False))
         decrypt_button.pack(ipadx=10, ipady=10, expand=True, fill="none", side=RIGHT)
 
     def updateText(self):
@@ -1132,6 +1178,30 @@ class AES_Page(Frame):
         random_text = aes_logic.add_padding(random_text, 32)
         entry.delete(0, END)
         entry.insert(0, random_text)
+
+    def callback(self, input):
+        if len(input) > 32:
+            messagebox.showwarning("Visualisation Tool", message="Reached 32 Bytes\nMessage too long")
+            return False
+        elif all(c in string.hexdigits for c in input):
+            return True
+        else:
+            messagebox.showwarning("Visualisation Tool", message="Entered a non-hexadecimal value")
+            return False
+
+    def num_check(self, controller, encrypt):
+        input = self.controller.shared_data["AES_input"].get()
+        key_1 = self.controller.shared_data["AES_key_1"].get()
+        key_2 = self.controller.shared_data["AES_key_2"].get()
+
+        if len(input) != 32 or len(key_1) != 32 or len(key_2) != 32:
+            messagebox.showwarning("Visualisation Tool", "Inputs are not the right length of 32 bytes")
+            return False
+
+        if encrypt:
+            controller.show_frame("AES_Encrypt_Page_1")
+        if not encrypt:
+            controller.show_frame("AES_Decrypt_Page_1")
 
 
 class AES_Encrypt_Page_1(Frame):
@@ -1935,4 +2005,3 @@ if __name__ == "__main__":
     app.config(menu=menubar)
 
     app.mainloop()
-
