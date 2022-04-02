@@ -1,6 +1,12 @@
 # Logic for AES encryption and decryption
 
 def GF_mul(byte_1, byte_2):
+    """
+    Returns the result of the multiplication of two bytes under the GF finite field
+    :param byte_1: integer that will be multiplied
+    :param byte_2: integer that will be multiplied
+    :return: p % 256: the result of the multiplication of the two bytes under the GF finite field
+    """
     p = 0
     hiBitSet = 0
     for i in range(8):
@@ -16,6 +22,12 @@ def GF_mul(byte_1, byte_2):
 
 # Assumes that padded text has 0x at the front
 def add_padding(unpadded_text, n):
+    """
+    Returns the text with padding up to n bytes
+    :param unpadded_text: String to be padded if it is not larger than n in length
+    :param n: Integer of the amount the unpadded text should be padded up to
+    :return: unpadded_text: String that contains the padded text- if it needed to be
+    """
     unpadded_text = str(unpadded_text[2:])
     if len(unpadded_text) < n:
         unpadded_text = unpadded_text.zfill(n)
@@ -25,11 +37,15 @@ def add_padding(unpadded_text, n):
 
 
 def make_table(hex_string):
-    # arrangement = [[b0, b4, b8, b12],
-    #               [b1, b5, b9, b13],
-    #               [b2, b6, b10, b14],
-    #               [b3, b7, b11, b15]
-
+    """
+    Returns the hexstring as a 4x4 array in the arrangement shown below:
+                [[b0, b4, b8, b12],
+                [b1, b5, b9, b13],
+                [b2, b6, b10, b14],
+                [b3, b7, b11, b15]
+    :param hex_string: String that will be made into the table
+    :return: table: Array made up of the values put in hexstring
+    """
     table = [["", "", "", ""],
              ["", "", "", ""],
              ["", "", "", ""],
@@ -43,6 +59,12 @@ def make_table(hex_string):
 
 
 def add_round_key(text, key):
+    """
+    Returns the text XORed with the key
+    :param text: Array made up of hexadecimal values
+    :param key: Array made up of hexadecimal values
+    :return: text: Array made up of the hexadecimal values of the text XORed with the key
+    """
     for columns in range(0, 4):
         for rows in range(0, 4):
             plain_value = hex(int(text[rows][columns], base=16))
@@ -52,6 +74,11 @@ def add_round_key(text, key):
 
 
 def s_box(plaintext):
+    """
+    Returns the substitution of the plaintext with the values in the lookup table
+    :param plaintext: Array made up of hexadecimal values
+    :return: plaintext: Array made up of hexadecimal values
+    """
     s_box = [[0x63, 0x7C, 0x77, 0x7B, 0xF2, 0x6B, 0x6F, 0xC5, 0x30, 0x01, 0x67, 0x2B, 0xFE, 0xD7, 0xAB, 0x76],
              [0xCA, 0x82, 0xC9, 0x7D, 0xFA, 0x59, 0x47, 0xF0, 0xAD, 0xD4, 0xA2, 0xAF, 0x9C, 0xA4, 0x72, 0xC0],
              [0xB7, 0xFD, 0x93, 0x26, 0x36, 0x3F, 0xF7, 0xCC, 0x34, 0xA5, 0xE5, 0xF1, 0x71, 0xD8, 0x31, 0x15],
@@ -79,6 +106,11 @@ def s_box(plaintext):
 
 
 def shift_rows(plaintext):
+    """
+    Returns the shifting of the rows according to the way AES does it
+    :param plaintext: Array made up of hexadecimal values
+    :return: plaintext: Array made up of the same hexadecimal values that have been shifted
+    """
     for i in range(0, 4):
         first_value = plaintext[i][0]
         second_value = plaintext[i][1]
@@ -106,6 +138,16 @@ def shift_rows(plaintext):
 
 
 def mix_columns(plaintext):
+    """
+    Returns the mixing of the plaintext's columns based on the methods of the AES block cipher
+    Each column in the plaintext is multiplied by this matrix:
+                            [2, 3, 1, 1]
+                            [1, 2, 3, 1]
+                            [1, 1, 2, 3]
+                            [3, 1, 1, 2]
+    :param plaintext: Array made up of hexadecimal values
+    :return: plaintext: Array made up of hexadecimal values that have been multiplied by a matrix
+    """
     matrix = [[2, 3, 1, 1],
               [1, 2, 3, 1],
               [1, 1, 2, 3],
@@ -150,6 +192,11 @@ def mix_columns(plaintext):
 
 
 def inv_shift_rows(ciphertext):
+    """
+    Returns the ciphertext after reversing the shift rows performed in the encryption
+    :param ciphertext: Array made up of hexadecimal values
+    :return: ciphertext: Array made up of hexadecimal values that have been reverted to their original position
+    """
     for i in range(0, 4):
         first_value = ciphertext[i][0]
         second_value = ciphertext[i][1]
@@ -175,6 +222,11 @@ def inv_shift_rows(ciphertext):
 
 
 def inv_s_box(ciphertext):
+    """
+    Returns the ciphertext after reversing the substitution that occurred in the encryption
+    :param ciphertext: Array made up of hexadecimal values
+    :return: ciphertext_copy: Array made up of hexadecimal values that have been reverted to their original values
+    """
     inverted_s_box = [[0x52, 0x09, 0x6A, 0xD5, 0x30, 0x36, 0xA5, 0x38, 0xBF, 0x40, 0xA3, 0x9E, 0x81, 0xF3, 0xD7, 0xFB],
                       [0x7C, 0xE3, 0x39, 0x82, 0x9B, 0x2F, 0xFF, 0x87, 0x34, 0x8E, 0x43, 0x44, 0xC4, 0xDE, 0xE9, 0xCB],
                       [0x54, 0x7B, 0x94, 0x32, 0xA6, 0xC2, 0x23, 0x3D, 0xEE, 0x4C, 0x95, 0x0B, 0x42, 0xFA, 0xC3, 0x4E],
@@ -201,6 +253,16 @@ def inv_s_box(ciphertext):
 
 
 def inv_mix_columns(ciphertext):
+    """
+    Returns the ciphertext after reversing the mixing of the columns that occurred in the encryption by multiplying each
+    column with this matrix:
+                            [0x0e, 0x0b, 0x0d, 0x09]
+                            [0x09, 0x0e, 0x0b, 0x0d]
+                            [0x0d, 0x09, 0x0e, 0x0b]
+                            [0x0b, 0x0d, 0x09, 0x0e]
+    :param ciphertext: Array made up of hexadecimal values
+    :return: ciphertext: Array made up of hexadecimal values that have been reverted to their original values
+    """
     matrix = [[0x0e, 0x0b, 0x0d, 0x09],
               [0x09, 0x0e, 0x0b, 0x0d],
               [0x0d, 0x09, 0x0e, 0x0b],
@@ -239,6 +301,13 @@ def inv_mix_columns(ciphertext):
 
 
 def do_encrypt(plaintext, key_1, key_2):
+    """
+    Returns the plaintext after being encrypted by one round of the AES block cipher
+    :param plaintext: String made up of 16 bytes as hexadecimal values
+    :param key_1: String made up of 16 bytes as hexadecimal values
+    :param key_2: String made up of 16 bytes as hexadecimal values
+    :return: ciphertext: String made up of 16 bytes as hexadecimal values
+    """
     ptxt = make_table(plaintext)
     k_1 = make_table(key_1)
     k_2 = make_table(key_2)
@@ -282,6 +351,13 @@ def do_encrypt(plaintext, key_1, key_2):
 
 
 def do_decrypt(ciphertext, key_1, key_2):
+    """
+    Returns the ciphertext being decrypted after one round of the AES block cipher
+    :param ciphertext: String made up of 16 bytes as hexadecimal values
+    :param key_1: String made up of 16 bytes as hexadecimal values
+    :param key_2: String made up of 16 bytes as hexadecimal values
+    :return: plaintext: String made up of 16 bytes as hexadecimal values
+    """
     ciphertext = add_padding(ciphertext, 32)
     key_1 = add_padding(key_1, 32)
     key_2 = add_padding(key_2, 32)

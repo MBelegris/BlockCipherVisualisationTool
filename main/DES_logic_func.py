@@ -1,7 +1,11 @@
-import random
-
+# Logic for DES encryption and decryption
 
 def initial_perm(plaintext):
+    """
+    Returns the plaintext after being permuted by the initial permutation order of the DES block cipher
+    :param plaintext: String Array which contains each bit of the plaintext that will be permuted
+    :return: plaintext_copy: String Array which contains the permuted plaintext
+    """
     permutation_order_no_1 = [58, 50, 42, 34, 26, 18, 10, 2, 60, 52, 44, 36, 28, 20, 12, 4, 62, 54, 46, 38, 30, 22, 14,
                               6, 64, 56, 48, 40, 32, 24, 16, 8, 57, 49, 41, 33, 25, 17, 9, 1, 59, 51, 43, 35, 27, 19,
                               11, 3, 61, 53, 45, 37, 29, 21, 13, 5, 63, 55, 47, 39, 31, 23, 15, 7]
@@ -14,6 +18,11 @@ def initial_perm(plaintext):
 
 
 def undo(ciphertext):
+    """
+    Returns the ciphertext after being undone from the initial permutation of the DES bloc cipher
+    :param ciphertext: Array of Strings that contains the ciphertext as bits
+    :return: ciphertext: Array of Strings that contains teh ciphertext after the initial permutation has been undone
+    """
     permutation_order_no_1 = [58, 50, 42, 34, 26, 18, 10, 2, 60, 52, 44, 36, 28, 20, 12, 4, 62, 54, 46, 38, 30, 22, 14,
                               6, 64, 56, 48, 40, 32, 24, 16, 8, 57, 49, 41, 33, 25, 17, 9, 1, 59, 51, 43, 35, 27, 19,
                               11, 3, 61, 53, 45, 37, 29, 21, 13, 5, 63, 55, 47, 39, 31, 23, 15, 7]
@@ -28,6 +37,11 @@ def undo(ciphertext):
 
 
 def right_side_expansion(initial_right_side):
+    """
+    Returns the expansion of the right side block of the DES block cipher
+    :param initial_right_side: Array of Strings that contains the right side of the plaintext
+    :return: right_side_after_expansion: Array of Strings that contains the expanded right side
+    """
     expansion_order = [32, 1, 2, 3, 4, 5, 4, 5, 6, 7, 8, 9, 8, 9, 10, 11, 12, 13, 12, 13, 14, 15, 16, 17, 16, 17, 18,
                        19, 20, 21, 20, 21, 22, 23, 24, 25, 24, 25, 26, 27, 28, 29, 28, 29, 30, 31, 32, 1]
 
@@ -38,6 +52,12 @@ def right_side_expansion(initial_right_side):
 
 
 def right_xor_key(right_side, key):
+    """
+    Returns the result of the expanded right side XORed with the Key
+    :param right_side: Array of Strings that contains the expanded right side of the plaintext
+    :param key: Array of Strings that contains the key used to encrypt the plaintext
+    :return: right_side_after_xor: Array of Strings that contains the expanded right side XORed with the Key
+    """
     right_side_after_xor = []
     for i in range(0, 48):
         each_key = int(key[i])
@@ -50,6 +70,11 @@ def right_xor_key(right_side, key):
 
 
 def s_box(right_side):
+    """
+    Returns the result of the right side being shrunk back to 32 bits long
+    :param right_side: Array of Strings that contains the expanded right side of the plaintext
+    :return: right_side_shrink: Array of Strings that contains the shrunk right side of the plaintext
+    """
     right_side_8_blocks = []
     for z in range(0, 48, 6):
         right_side_6_bit_block = []
@@ -181,6 +206,11 @@ def s_box(right_side):
 
 
 def second_permutation(right_side):
+    """
+    Returns the result of the right side being permuted
+    :param right_side: Array of Strings that contains the shrunk right side of the plaintext
+    :return: permuted_right: Array of Strings that contains the permuted right side of the plaintext
+    """
     permutation_order_no_2 = [16, 7, 20, 21, 29, 12, 28, 17, 1, 15, 23, 26, 5, 8, 31, 10, 2, 8, 24, 14, 32, 27,
                               3, 9, 19, 13, 30, 6, 22, 11, 4, 25]
     permuted_right = []
@@ -190,6 +220,12 @@ def second_permutation(right_side):
 
 
 def right_xor_left(right_side, left_side):
+    """
+    Returns the result of the right side of the plaintext XORed with the left side
+    :param right_side: Array of Strings that contains the shrunk right side of the plaintext
+    :param left_side: Array of Strings that contains the left side of the plaintext
+    :return: right_xor_left: Array of Strings that contains the right side of the plaintext XORed with the left side
+    """
     right_xor_left = []
     for b in range(0, 32):
         each_left = int(left_side[b])
@@ -201,18 +237,13 @@ def right_xor_left(right_side, left_side):
     return right_xor_left
 
 
-def make_ciphertext(left_side, right_side):
-    final_left = right_side
-    final_right = left_side
-    ciphertext = final_left + final_right
-
-    for x in range(0, 64):
-        print(ciphertext[x], end="")
-    print()
-    return ciphertext
-
-
 def run_encrypt(plaintext, key):
+    """
+    Returns the result of the plaintext being encrypted with the DES block cipher after one round
+    :param plaintext: Array of Strings that contains the plaintext to be encrypted
+    :param key: Array of Strings that contains the key used to encrypt the plaintext
+    :return: ciphertext: Array of Strings that contains the final result of the plaintext being encrypted
+    """
     print('Encryption: Plaintext ' + ''.join(plaintext))
     permuted_plaintext = initial_perm(plaintext)
     print('Encryption: Permuted plaintext ', ''.join(permuted_plaintext))
@@ -237,6 +268,12 @@ def run_encrypt(plaintext, key):
 
 
 def run_decrypt(ciphertext, key):
+    """
+    Returns the result of the ciphertext being decrypted with the DES block cipher after one round
+    :param ciphertext: Array of Strings that contains the ciphertext to be decrypted
+    :param key: Array of Strings that contains the key used to decrypt the ciphertext
+    :return: Array of Strings that contains the final result of the ciphertext being decrypted
+    """
     print('Decryption: Ciphertext ' + ''.join(ciphertext))
     left_side = ciphertext[0:32]
     right_side = ciphertext[32:64]
