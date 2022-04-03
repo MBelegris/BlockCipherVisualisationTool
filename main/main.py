@@ -146,7 +146,8 @@ class DES_Image_Page(Frame):
             label = Label(self, text="IMAGE MISSING", font=("Arial", 15))
             label.pack()
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Disclaimer_Page"))
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Disclaimer_Page"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side='bottom')
 
     def updateText(self):
@@ -180,7 +181,8 @@ class DES_Disclaimer_Page(Frame):
             label = Label(self, text="IMAGE MISSING", font=("Arial", 15))
             label.pack()
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Page"))
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Page"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side='bottom')
 
     def updateText(self):
@@ -320,7 +322,8 @@ class DES_Encrypt_Page_1(Frame):
         permuted_label = Label(self, text=("Permutation Table\n" + str(permutation_order_no_1)), font=("Arial", 8))
         permuted_label.pack(expand=True)
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Encrypt_Page_2"))
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Encrypt_Page_2"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side='bottom')
 
     def updateText(self):
@@ -343,7 +346,8 @@ class DES_Encrypt_Page_2(Frame):
         plaintext_label = Label(self, text="Plaintext", font=("Arial", 11))
         plaintext_label.pack()
 
-        next_button = Button(self, text="NEXT", command=lambda: self.expand_right(controller))
+        next_button = Button(self, text="NEXT", command=lambda: self.expand_right(controller),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side='bottom')
 
         input_label = Label(self)
@@ -406,7 +410,8 @@ class DES_Encrypt_Page_3(Frame):
         permutation_order_label = Label(self, text=("Expansion Order\n" + str(expansion_order)), font=("Arial", 10))
         permutation_order_label.pack(expand=1)
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Encrypt_Page_4"))
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Encrypt_Page_4"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
     def updateText(self):
@@ -438,7 +443,8 @@ class DES_Encrypt_Page_4(Frame):
         right_label.pack()
         self.right_label = right_label
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Encrypt_Page_5"))
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Encrypt_Page_5"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
     def updateText(self):
@@ -520,7 +526,8 @@ class DES_Encrypt_Page_5(Frame):
         lookup_table_Label = Label(self, text=lookup_table_text, font=("Arial", 10))
         lookup_table_Label.pack()
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Encrypt_Page_6"))
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Encrypt_Page_6"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
     def updateText(self):
@@ -601,7 +608,8 @@ class DES_Encrypt_Page_6(Frame):
                                         font=("Arial", 10))
         permutation_order_label.pack()
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Encrypt_Page_7"))
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Encrypt_Page_7"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
     def updateText(self):
@@ -633,7 +641,8 @@ class DES_Encrypt_Page_7(Frame):
         right_side_xored_with_left_side_label.pack()
         self.right_side_xored_with_left_side_label = right_side_xored_with_left_side_label
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Encrypt_Page_8"))
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Encrypt_Page_8"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
     def updateText(self):
@@ -700,7 +709,8 @@ class DES_Decrypt_Page_1(Frame):
                             font=("Arial", 25), bg="#cf3030", fg="white")
         title_label.pack(fill='x', ipady=10)
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Decrypt_Page_2"))
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Decrypt_Page_2"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
         ciphertext_label = Label(self)
@@ -765,7 +775,8 @@ class DES_Decrypt_Page_2(Frame):
         permutation_order_label = Label(self, text=("Expansion Order\n" + str(expansion_order)), font=("Arial", 10))
         permutation_order_label.pack(expand=1)
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Decrypt_Page_3"))
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Decrypt_Page_3"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
     def updateText(self):
@@ -794,7 +805,8 @@ class DES_Decrypt_Page_3(Frame):
         xored_right_label.pack()
         self.xored_right_label = xored_right_label
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Decrypt_Page_4"))
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Decrypt_Page_4"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
     def updateText(self):
@@ -873,7 +885,8 @@ class DES_Decrypt_Page_4(Frame):
         lookup_table_label = Label(self, text=lookup_table_text, font=("Arial", 10))
         lookup_table_label.pack()
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Decrypt_Page_5"))
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Decrypt_Page_5"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
     def updateText(self):
@@ -949,7 +962,8 @@ class DES_Decrypt_Page_5(Frame):
                                         font=("Arial", 10))
         permutation_table_label.pack()
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Decrypt_Page_6"))
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Decrypt_Page_6"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
     def updateText(self):
@@ -981,7 +995,8 @@ class DES_Decrypt_Page_6(Frame):
         visualisation_label.pack()
         self.visualisation_label = visualisation_label
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Decrypt_Page_7"))
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Decrypt_Page_7"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
     def updateText(self):
@@ -1074,7 +1089,8 @@ class AES_Image_Page(Frame):
             label = Label(self, text="IMAGE MISSING", font=("Arial", 15))
             label.pack()
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Disclaimer_Page"))
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Disclaimer_Page"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side='bottom')
 
     def updateText(self):
@@ -1108,7 +1124,8 @@ class AES_Disclaimer_Page(Frame):
             label = Label(self, text="IMAGE MISSING", font=("Arial", 15))
             label.pack()
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Page"))
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Page"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side='bottom')
 
     def updateText(self):
@@ -1234,7 +1251,8 @@ class AES_Encrypt_Page_1(Frame):
         key_2_label.pack()
         self.key_2_label = key_2_label
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Encrypt_Page_2"))
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Encrypt_Page_2"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
     def updateText(self):
@@ -1283,7 +1301,8 @@ class AES_Encrypt_Page_2(Frame):
         result_label.pack()
         self.result_label = result_label
 
-        next_button = Button(self, text="NEXT", command=lambda: self.controller.show_frame("AES_Encrypt_Page_3"))
+        next_button = Button(self, text="NEXT", command=lambda: self.controller.show_frame("AES_Encrypt_Page_3"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
     def updateText(self):
@@ -1363,7 +1382,8 @@ class AES_Encrypt_Page_3(Frame):
         lookup_table_label = Label(self, text=lookup_text, font=("Arial", 10))
         lookup_table_label.grid(row=4, column=0, columnspan=3)
 
-        next_button = Button(self, text="NEXT", command=lambda: self.controller.show_frame("AES_Encrypt_Page_4"))
+        next_button = Button(self, text="NEXT", command=lambda: self.controller.show_frame("AES_Encrypt_Page_4"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.grid(row=5, column=1, pady=15)
 
     def updateText(self):
@@ -1436,7 +1456,8 @@ class AES_Encrypt_Page_4(Frame):
         result_label.pack()
         self.result_label = result_label
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Encrypt_Page_5"))
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Encrypt_Page_5"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
     def updateText(self):
@@ -1493,7 +1514,8 @@ class AES_Encrypt_Page_5(Frame):
         answer_label.grid(column=1, row=3)
         self.answer_label = answer_label
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Encrypt_Page_6"))
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Encrypt_Page_6"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.grid(column=1, row=4, pady=210)
 
     def updateText(self):
@@ -1549,7 +1571,8 @@ class AES_Encrypt_Page_6(Frame):
         result_label.pack()
         self.result_label = result_label
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Encrypt_Page_7"))
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Encrypt_Page_7"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
     def updateText(self):
@@ -1633,7 +1656,8 @@ class AES_Decrypt_Page_1(Frame):
         key_2_label.pack()
         self.key_2_label = key_2_label
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Decrypt_Page_2"))
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Decrypt_Page_2"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
     def updateText(self):
@@ -1683,7 +1707,8 @@ class AES_Decrypt_Page_2(Frame):
         result_label.pack()
         self.result_label = result_label
 
-        next_button = Button(self, text="NEXT", command=lambda: self.controller.show_frame("AES_Decrypt_Page_3"))
+        next_button = Button(self, text="NEXT", command=lambda: self.controller.show_frame("AES_Decrypt_Page_3"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
     def updateText(self):
@@ -1738,7 +1763,8 @@ class AES_Decrypt_Page_3(Frame):
         answer_label.grid(column=1, row=3)
         self.answer_label = answer_label
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Decrypt_Page_4"))
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Decrypt_Page_4"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.grid(column=1, row=4, pady=210)
 
     def updateText(self):
@@ -1800,7 +1826,8 @@ class AES_Decrypt_Page_4(Frame):
         result_label.pack()
         self.result_label = result_label
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Decrypt_Page_5"))
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Decrypt_Page_5"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
     def updateText(self):
@@ -1876,7 +1903,8 @@ class AES_Decrypt_Page_5(Frame):
         lookup_table_label = Label(self, text=lookup_text, font=("Arial", 10))
         lookup_table_label.grid(row=4, column=0, columnspan=3)
 
-        next_button = Button(self, text="NEXT", command=lambda: self.controller.show_frame("AES_Decrypt_Page_6"))
+        next_button = Button(self, text="NEXT", command=lambda: self.controller.show_frame("AES_Decrypt_Page_6"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.grid(row=5, column=1, pady=15)
 
     def updateText(self):
@@ -1944,7 +1972,8 @@ class AES_Decrypt_Page_6(Frame):
         result_label.pack()
         self.result_label = result_label
 
-        next_button = Button(self, text="NEXT", command=lambda: self.controller.show_frame("AES_Decrypt_Page_7"))
+        next_button = Button(self, text="NEXT", command=lambda: self.controller.show_frame("AES_Decrypt_Page_7"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
     def updateText(self):
