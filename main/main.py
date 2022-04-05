@@ -5,7 +5,6 @@ import tkinter
 from tkinter import *
 from tkinter import messagebox
 from PIL import Image, ImageTk
-from string import *
 import DES_logic_func as des_logic
 import AES_logic_func as aes_logic
 
@@ -136,7 +135,7 @@ class DES_Image_Page(Frame):
 
         try:
             img = Image.open("./images/DES_Drawing.png")
-            img = ImageTk.PhotoImage(img.resize((400, 400)))
+            img = ImageTk.PhotoImage(img.resize((300, 400)))
             label = Label(self, image=img)
             label.image = img
             label.pack()
@@ -171,7 +170,7 @@ class DES_Disclaimer_Page(Frame):
 
         try:
             img = Image.open("./images/DES_Disclaimer_Drawing.png")
-            img = ImageTk.PhotoImage(img.resize((400, 400)))
+            img = ImageTk.PhotoImage(img.resize((300, 400)))
             label = Label(self, image=img)
             label.image = img
             label.pack()
@@ -1079,7 +1078,7 @@ class AES_Image_Page(Frame):
 
         try:
             img = Image.open("./images/AES_Drawing.png")
-            img = ImageTk.PhotoImage(img.resize((700, 400)))
+            img = ImageTk.PhotoImage(img.resize((650, 400)))
             label = Label(self, image=img)
             label.image = img
             label.pack()
@@ -1236,7 +1235,7 @@ class AES_Encrypt_Page_1(Frame):
 
         explanation_txt = "arrangement =\n [[b0, b4, b8, b12],\n[b1, b5, b9, b13],\n" \
                           "[b2, b6, b10, b14],\n[b3, b7, b11, b15]"
-        explanation_label = Label(self, text=explanation_txt, font=("Arial", 15))
+        explanation_label = Label(self, text=explanation_txt, font=("Arial", 12))
         explanation_label.pack()
 
         plaintext_label = Label(self)
@@ -1641,7 +1640,7 @@ class AES_Decrypt_Page_1(Frame):
 
         explanation_txt = "arrangement =\n [[b0, b4, b8, b12],\n[b1, b5, b9, b13],\n" \
                           "[b2, b6, b10, b14],\n[b3, b7, b11, b15]"
-        explanation_label = Label(self, text=explanation_txt, font=("Arial", 15))
+        explanation_label = Label(self, text=explanation_txt, font=("Arial", 12))
         explanation_label.pack()
 
         ciphertext_label = Label(self)
