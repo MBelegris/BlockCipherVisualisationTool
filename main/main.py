@@ -7,6 +7,7 @@ from tkinter import messagebox
 from PIL import Image, ImageTk
 import DES_logic_func as des_logic
 import AES_logic_func as aes_logic
+import DES_key_gen_func as des_key
 
 
 def get_decimal_value(binary_string):
@@ -73,7 +74,11 @@ class TkinterApp(Tk):
             "AES_plaintext_table": tkinter.StringVar(),
             "AES_key_1_table": tkinter.StringVar(),
             "AES_key_2_table": tkinter.StringVar(),
-            "AES_ciphertext_table": tkinter.StringVar()
+            "AES_ciphertext_table": tkinter.StringVar(),
+            "Key_gen_original": tkinter.StringVar(),
+            "Key_gen_Key": tkinter.StringVar(),
+            "Key_gen_left": tkinter.StringVar(),
+            "Key_gen_right": tkinter.StringVar()
         }
 
         container = Frame(self)
@@ -84,20 +89,20 @@ class TkinterApp(Tk):
         self.frames = {}
 
         for F in (Home_Page, DES_Page, DES_Image_Page, DES_Disclaimer_Page, DES_Encrypt_Page_1, DES_Encrypt_Page_2,
-                  DES_Encrypt_Page_3,
-                  DES_Encrypt_Page_4, DES_Encrypt_Page_5, DES_Encrypt_Page_6, DES_Encrypt_Page_7, DES_Encrypt_Page_8,
-                  DES_Decrypt_Page_1, DES_Decrypt_Page_2, DES_Decrypt_Page_3, DES_Decrypt_Page_4, DES_Decrypt_Page_5,
-                  DES_Decrypt_Page_6, DES_Decrypt_Page_7, AES_Page, AES_Image_Page, AES_Disclaimer_Page,
-                  AES_Encrypt_Page_1,
-                  AES_Encrypt_Page_2, AES_Encrypt_Page_3, AES_Encrypt_Page_4, AES_Encrypt_Page_5, AES_Encrypt_Page_6,
-                  AES_Encrypt_Page_7, AES_Decrypt_Page_1, AES_Decrypt_Page_2, AES_Decrypt_Page_3, AES_Decrypt_Page_4,
-                  AES_Decrypt_Page_5, AES_Decrypt_Page_6, AES_Decrypt_Page_7):
+                  DES_Encrypt_Page_3, DES_Encrypt_Page_4, DES_Encrypt_Page_5, DES_Encrypt_Page_6, DES_Encrypt_Page_7,
+                  DES_Encrypt_Page_8, DES_Decrypt_Page_1, DES_Decrypt_Page_2, DES_Decrypt_Page_3, DES_Decrypt_Page_4,
+                  DES_Decrypt_Page_5, DES_Decrypt_Page_6, DES_Decrypt_Page_7, DES_Info_Page,
+                  DES_Key_Gen_Page, DES_Key_Gen_Page_1, DES_Key_Gen_Page_2, DES_Key_Gen_Page_3, DES_Key_Gen_Page_4,
+                  AES_Page, AES_Image_Page, AES_Disclaimer_Page, AES_Encrypt_Page_1, AES_Encrypt_Page_2,
+                  AES_Encrypt_Page_3, AES_Encrypt_Page_4, AES_Encrypt_Page_5, AES_Encrypt_Page_6, AES_Encrypt_Page_7,
+                  AES_Decrypt_Page_1, AES_Decrypt_Page_2, AES_Decrypt_Page_3, AES_Decrypt_Page_4, AES_Decrypt_Page_5,
+                  AES_Decrypt_Page_6, AES_Decrypt_Page_7):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
             frame.grid(row=0, column=0, sticky="nsew")
 
-        self.show_frame("Home_Page")
+        self.show_frame("DES_Page")
 
     def show_frame(self, container):
         frame = self.frames[container]
@@ -110,16 +115,79 @@ class Home_Page(Frame):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        des_label = Label(self, text="Home", bg="#cf3030", font=("Arial", 20), fg="white")
-        des_label.pack(ipadx=230, ipady=50, expand=True)
+        des_label = Label(self, text="Home", bg="#cf3030", font=("Arial", 25), fg="white")
+        des_label.pack(fill='x', ipady=30)
 
-        des_encrypt_label = Button(self, text="DES", bg="#e88a1a", font=("Arial", 10), fg="white",
-                                   command=lambda: controller.show_frame("DES_Image_Page"))
-        des_encrypt_label.pack(ipadx=250, ipady=50, expand=True)
+        des_button = Button(self, text="DES", bg="#e88a1a", font=("Calibri", 25), fg="white",
+                            command=lambda: controller.show_frame("DES_Info_Page"))
+        des_button.pack(ipadx=200, ipady=50, expand=True)
 
-        des_decrypt_label = Button(self, text="AES", bg="#e88a1a", font=("Arial", 10), fg="white",
-                                   command=lambda: controller.show_frame("AES_Image_Page"))
-        des_decrypt_label.pack(ipadx=250, ipady=50, expand=True)
+        aes_button = Button(self, text="AES", bg="#e88a1a", font=("Calibri", 25), fg="white",
+                            command=lambda: controller.show_frame("AES_Image_Page"))
+        aes_button.pack(ipadx=200, ipady=50, expand=True)
+
+    def updateText(self):
+        pass
+
+
+class DES_Info_Page(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
+        self.controller = controller
+
+        title_label = Label(self, text="DES", font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label.pack(fill='x', ipady=10)
+
+        label_1_text = "\nThe Data Encryption Standard (DES) is a Symmetric Key Block Cipher created in 1976\n"
+        label_1 = Label(self, text=label_1_text, font=("Calibri", 15), anchor='w')
+        label_1.pack()
+
+        input_text = "Inputs: 64-bit Plaintext and 64-bit Key (including 8 parity bits)"
+        inputs_label = Label(self, text=input_text, font=("Calibri", 15), anchor='w')
+        inputs_label.pack()
+
+        output_text = "Output: 64-bit Ciphertext.\n"
+        output_label = Label(self, text=output_text, font=("Calibri", 15), anchor='w')
+        output_label.pack()
+
+        label_2_text = "It is an implementation of a Feistel Network, meaning that reversing the steps taken to " \
+                       "produce the output, the input can be found.\n"
+        label_2 = Label(self, text=label_2_text, font=("Calibri", 15), anchor='w')
+        label_2.pack()
+
+        label_3_text = "The DES cipher is made up of an initial permutation, then 16 rounds of encryption through a " \
+                       "Function and a final permutation.\n"
+        label_3 = Label(self, text=label_3_text, font=("Calibri", 15), anchor='w')
+        label_3.pack()
+
+        label_4_text = "Each round is made up of 5 Steps:"
+        label_4 = Label(self, text=label_4_text, font=("Calibri", 15), anchor='w')
+        label_4.pack()
+
+        step_1_text = "1. Expansion of the right side of the permuted text."
+        step_1_label = Label(self, text=step_1_text, font=("Calibri", 15), anchor='w')
+        step_1_label.pack()
+
+        step_2_text = "2. XORing the expanded text with a 48-bit round key."
+        step_2_label = Label(self, text=step_2_text, font=("Calibri", 15), anchor='w')
+        step_2_label.pack()
+
+        step_3_text = "3. Passing the right side into the S Box to shrink it down to 32-bits again."
+        step_3_label = Label(self, text=step_3_text, font=("Calibri", 15), anchor='w')
+        step_3_label.pack()
+
+        step_4_text = "4. XORing the right side with the original permuted left side."
+        step_4_label = Label(self, text=step_4_text, font=("Calibri", 15), anchor='w')
+        step_4_label.pack()
+
+        step_5_text = "5. The original permuted right side becomes the new left side and the new right " \
+                      "side is the result of the XORing of the right side with the\n original permuted left side."
+        step_5_label = Label(self, text=step_5_text, font=("Calibri", 15), anchor='w')
+        step_5_label.pack()
+
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Image_Page"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
+        next_button.pack(side='bottom')
 
     def updateText(self):
         pass
@@ -130,7 +198,8 @@ class DES_Image_Page(Frame):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Drawing of the Structure of DES", font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Label(self, text="Diagram showing the Structure of DES",
+                            font=("Arial", 25), bg="#cf3030", fg="white")
         title_label.pack(fill='x', ipady=10)
 
         try:
@@ -138,7 +207,7 @@ class DES_Image_Page(Frame):
             img = ImageTk.PhotoImage(img.resize((300, 400)))
             label = Label(self, image=img)
             label.image = img
-            label.pack()
+            label.pack(ipady=20)
         except Exception as inst:
             print(inst)
             print(os.listdir())
@@ -162,15 +231,15 @@ class DES_Disclaimer_Page(Frame):
                             font=("Arial", 25), bg="#cf3030", fg="white")
         title_label.pack(fill='x', ipady=10)
 
-        disclaimer_text = "The program does not show each round performed by the DES cipher but instead visualises " \
-                          "the first round of every encryption/decryption, as to help learn the cipher only one \n" \
-                          "round needs to be visualised. The diagram below shows what this program actually visualises."
-        disclaimer_label = Label(self, text=disclaimer_text, font=("Arial", 10))
+        disclaimer_text = "\nThe program does not show each round performed by the DES cipher but instead visualises " \
+                          "the first round of every encryption/decryption,\nas to learn the cipher only one round " \
+                          "needs to be visualised. The diagram below shows what this program actually visualises.\n"
+        disclaimer_label = Label(self, text=disclaimer_text, font=("Calibri", 15))
         disclaimer_label.pack()
 
         try:
             img = Image.open("./images/DES_Disclaimer_Drawing.png")
-            img = ImageTk.PhotoImage(img.resize((300, 400)))
+            img = ImageTk.PhotoImage(img.resize((300, 350)))
             label = Label(self, image=img)
             label.image = img
             label.pack()
@@ -198,7 +267,7 @@ class DES_Page(Frame):
         title_label = Label(self, text="DES Page", font=("Arial", 25), bg="#cf3030", fg="white")
         title_label.pack(fill='x', ipady=10)
 
-        input_label = Label(self, text="Input 64-Bit String:", font=("Arial", 20), fg="black")
+        input_label = Label(self, text="Input 64-Bit String:", font=("Calibri", 20), fg="black")
         input_label.pack(expand=True)
 
         input_entry = Entry(self, textvariable=plaintext, bg='white', font=("Arial", 10))
@@ -212,7 +281,7 @@ class DES_Page(Frame):
                               command=lambda: self.make_random_plaintext())
         random_input.pack(ipadx=20, ipady=10, expand=True, fill="none")
 
-        key_label = Label(self, text="Enter Key:", font=("Arial", 20), fg="black")
+        key_label = Label(self, text="Enter Key:", font=("Calibri", 20), fg="black")
         key_label.pack(expand=True)
 
         key_entry = Entry(self, textvariable=key, bg='white', font=("Arial", 10))
@@ -261,7 +330,7 @@ class DES_Page(Frame):
             messagebox.showwarning("Visualisation Tool", message="Reached 64 bits\nMessage too long")
             return False
         elif input.isdigit() or input == "":
-            if int(input[len(input)-1]) > 1:
+            if int(input[len(input) - 1]) > 1:
                 messagebox.showwarning("Visualisation Tool", message="Can only enter digits: 0, 1")
                 return False
             return True
@@ -274,7 +343,7 @@ class DES_Page(Frame):
             messagebox.showwarning("Visualisation Tool", message="Reached 48 bits\nMessage too long")
             return False
         elif input.isdigit() or input == "":
-            if int(input[len(input)-1]) > 1:
+            if int(input[len(input) - 1]) > 1:
                 messagebox.showwarning("Visualisation Tool", message="Can only enter digits: 0, 1")
                 return False
             return True
@@ -310,15 +379,16 @@ class DES_Encrypt_Page_1(Frame):
         title_label = Label(self, text="Initial Permutation", font=("Arial", 25), bg="#cf3030", fg="white")
         title_label.pack(fill='x', ipady=10)
 
-        explanation_label = Label(self, text="Original Plaintext → Permuted Plaintext\n",
-                                  font=("Arial", 10))
+        explanation_text = "\nThe first step of encryption is to change the position of the data according to the order" \
+                           " shown below.\n\nFor example, the 58th bit is moved to the first position.\n\n\n"
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 14))
         explanation_label.pack()
 
         input_label = Label(self, bg="orange")
         input_label.pack()
         self.input_label = input_label
 
-        permuted_label = Label(self, text=("Permutation Table\n" + str(permutation_order_no_1)), font=("Arial", 8))
+        permuted_label = Label(self, text=("Permutation Order\n" + str(permutation_order_no_1)), font=("Calibri", 9))
         permuted_label.pack(expand=True)
 
         next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Encrypt_Page_2"),
@@ -328,8 +398,8 @@ class DES_Encrypt_Page_1(Frame):
     def updateText(self):
         plaintext = self.controller.shared_data["plaintext"].get()
         permuted_plaintext = self.controller.shared_data["initial_permutation"]
-        updated_label = Label(self.input_label, text=(plaintext + "\n→\n" + ' '.join(permuted_plaintext)),
-                              font=("Arial", 10))
+        updated_label = Label(self.input_label, text=(plaintext + "\n→\n" + ''.join(permuted_plaintext)),
+                              font=("Calibri", 17))
         updated_label.pack(expand=True, side=TOP)
 
 
@@ -342,8 +412,10 @@ class DES_Encrypt_Page_2(Frame):
                             font=("Arial", 25), bg="#cf3030", fg="white")
         title_label.pack(fill='x', ipady=10)
 
-        plaintext_label = Label(self, text="Plaintext", font=("Arial", 11))
-        plaintext_label.pack()
+        explanation_text = "\nThe right and left side are split. This is because the right side will go through " \
+                           "several stages to encrypt it.\n"
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 14))
+        explanation_label.pack()
 
         next_button = Button(self, text="NEXT", command=lambda: self.expand_right(controller),
                              font=("Arial", 10), bg="#cf3030", fg="white")
@@ -365,16 +437,16 @@ class DES_Encrypt_Page_2(Frame):
         initial_perm = self.controller.shared_data["initial_permutation"]
         self.controller.shared_data["initial_left_side"] = initial_perm[0:32]
 
-        updated_input_label = Label(self.input_label, text=initial_perm, font=("Arial", 11))
+        updated_input_label = Label(self.input_label, text="Plaintext:\n" + ''.join(initial_perm), font=("Calibri", 14))
         updated_input_label.pack()
 
         left_side_text = "Left Side:\n" + ' '.join(self.controller.shared_data["initial_left_side"])
         updated_left_side = Label(self.left_side, text=left_side_text,
-                                  font=("Arial", 10))
+                                  font=("Calibri", 14))
         updated_left_side.pack(expand=1, side='left', ipadx=10)
 
         right_side_text = "Right Side:\n" + ' '.join(initial_perm[32:64])
-        updated_right_side = Label(self.right_side, text=right_side_text, font=("Arial", 11))
+        updated_right_side = Label(self.right_side, text=right_side_text, font=("Calibri", 14))
         updated_right_side.pack(expand=1, side='left', ipadx=10)
 
     def expand_right(self, controller):
@@ -395,7 +467,10 @@ class DES_Encrypt_Page_3(Frame):
         title_label = Label(self, text="Expansion of Right side", font=("Arial", 25), bg="#cf3030", fg="white")
         title_label.pack(fill='x', ipady=10)
 
-        explanation_label = Label(self, text="Right Side → Expanded Right Side\n", font=("Arial", 10))
+        explanation_text = "\nThe right side is expanded from 32-bits to 48-bits, " \
+                           "based on the expansion order shown below.\n\nRight Side → Expanded Right Side\n\n"
+
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 14))
         explanation_label.pack()
 
         expansion_label = Label(self, bg="orange")
@@ -406,7 +481,7 @@ class DES_Encrypt_Page_3(Frame):
                            19, 20,
                            21, 20, 21, 22, 23, 24, 25, 24, 25, 26, 27, 28, 29, 28, 29, 30, 31, 32, 1]
 
-        permutation_order_label = Label(self, text=("Expansion Order\n" + str(expansion_order)), font=("Arial", 10))
+        permutation_order_label = Label(self, text=("Expansion Order\n" + str(expansion_order)), font=("Calibri", 13))
         permutation_order_label.pack(expand=1)
 
         next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Encrypt_Page_4"),
@@ -422,11 +497,11 @@ class DES_Encrypt_Page_3(Frame):
 
         text = right_side + "\n→\n" + right_after_expansion
 
-        updated_expansion_label = Label(self.expansion_label, text=text, font=("Arial", 10))
+        updated_expansion_label = Label(self.expansion_label, text=text, font=("Calibri", 17))
         updated_expansion_label.pack()
 
 
-class DES_Encrypt_Page_4(Frame):
+class DES_Encrypt_Page_4(Frame):  # Maybe need to take a look at this more
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
@@ -435,8 +510,10 @@ class DES_Encrypt_Page_4(Frame):
                             font=("Arial", 25), bg="#cf3030", fg="white")
         title_label.pack(fill='x', ipady=10)
 
-        explanation_label = Label(self, text="RIGHT AFTER EXPANSION  ⊕  SUBKEY\n", font=("Arial", 10))
-        explanation_label.pack()
+        explanation_text = "\nThe expanded right side is XORed with the subkey\n\n" \
+                           "RIGHT AFTER EXPANSION  ⊕  SUBKEY  →  RESULT\n"
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 14))
+        explanation_label.pack(ipady=25)
 
         right_label = Label(self, bg="orange")
         right_label.pack()
@@ -454,9 +531,9 @@ class DES_Encrypt_Page_4(Frame):
         xored_right = des_logic.right_xor_key(right_side, key)
         self.controller.shared_data["changed_right_side"] = xored_right
 
-        right_label_text = ' '.join(right_side) + "  ⊕  " + key + "\n→\n" + ' '.join(xored_right)
-        updated_right_label = Label(self.right_label, text=right_label_text, font=("Arial", 10))
-        updated_right_label.pack()
+        right_label_text = ''.join(right_side) + "\n⊕\n" + key + "\n→\n" + ''.join(xored_right)
+        updated_right_label = Label(self.right_label, text=right_label_text, font=("Calibri", 17))
+        updated_right_label.pack(ipadx=10)
 
 
 class DES_Encrypt_Page_5(Frame):
@@ -475,7 +552,7 @@ class DES_Encrypt_Page_5(Frame):
             "Therefore, there will now be 8 4-bit blocks meaning there are 32-bits on the right side now, " \
             "not 48 (the number of bits after the expansion)\n\n" \
             "Also, each block has a different lookup table"
-        explanation_label = Label(self, text=explanation_text, font=("Arial", 10))
+        explanation_label = Label(self, text=explanation_text, font=("Calibri", 10))
         explanation_label.pack()
 
         right_after_e_xor_label = Label(self, text="RIGHT AFTER EXPANSION AND XOR")
@@ -2026,6 +2103,255 @@ class AES_Decrypt_Page_7(Frame):
         plaintext = '0x' + plaintext
         updated_ciphertext_label = Label(self.plaintext_label, text=plaintext, font=("Arial", 20))
         updated_ciphertext_label.pack()
+
+
+class DES_Key_Gen_Page(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
+        self.controller = controller
+
+        key = self.controller.shared_data["Key_gen_Key"]
+
+        title_label = Label(self, text="DES Key Generation Page", font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label.pack(fill='x', ipady=10)
+
+        input_label = Label(self, text="Input 64-Bit String:", font=("Arial", 20), fg="black")
+        input_label.pack(expand=True)
+
+        input_entry = Entry(self, textvariable=key, bg='white', font=("Arial", 10))
+        input_entry.pack(ipadx=155, ipady=10, expand=True)
+        input_entry.focus()
+        self.input_entry = input_entry
+        input_reg = self.register(self.input_callback)
+        input_entry.config(validate="key", validatecommand=(input_reg, '%P'))
+
+        random_input = Button(self, text="Random", bg='#cf3030', fg="white", font=("Arial", 10),
+                              command=lambda: self.make_random())
+        random_input.pack(ipadx=20, ipady=10, expand=True, fill="none")
+
+        generate_button = Button(self, text="Generate", font=("Arial", 20), bg="#e88a1a", fg="white",
+                                 command=lambda: self.num_check(controller))
+        generate_button.pack(ipadx=10, ipady=10, expand=True, fill="none", side=LEFT)
+
+    def updateText(self):
+        pass
+
+    def make_random(self):
+        random_text = ""
+        for x in range(0, 64):
+            random_text += str(random.randint(0, 1))
+        self.input_entry.delete(0, END)
+        self.input_entry.insert(0, random_text)
+
+    def input_callback(self, input):
+        if len(input) > 64:
+            messagebox.showwarning("Visualisation Tool", message="Reached 64 bits\nMessage too long")
+            return False
+        elif input.isdigit() or input == "":
+            if int(input[len(input) - 1]) > 1:
+                messagebox.showwarning("Visualisation Tool", message="Can only enter digits: 0, 1")
+                return False
+            return True
+        else:
+            messagebox.showwarning("Visualisation Tool", message="Can only enter digits: 0, 1")
+            return False
+
+    def num_check(self, controller):
+        key = self.controller.shared_data["Key_gen_Key"].get()
+
+        if len(key) != 64:
+            messagebox.showwarning("Visualisation Tool", "Check input length.\n Input must be 64 bits")
+            return False
+
+        self.controller.shared_data["Key_gen_original"] = key
+        controller.show_frame("DES_Key_Gen_Page_1")
+
+
+class DES_Key_Gen_Page_1(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
+        self.controller = controller
+
+        title_label = Label(self, text="Initial Permutation", font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label.pack(fill='x', ipady=10)
+
+        explanation_text = "Due to the permutation order shown below, the length of the key shrinks to be 56 bits " \
+                           "long as every eighth bit was a parity bit."
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 10))
+        explanation_label.pack()
+
+        permutation_label = Label(self, bg="orange")
+        permutation_label.pack(expand=True)
+        self.permutation_label = permutation_label
+
+        permutation_order = [57, 49, 41, 33, 25, 17, 9, 1, 58, 50, 42, 34, 26, 18, 10, 2, 59, 51, 43, 35, 27, 19, 11, 3,
+                             60, 52, 44, 36, 63, 55, 47, 39, 31, 23, 15, 7, 62, 54, 46, 38, 30, 22, 14, 6, 61, 53, 45,
+                             37, 29, 21, 13, 5, 28, 20, 12, 4]
+        permutation_order_label = Label(self, text=("Permutation Order:\n" + str(permutation_order)),
+                                        font=("Arial", 10))
+        permutation_order_label.pack(expand=True)
+
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Key_Gen_Page_2"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
+        next_button.pack(side='bottom')
+
+    def updateText(self):
+        key = self.controller.shared_data["Key_gen_Key"].get()
+        permuted_key = des_key.permutation_order_1(list(key))
+
+        updated_label = Label(self.permutation_label, text=(key + "\n→\n" + ''.join(permuted_key)),
+                              font=("Arial", 10))
+        updated_label.pack(expand=True, side=TOP)
+        self.controller.shared_data["Key_gen_key"] = permuted_key
+
+
+class DES_Key_Gen_Page_2(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
+        self.controller = controller
+
+        title_label = Label(self, text="Round N: Shifting of Left and Right Side",
+                            font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label.grid(row=0, column=0, columnspan=3, ipadx=350, ipady=10)
+
+        explanation_text = "At the beginning of each round the key is split in half, and each side is shifted either " \
+                           "once or twice to the left, depending on the round."
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 10))
+        explanation_label.grid(row=1, column=0, columnspan=3, pady=25)
+
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Key_Gen_Page_3"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
+        next_button.grid(row=5, column=1, pady=215)
+
+    def updateText(self):
+        key = self.controller.shared_data["Key_gen_Key"].get()
+        left_side = key[:28]
+        right_side = key[28:]
+
+        updated_original_label = Label(self, text="Permuted Key:\n" + key, font=("Arial", 10))
+        updated_original_label.grid(row=2, column=0, columnspan=3, pady=20)
+
+        updated_left_side_label = Label(self, text="Left Side:\n" + left_side, font=("Arial", 10))
+        updated_left_side_label.grid(row=3, column=0)
+
+        updated_right_side_label = Label(self, text="Right Side:\n" + right_side, font=("Arial", 10))
+        updated_right_side_label.grid(row=3, column=2)
+
+        shifted_left = list(des_key.left_shift(left_side))
+        shifted_right = list(des_key.left_shift(right_side))
+
+        updated_left_side_shift_label = Label(self, text="Shifted Left Side:\n" + (''.join(shifted_left)),
+                                              font=("Arial", 10))
+        updated_left_side_shift_label.grid(row=4, column=0, pady=20)
+
+        updated_right_side_shift_label = Label(self, text="Shifted Right Side:\n" + (''.join(shifted_right)),
+                                               font=("Arial", 10))
+        updated_right_side_shift_label.grid(row=4, column=2, pady=20)
+
+        self.controller.shared_data["Key_gen_left"] = shifted_left
+        self.controller.shared_data["Key_gen_right"] = shifted_right
+
+
+class DES_Key_Gen_Page_3(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
+        self.controller = controller
+
+        title_label = Label(self, text="Round N: Combination and Permutation of Left and Right Side",
+                            font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label.grid(row=0, column=0, columnspan=3, ipadx=160, ipady=10)
+
+        explanation_text = "After combining the left and right side together, they are permuted once again. This " \
+                           "permutation shrinks the key even more to have a length of 48 bits.\nBy repeating this " \
+                           "step and the previous one, new round keys are generated for the DES cipher."
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 10))
+        explanation_label.grid(row=1, column=0, columnspan=3)
+
+        permutation_order = [14, 17, 11, 24, 1, 5, 3, 28, 15, 6, 21, 10, 23, 19, 12, 4, 26, 8, 16, 7, 27, 20, 13, 2, 41,
+                             52, 31, 37, 47, 55, 30, 40, 51, 45, 33, 48, 44, 49, 39, 56, 34, 53, 46, 42, 50, 36, 29, 32]
+        permutation_order_label = Label(self, text="Permutation Order:\n" + str(permutation_order), font=("Arial", 10))
+        permutation_order_label.grid(row=5, column=0, columnspan=3, ipady=137)
+
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Key_Gen_Page_4"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
+        next_button.grid(row=6, column=1)
+
+    def updateText(self):
+        left_side = self.controller.shared_data["Key_gen_left"]
+        right_side = self.controller.shared_data["Key_gen_right"]
+
+        key = left_side + right_side
+        permuted_key = des_key.combine_left_and_right(list(left_side), list(right_side))
+
+        left_side_label = Label(self, text="Left Side:\n" + (''.join(left_side)), font=("Arial", 10))
+        left_side_label.grid(row=2, column=0, ipady=10)
+
+        right_side_label = Label(self, text="Right Side:\n" + (''.join(right_side)), font=("Arial", 10))
+        right_side_label.grid(row=2, column=2)
+
+        result_text = "Result:\n" + ''.join(key) + "\n->\n" + ''.join(permuted_key)
+        result_label = Label(self, text=result_text, font=("Arial", 10))
+        result_label.grid(row=3, column=1)
+
+        self.controller.shared_data["Key_gen_Key"] = permuted_key
+
+
+class DES_Key_Gen_Page_4(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
+        self.controller = controller
+
+        title_label = Label(self, text="Results",
+                            font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label.pack(fill='x', ipady=10)
+
+    def updateText(self):
+        original = self.controller.shared_data["Key_gen_original"]
+        key = self.controller.shared_data["Key_gen_Key"]
+
+        original_text = "Original Key: " + original
+        original_label = Label(self, text=original_text, font=("Arial", 10))
+        original_label.pack(ipady=10)
+
+        round_1_text = "Round 1: " + ''.join(key)
+        round_1_label = Label(self, text=round_1_text, font=("Arial", 10))
+        round_1_label.pack(ipady=10)
+
+        round_2_text = "Round 2: " + ''.join(des_key.gen_key(original, 2))
+        round_2_label = Label(self, text=round_2_text, font=("Arial", 10))
+        round_2_label.pack(ipady=10)
+
+        round_2_text = "Round 3: " + ''.join(des_key.gen_key(original, 3))
+        round_2_label = Label(self, text=round_2_text, font=("Arial", 10))
+        round_2_label.pack(ipady=10)
+
+        round_2_text = "Round 4: " + ''.join(des_key.gen_key(original, 4))
+        round_2_label = Label(self, text=round_2_text, font=("Arial", 10))
+        round_2_label.pack(ipady=10)
+
+        round_2_text = "Round 5: " + ''.join(des_key.gen_key(original, 5))
+        round_2_label = Label(self, text=round_2_text, font=("Arial", 10))
+        round_2_label.pack(ipady=10)
+
+        round_2_text = "Round 6: " + ''.join(des_key.gen_key(original, 6))
+        round_2_label = Label(self, text=round_2_text, font=("Arial", 10))
+        round_2_label.pack(ipady=10)
+
+        round_2_text = "Round 7: " + ''.join(des_key.gen_key(original, 7))
+        round_2_label = Label(self, text=round_2_text, font=("Arial", 10))
+        round_2_label.pack(ipady=10)
+
+        round_2_text = "Round 8: " + ''.join(des_key.gen_key(original, 8))
+        round_2_label = Label(self, text=round_2_text, font=("Arial", 10))
+        round_2_label.pack(ipady=10)
+
+        round_2_text = "Round 9: " + ''.join(des_key.gen_key(original, 9))
+        round_2_label = Label(self, text=round_2_text, font=("Arial", 10))
+        round_2_label.pack(ipady=10)
+
+        round_2_text = "Round 10: " + ''.join(des_key.gen_key(original, 10))
+        round_2_label = Label(self, text=round_2_text, font=("Arial", 10))
+        round_2_label.pack(ipady=10)
 
 
 if __name__ == "__main__":
