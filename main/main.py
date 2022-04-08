@@ -93,7 +93,7 @@ class TkinterApp(Tk):
                   DES_Encrypt_Page_8, DES_Decrypt_Page_1, DES_Decrypt_Page_2, DES_Decrypt_Page_3, DES_Decrypt_Page_4,
                   DES_Decrypt_Page_5, DES_Decrypt_Page_6, DES_Decrypt_Page_7, DES_Info_Page,
                   DES_Key_Gen_Page, DES_Key_Gen_Page_1, DES_Key_Gen_Page_2, DES_Key_Gen_Page_3, DES_Key_Gen_Page_4,
-                  AES_Page, AES_Image_Page, AES_Disclaimer_Page, AES_Encrypt_Page_1, AES_Encrypt_Page_2,
+                  AES_Page, AES_Info_Page, AES_Image_Page, AES_Disclaimer_Page, AES_Encrypt_Page_1, AES_Encrypt_Page_2,
                   AES_Encrypt_Page_3, AES_Encrypt_Page_4, AES_Encrypt_Page_5, AES_Encrypt_Page_6, AES_Encrypt_Page_7,
                   AES_Decrypt_Page_1, AES_Decrypt_Page_2, AES_Decrypt_Page_3, AES_Decrypt_Page_4, AES_Decrypt_Page_5,
                   AES_Decrypt_Page_6, AES_Decrypt_Page_7):
@@ -102,7 +102,7 @@ class TkinterApp(Tk):
             self.frames[page_name] = frame
             frame.grid(row=0, column=0, sticky="nsew")
 
-        self.show_frame("DES_Page")
+        self.show_frame("AES_Page")
 
     def show_frame(self, container):
         frame = self.frames[container]
@@ -123,7 +123,7 @@ class Home_Page(Frame):
         des_button.pack(ipadx=200, ipady=50, expand=True)
 
         aes_button = Button(self, text="AES", bg="#e88a1a", font=("Calibri", 25), fg="white",
-                            command=lambda: controller.show_frame("AES_Image_Page"))
+                            command=lambda: controller.show_frame("AES_Info_Page"))
         aes_button.pack(ipadx=200, ipady=50, expand=True)
 
     def updateText(self):
@@ -501,7 +501,7 @@ class DES_Encrypt_Page_3(Frame):
         updated_expansion_label.pack()
 
 
-class DES_Encrypt_Page_4(Frame):  # Maybe need to take a look at this more
+class DES_Encrypt_Page_4(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
@@ -545,14 +545,13 @@ class DES_Encrypt_Page_5(Frame):
         title_label.pack(fill='x', ipady=10)
 
         explanation_text = \
-            "Right side is split into 8 6-bit blocks. The first and last digits of each block are combined as well as" \
-            " the middle digits to get 2 decimal numbers. \n\n" \
-            "Based on these values a number is found in the lookup table. " \
+            "Right side is split into 8 6-bit blocks. The first and last digits of each block are combined as well " \
+            "as the middle digits to get 2 decimal numbers. \n\n" \
+            "Based on these values a number is found in the lookup table, of which each block has a separate one. " \
             "This number is the new value for the the block.\n\n" \
             "Therefore, there will now be 8 4-bit blocks meaning there are 32-bits on the right side now, " \
-            "not 48 (the number of bits after the expansion)\n\n" \
-            "Also, each block has a different lookup table"
-        explanation_label = Label(self, text=explanation_text, font=("Calibri", 10))
+            "not 48 (the number of bits after the expansion)"
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 13))
         explanation_label.pack()
 
         right_after_e_xor_label = Label(self, text="RIGHT AFTER EXPANSION AND XOR")
@@ -597,14 +596,15 @@ class DES_Encrypt_Page_5(Frame):
             for columns in range(0, 16):
                 lookup_table_text += lookup_table_1[rows][columns]
                 lookup_table_text += "  "
-            lookup_table_text += "\n"
+            if rows != 3:
+                lookup_table_text += "\n"
 
-        lookup_table_Label = Label(self, text=lookup_table_text, font=("Arial", 10))
-        lookup_table_Label.pack()
+        lookup_table_Label = Label(self, text=lookup_table_text, font=("Calibri", 11))
+        lookup_table_Label.pack(fill='x')
 
         next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Encrypt_Page_6"),
                              font=("Arial", 10), bg="#cf3030", fg="white")
-        next_button.pack(side=BOTTOM)
+        next_button.pack(side='bottom')
 
     def updateText(self):
         right_side = self.controller.shared_data["changed_right_side"]
@@ -619,19 +619,19 @@ class DES_Encrypt_Page_5(Frame):
         # Initial text- right side that has been expanded and xored
         updated_right_after_e_xor_label = Label(self.right_after_e_xor_label,
                                                 text=("Right Side\n" + ' '.join(right_side)),
-                                                font=("Arial", 10))
+                                                font=("Calibri", 12))
         updated_right_after_e_xor_label.pack()
 
         # Same text as above but has been split to show the 6 blocks
         updated_right_split_label = Label(self.right_split_label,
                                           text="Segmented Right Side\n" + ' '.join(six_bit_label_text),
-                                          font=("Arial", 10))
+                                          font=("Calibri", 12))
         updated_right_split_label.pack()
 
         # First block
         first_block_text = six_bit_label_array[0]
         updated_first_block_label = Label(self.first_block_label, text="First Block\n" + ' '.join(first_block_text),
-                                          font=("Arial", 10))
+                                          font=("Calibri", 12))
         updated_first_block_label.pack()
 
         # First and Last bit of the first block and their decimal value
@@ -640,7 +640,7 @@ class DES_Encrypt_Page_5(Frame):
         updated_first_block_first_and_last_bit_label = Label(self.first_block_first_and_last_bit_label,
                                                              text="First Block: First and Last Bit\n" +
                                                                   ' '.join(first_block_first_and_last_bit_text),
-                                                             font=("Arial", 10))
+                                                             font=("Calibri", 12))
         updated_first_block_first_and_last_bit_label.pack()
 
         # Middle 4 bits of the first block and their decimal value
@@ -650,14 +650,14 @@ class DES_Encrypt_Page_5(Frame):
         updated_middle_bits_of_first_block_label = Label(self.middle_bits_of_first_block_label,
                                                          text="First Block: Middle Bits\n" +
                                                               ' '.join(middle_bits_of_first_block_text),
-                                                         font=("Arial", 10))
+                                                         font=("Calibri", 12))
         updated_middle_bits_of_first_block_label.pack()
 
         # Shrunk version of the right side after going through the s_box
         shrunk_right_side = des_logic.s_box(right_side)
         updated_shrunk_right_label = Label(self.shrunk_right_side_label, text="Shrunk Right Side\n" +
                                                                               ' '.join(shrunk_right_side),
-                                           font=("Arial", 10))
+                                           font=("Calibri", 12))
         updated_shrunk_right_label.pack()
         self.controller.shared_data["changed_right_side"] = shrunk_right_side
 
@@ -670,7 +670,10 @@ class DES_Encrypt_Page_6(Frame):
         title_label = Label(self, text="Right Side Permutation", font=("Arial", 25), bg="#cf3030", fg="white")
         title_label.pack(fill='x', ipady=10)
 
-        explanation_label = Label(self, text="\n8 4-Bit RIGHT SIDE  →  PERMUTED RIGHT SIDE\n", font=("Arial", 10))
+        explanation_text = "\nThe right side is permuted based on the permutation order shown below. For example, " \
+                           "the 1st place bit is replaced by the 16th place bit.\n\n" \
+                           "8 4-Bit RIGHT SIDE  →  PERMUTED RIGHT SIDE\n\n\n"
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 14))
         explanation_label.pack()
 
         right_side_and_permutation_label = Label(self, bg="orange")
@@ -681,8 +684,8 @@ class DES_Encrypt_Page_6(Frame):
                                   3, 9, 19, 13, 30, 6, 22, 11, 4, 25]
 
         permutation_order_label = Label(self, text=("\nPERMUTATION ORDER\n" + str(permutation_order_no_2)),
-                                        font=("Arial", 10))
-        permutation_order_label.pack()
+                                        font=("Calibri", 16))
+        permutation_order_label.pack(expand=True)
 
         next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Encrypt_Page_7"),
                              font=("Arial", 10), bg="#cf3030", fg="white")
@@ -695,7 +698,7 @@ class DES_Encrypt_Page_6(Frame):
         right_side_and_permutation_text = ' '.join(right_side) + "\n→\n" + ' '.join(permuted_right_side)
         updated_right_side_and_permutation_label = Label(self.right_side_and_permutation_label,
                                                          text=right_side_and_permutation_text,
-                                                         font=("Arial", 10))
+                                                         font=("Calibri", 17))
         updated_right_side_and_permutation_label.pack()
 
         self.controller.shared_data["changed_right_side"] = permuted_right_side
@@ -710,8 +713,11 @@ class DES_Encrypt_Page_7(Frame):
                             font=("Arial", 25), bg="#cf3030", fg="white")
         title_label.pack(fill='x', ipady=10)
 
-        explanation_label = Label(self, text="RIGHT SIDE  ⊕  LEFT SIDE  →  NEW LEFT SIDE\n", font=("Arial", 10))
-        explanation_label.pack()
+        explanation_text = "The Left side and the Right side are XORed together. The result of this calculation is " \
+                           "to become the Left Side of the Ciphertext.\n\n" \
+                           "RIGHT SIDE  ⊕  LEFT SIDE  →  NEW LEFT SIDE\n\n\n"
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 14))
+        explanation_label.pack(ipady=20)
 
         right_side_xored_with_left_side_label = Label(self, bg="orange")
         right_side_xored_with_left_side_label.pack()
@@ -731,7 +737,7 @@ class DES_Encrypt_Page_7(Frame):
 
         updated_right_side_xored_with_left_side_label = Label(self.right_side_xored_with_left_side_label,
                                                               text=right_side_xored_with_left_side_text,
-                                                              font=("Arial", 10))
+                                                              font=("Calibri", 17))
         updated_right_side_xored_with_left_side_label.pack()
 
         self.controller.shared_data["changed_right_side"] = new_right
@@ -746,11 +752,16 @@ class DES_Encrypt_Page_8(Frame):
                             font=("Arial", 25), bg="#cf3030", fg="white")
         title_label.pack(fill='x', ipady=10)
 
-        left_block_label = Label(self, text="LEFT SIDE BLOCK = ")
+        explanation_text = "The left side of the ciphertext is the result of the permuted right side being " \
+                           "encrypted and the right side is the value of the permuted right side."
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 14))
+        explanation_label.pack(ipady=10)
+
+        left_block_label = Label(self)
         left_block_label.pack()
         self.left_block_label = left_block_label
 
-        right_block_label = Label(self, text="RIGHT SIDE BLOCK = ")
+        right_block_label = Label(self)
         right_block_label.pack()
         self.right_block_label = right_block_label
 
@@ -764,16 +775,16 @@ class DES_Encrypt_Page_8(Frame):
         ciphertext = left_side + right_side
 
         left_block_text = "LEFT SIDE:\n" + ' '.join(left_side)
-        updated_left_block_label = Label(self.left_block_label, text=left_block_text, font=("Arial", 10))
-        updated_left_block_label.pack()
+        updated_left_block_label = Label(self.left_block_label, text=left_block_text, font=("Calibri", 17))
+        updated_left_block_label.pack(ipady=20)
 
         right_block_text = "RIGHT SIDE: \n" + ' '.join(right_side)
-        updated_right_block_label = Label(self.right_block_label, text=right_block_text, font=("Arial", 10))
-        updated_right_block_label.pack()
+        updated_right_block_label = Label(self.right_block_label, text=right_block_text, font=("Calibri", 17))
+        updated_right_block_label.pack(ipady=20)
 
         ciphertext_text = "CIPHERTEXT: \n" + ' '.join(ciphertext)
-        updated_ciphertext_label = Label(self.ciphertext_label, text=ciphertext_text, font=("Arial", 12))
-        updated_ciphertext_label.pack()
+        updated_ciphertext_label = Label(self.ciphertext_label, text=ciphertext_text, font=("Calibri", 18))
+        updated_ciphertext_label.pack(ipady=20)
 
 
 class DES_Decrypt_Page_1(Frame):
@@ -784,6 +795,15 @@ class DES_Decrypt_Page_1(Frame):
         title_label = Label(self, text="Splitting of Left and Right Side of Ciphertext ",
                             font=("Arial", 25), bg="#cf3030", fg="white")
         title_label.pack(fill='x', ipady=10)
+
+        explanation_text = "\nThe text is split in half. This is because the right side will go through several steps " \
+                           "different to the left side.\n\nBy having the right side go through the same steps it did " \
+                           "to encrypt it, the original permuted left side can be found by\n\nXORing the result of " \
+                           "the right side going through the encryption steps and the ciphertext’s left side.\n\n" \
+                           "Since the original permuted right side is the same as the ciphertext’s right side, " \
+                           "the original permuted plaintext can be found.\n"
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 14))
+        explanation_label.pack()
 
         next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Decrypt_Page_2"),
                              font=("Arial", 10), bg="#cf3030", fg="white")
@@ -810,13 +830,13 @@ class DES_Decrypt_Page_1(Frame):
         right_side_label = "Right Side:\n" + ' '.join(right_side)
 
         updated_ciphertext_label = Label(self.ciphertext_label, text="Ciphertext:\n" + ' '.join(ciphertext),
-                                         font=("Arial", 11))
+                                         font=("Calibri", 14))
         updated_ciphertext_label.pack()
 
-        updated_left_side_label = Label(self.left_side_label, text=left_side_label, font=("Arial", 11))
+        updated_left_side_label = Label(self.left_side_label, text=left_side_label, font=("Calibri", 14))
         updated_left_side_label.pack(expand=1, fill='x', side='left', ipadx=10)
 
-        updated_right_side_label = Label(self.right_side_label, text=right_side_label, font=("Arial", 11))
+        updated_right_side_label = Label(self.right_side_label, text=right_side_label, font=("Calibri", 14))
         updated_right_side_label.pack(expand=1, fill='x', side='right', ipadx=10)
 
         self.controller.shared_data["decryption_right_side"] = right_side
@@ -831,14 +851,11 @@ class DES_Decrypt_Page_2(Frame):
         title_label = Label(self, text="Expansion of the Right Side", font=("Arial", 25), bg="#cf3030", fg="white")
         title_label.pack(fill='x', ipady=10)
 
-        explanation_label = Label(self, text="The Right Side must go through the same steps it went through to "
-                                             "encrypt it so that it can be XORed with the ciphertext left side.\n"
-                                             "This will then yield the original left side of the permuted plaintext.",
-                                  font=("Arial", 10))
+        explanation_text = "\nThe right side is expanded from 32-bits to 48-bits, based on the expansion order shown " \
+                           "below.\nAs can be seen, several values are repeated to expand the right side.\n\n" \
+                           "Right Side → Expanded Right Side\n\n"
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 14))
         explanation_label.pack()
-
-        visual_label = Label(self, text="Right Side → Expanded Right Side", font=("Arial", 10))
-        visual_label.pack()
 
         expansion_label = Label(self, bg="orange")
         expansion_label.pack()
@@ -848,7 +865,7 @@ class DES_Decrypt_Page_2(Frame):
                            19, 20,
                            21, 20, 21, 22, 23, 24, 25, 24, 25, 26, 27, 28, 29, 28, 29, 30, 31, 32, 1]
 
-        permutation_order_label = Label(self, text=("Expansion Order\n" + str(expansion_order)), font=("Arial", 10))
+        permutation_order_label = Label(self, text=("Expansion Order\n" + str(expansion_order)), font=("Calibri", 13))
         permutation_order_label.pack(expand=1)
 
         next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Decrypt_Page_3"),
@@ -861,7 +878,7 @@ class DES_Decrypt_Page_2(Frame):
         self.controller.shared_data["decryption_changed_right_side"] = expanded_right_side
 
         expansion_text = ' '.join(right_side) + "\n→\n" + ' '.join(expanded_right_side)
-        updated_expansion_label = Label(self.expansion_label, text=expansion_text, font=("Arial", 10))
+        updated_expansion_label = Label(self.expansion_label, text=expansion_text, font=("Calibri", 17))
         updated_expansion_label.pack()
 
 
@@ -874,8 +891,10 @@ class DES_Decrypt_Page_3(Frame):
                             font=("Arial", 25), bg="#cf3030", fg="white")
         title_label.pack(fill='x', ipady=10)
 
-        explanation_label = Label(self, text="Expanded Right ⊕ SUBKEY", font=("Arial", 10))
-        explanation_label.pack(ipady=10)
+        explanation_text = "The expanded right side is XORed with the subkey\n\n" \
+                           "RIGHT AFTER EXPANSION  ⊕  SUBKEY  →  RESULT\n"
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 14))
+        explanation_label.pack(ipady=40)
 
         xored_right_label = Label(self, bg="orange")
         xored_right_label.pack()
@@ -891,9 +910,9 @@ class DES_Decrypt_Page_3(Frame):
         xored_right_side = des_logic.right_xor_key(right_side, key)
         self.controller.shared_data["decryption_changed_right_side"] = xored_right_side
 
-        xored_right_text = ' '.join(right_side) + " ⊕ " + ' '.join(key) + "\n→\n" + ' '.join(xored_right_side)
-        updated_xored_right_label = Label(self.xored_right_label, text=xored_right_text, font=("Arial", 10))
-        updated_xored_right_label.pack()
+        xored_right_text = ' '.join(right_side) + "\n⊕\n" + ' '.join(key) + "\n→\n" + ' '.join(xored_right_side)
+        updated_xored_right_label = Label(self.xored_right_label, text=xored_right_text, font=("Calibri", 17))
+        updated_xored_right_label.pack(ipadx=10)
 
 
 class DES_Decrypt_Page_4(Frame):
@@ -905,15 +924,13 @@ class DES_Decrypt_Page_4(Frame):
         title_label.pack(fill='x', ipady=10)
 
         explanation_text = \
-            "Right side is split into 8 6-bit blocks. The first and last digits of each block are combined as well as" \
-            " the middle digits to get 2 decimal numbers. \n\n" \
-            "Based on these values a number is found in the lookup table. " \
+            "Right side is split into 8 6-bit blocks. The first and last digits of each block are combined as well " \
+            "as the middle digits to get 2 decimal numbers. \n\n" \
+            "Based on these values a number is found in the lookup table, of which each block has a separate one. " \
             "This number is the new value for the the block.\n\n" \
-            "Therefore, there will now be 8 4-bit blocks meaning there are 32-bits on the right side now," \
-            " not 48 (the number of bits after the expansion)\n\n" \
-            "Also, each block has a different lookup table"
-
-        explanation_label = Label(self, text=explanation_text, font=("Arial", 10))
+            "Therefore, there will now be 8 4-bit blocks meaning there are 32-bits on the right side now, " \
+            "not 48 (the number of bits after the expansion)"
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 13))
         explanation_label.pack()
 
         right_side_label = Label(self, text="ciphertext")
@@ -956,14 +973,15 @@ class DES_Decrypt_Page_4(Frame):
             for columns in range(0, 16):
                 lookup_table_text += first_block_lookup_table[rows][columns]
                 lookup_table_text += "  "
-            lookup_table_text += "\n"
+            if rows != 3:
+                lookup_table_text += "\n"
 
-        lookup_table_label = Label(self, text=lookup_table_text, font=("Arial", 10))
-        lookup_table_label.pack()
+        lookup_table_Label = Label(self, text=lookup_table_text, font=("Calibri", 11))
+        lookup_table_Label.pack(fill='x')
 
         next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Decrypt_Page_5"),
                              font=("Arial", 10), bg="#cf3030", fg="white")
-        next_button.pack(side=BOTTOM)
+        next_button.pack(side='bottom')
 
     def updateText(self):
         right_side = self.controller.shared_data["decryption_changed_right_side"]
@@ -978,17 +996,17 @@ class DES_Decrypt_Page_4(Frame):
             six_bit_label_text += "  "
 
         updated_right_side_label = Label(self.right_side_label, text=("Right Side\n" + ' '.join(right_side)),
-                                         font=("Arial", 10))
+                                         font=("Calibri", 12))
         updated_right_side_label.pack()
 
         updated_segmented_right_side_label = Label(self.segmented_right_side_label,
                                                    text=("Segmented Left Side\n" + ' '.join(six_bit_label_text)),
-                                                   font=("Arial", 10))
+                                                   font=("Arial", 12))
         updated_segmented_right_side_label.pack()
 
         updated_first_block_label = Label(self.first_block_label,
                                           text="First Block:\n" + ' '.join(six_bit_label_array[0]),
-                                          font=("Arial", 10))
+                                          font=("Calibri", 12))
         updated_first_block_label.pack()
 
         first_block_first_and_last_bits_text = six_bit_label_array[0][0] + six_bit_label_array[0][5]
@@ -996,7 +1014,7 @@ class DES_Decrypt_Page_4(Frame):
         updated_first_block_first_and_last_bits = Label(self.first_block_first_and_last_bits,
                                                         text="First Block: First and Last Bits\n" +
                                                              ' '.join(first_block_first_and_last_bits_text),
-                                                        font=("Arial", 10))
+                                                        font=("Arial", 12))
         updated_first_block_first_and_last_bits.pack()
 
         first_block_middle_bits_text = six_bit_label_array[0][1] + six_bit_label_array[0][2] + \
@@ -1005,13 +1023,13 @@ class DES_Decrypt_Page_4(Frame):
         updated_first_block_middle_bits = Label(self.first_block_middle_bits,
                                                 text="First Block: Middle Bits\n" +
                                                      ' '.join(first_block_middle_bits_text),
-                                                font=("Arial", 10))
+                                                font=("Calibri", 12))
         updated_first_block_middle_bits.pack()
 
         shrunk_right_side = des_logic.s_box(right_side)
         updated_shrunk_right_side = Label(self.shrunk_right_side,
                                           text=("Shrunk Right Side: \n" + ' '.join(shrunk_right_side)),
-                                          font=("Arial", 10))
+                                          font=("Calibri", 12))
         updated_shrunk_right_side.pack()
 
         self.controller.shared_data["decryption_changed_right_side"] = shrunk_right_side
@@ -1025,7 +1043,10 @@ class DES_Decrypt_Page_5(Frame):
         title_label = Label(self, text="Permutation of Right side", font=("Arial", 25), bg="#cf3030", fg="white")
         title_label.pack(fill='x', ipady=10)
 
-        explanation_label = Label(self, text="Right Side → Permuted Right Side\n")
+        explanation_text = "\nThe right side is permuted based on the permutation order shown below.\nFor example, " \
+                           "the 1st place bit is replaced by the 16th place bit.\n\n" \
+                           "8 4-Bit RIGHT SIDE  →  PERMUTED RIGHT SIDE\n\n\n"
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 14))
         explanation_label.pack()
 
         permutation_label = Label(self, bg="orange")
@@ -1035,8 +1056,8 @@ class DES_Decrypt_Page_5(Frame):
         permutation_order_no_2 = [16, 7, 20, 21, 29, 12, 28, 17, 1, 15, 23, 26, 5, 8, 31, 10, 2, 8, 24, 14, 32, 27,
                                   3, 9, 19, 13, 30, 6, 22, 11, 4, 25]
         permutation_table_label = Label(self, text=("\nPermutation Order:\n" + str(permutation_order_no_2)),
-                                        font=("Arial", 10))
-        permutation_table_label.pack()
+                                        font=("Calibri", 16))
+        permutation_table_label.pack(expand=True)
 
         next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Decrypt_Page_6"),
                              font=("Arial", 10), bg="#cf3030", fg="white")
@@ -1047,8 +1068,8 @@ class DES_Decrypt_Page_5(Frame):
         permuted_right_side = des_logic.second_permutation(right_side)
 
         permutation_text = ' '.join(right_side) + "\n→\n" + ' '.join(permuted_right_side)
-        updated_permutation_label = Label(self.permutation_label, text=permutation_text, font=("Arial", 10))
-        updated_permutation_label.pack()
+        updated_permutation_label = Label(self.permutation_label, text=permutation_text, font=("Calibri", 17))
+        updated_permutation_label.pack(ipady=10)
 
         self.controller.shared_data["decryption_changed_right_side"] = permuted_right_side
 
@@ -1061,11 +1082,11 @@ class DES_Decrypt_Page_6(Frame):
         title_label = Label(self, text="Left Side XORed with Right Side", font=("Arial", 25), bg="#cf3030", fg="white")
         title_label.pack(fill='x', ipady=10)
 
-        explanation_label = Label(self, text="By XORing the ciphertexts left side with the right side that has "
-                                             "encrypted, the permuted plaintext's left side can be found.\n"
-                                             "Left Side ⊕ Right Side → Permuted Plaintext Left Side",
-                                  font=("Arial", 10))
-        explanation_label.pack(ipady=10)
+        explanation_text = "The Left side and the Right side are XORed together. The result of this calculation is " \
+                           "to become the Left Side of the Plaintext.\n\n" \
+                           "RIGHT SIDE  ⊕  LEFT SIDE  →  NEW LEFT SIDE\n\n\n"
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 14))
+        explanation_label.pack(ipady=20)
 
         visualisation_label = Label(self, bg="orange")
         visualisation_label.pack()
@@ -1080,9 +1101,9 @@ class DES_Decrypt_Page_6(Frame):
         right_side = self.controller.shared_data["decryption_changed_right_side"]
         new_left = des_logic.right_xor_left(right_side, left_side)
 
-        visualisation_text = ' '.join(left_side) + "  ⊕  " + ' '.join(right_side) + "\n→\n" + ' '.join(new_left)
-        updated_visualisation_label = Label(self.visualisation_label, text=visualisation_text, font=("Arial", 10))
-        updated_visualisation_label.pack()
+        visualisation_text = ' '.join(left_side) + "\n⊕\n" + ' '.join(right_side) + "\n→\n" + ' '.join(new_left)
+        updated_visualisation_label = Label(self.visualisation_label, text=visualisation_text, font=("Calibri", 17))
+        updated_visualisation_label.pack(ipadx=10)
 
         self.controller.shared_data["decryption_changed_left_side"] = new_left
 
@@ -1096,13 +1117,11 @@ class DES_Decrypt_Page_7(Frame):
                             font=("Arial", 25), bg="#cf3030", fg="white")
         title_label.pack(fill='x', ipady=10)
 
-        explanation_label = Label(self, text="The final step is to merge the calculated left side (the side that was "
-                                             "the result of the XORing of the ciphertext's left side and the calculated"
-                                             " right side)\n and the ciphertext's right side, as this is the permuted "
-                                             "plaintext. So the last stage in decryption is to undo the initial "
-                                             "permutation performed at the start of the encryption process.\n\n"
-                                             "Merged Left and Right Side → Original Plaintext\n\n",
-                                  font=("Arial", 10))
+        explanation_text = "\nBy combining the result of the calculations, i.e. the left side, and the ciphertext’s " \
+                           "right side, the original permuted right side is found.\nThe last step then, is to undo " \
+                           "the initial permutation used to encrypt the data.\n\n" \
+                           "Merged Left and Right Side → Original Plaintext\n\n\n"
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 14))
         explanation_label.pack()
 
         left_and_right_side_label = Label(self)
@@ -1121,28 +1140,96 @@ class DES_Decrypt_Page_7(Frame):
                                   4, 62, 54, 46, 38, 30, 22, 14, 6, 64, 56, 48, 40, 32, 24, 16,
                                   8, 57, 49, 41, 33, 25, 17, 9, 1, 59, 51, 43, 35, 27, 19, 11,
                                   3, 61, 33, 45, 37, 29, 21, 13, 5, 63, 55, 47, 39, 31, 23, 15, 7]
-        permutation_order_label = Label(self, text=("Permutation Order:\n" + str(permutation_order_no_1)),
-                                        font=("Arial", 8))
+        permutation_order_label = Label(self, text=("\nPermutation Order:\n" + str(permutation_order_no_1)),
+                                        font=("Calibri", 9))
         permutation_order_label.pack()
 
     def updateText(self):
         left_side = self.controller.shared_data["decryption_changed_left_side"]
         right_side = list(self.controller.shared_data["decryption_right_side"])
         left_and_right_side = left_side + right_side
+
         left_and_right_side_text = ' '.join(left_side + right_side) + "\n→"
+
         plaintext = des_logic.undo(left_and_right_side)
-        print(''.join(plaintext))
+
         updated_left_and_right_side_label = Label(self.left_and_right_side_label,
                                                   text=left_and_right_side_text,
-                                                  font=("Arial", 10))
+                                                  font=("Calibri", 14))
         updated_left_and_right_side_label.pack()
 
-        updated_result_label = Label(self.result_label, text=' '.join(plaintext), font=("Arial", 10))
+        updated_result_label = Label(self.result_label, text=' '.join(plaintext), font=("Calibri", 14))
         updated_result_label.pack()
 
         updated_plaintext_label = Label(self.plaintext_label, text=("Plaintext: \n" + ' '.join(plaintext)),
-                                        font=("Arial", 12))
+                                        font=("Calibri", 17))
         updated_plaintext_label.pack(side=BOTTOM)
+
+
+class AES_Info_Page(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
+        self.controller = controller
+
+        title_label = Label(self, text="AES", font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label.pack(fill='x', ipady=10)
+
+        label_1_text = "The Advanced Encryption Standard (AES) is a Symmetric Key Block Cipher established in 2001\n"
+        label_1 = Label(self, text=label_1_text, font=("Calibri", 15), anchor='w')
+        label_1.pack()
+
+        input_text = "Inputs: 128-bit Plaintext and 128/192/256-bit Key"
+        inputs_label = Label(self, text=input_text, font=("Calibri", 15), anchor='w')
+        inputs_label.pack()
+
+        output_text = "Output: 128-bit Ciphertext.\n"
+        output_label = Label(self, text=output_text, font=("Calibri", 15), anchor='w')
+        output_label.pack()
+
+        label_2_text = "It is an implementation of a Substitution Permutation Network,\nmeaning that to reverse the " \
+                       "process, inverse of each step can be applied in the reverse order.\n"
+        label_2 = Label(self, text=label_2_text, font=("Calibri", 15), anchor='w')
+        label_2.pack()
+
+        label_3_text = "For an 128-bit Key there are 10 rounds (12 for 192 and 14 for 256)\n"
+        label_3 = Label(self, text=label_3_text, font=("Calibri", 15), anchor='w')
+        label_3.pack()
+
+        process_text = "To encrypt the plaintext is first XORed by the initial round key and then goes " \
+                       "through several stages for each round"
+        process_label = Label(self, text=process_text, font=("Calibri", 15))
+        process_label.pack()
+
+        label_4_text = "Each round is made up of 5 Steps:"
+        label_4 = Label(self, text=label_4_text, font=("Calibri", 15), anchor='w')
+        label_4.pack()
+
+        step_1_text = "1. Substitute the bytes in the Plaintext."
+        step_1_label = Label(self, text=step_1_text, font=("Calibri", 15), anchor='w')
+        step_1_label.pack()
+
+        step_2_text = "2. Shift the rows accordingly."
+        step_2_label = Label(self, text=step_2_text, font=("Calibri", 15), anchor='w')
+        step_2_label.pack()
+
+        step_3_text = "3. Mix the columns by multiplying them by a certain matrix."
+        step_3_label = Label(self, text=step_3_text, font=("Calibri", 15), anchor='w')
+        step_3_label.pack()
+
+        step_4_text = "4. Add the round key by XORing it with the plaintext."
+        step_4_label = Label(self, text=step_4_text, font=("Calibri", 15), anchor='w')
+        step_4_label.pack()
+
+        step_5_text = "5. On the last round, repeat all these steps except for the mix columns step."
+        step_5_label = Label(self, text=step_5_text, font=("Calibri", 15), anchor='w')
+        step_5_label.pack()
+
+        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Image_Page"),
+                             font=("Arial", 10), bg="#cf3030", fg="white")
+        next_button.pack(side='bottom')
+
+    def updateText(self):
+        pass
 
 
 class AES_Image_Page(Frame):
@@ -1155,10 +1242,10 @@ class AES_Image_Page(Frame):
 
         try:
             img = Image.open("./images/AES_Drawing.png")
-            img = ImageTk.PhotoImage(img.resize((650, 400)))
+            img = ImageTk.PhotoImage(img.resize((750, 400)))
             label = Label(self, image=img)
             label.image = img
-            label.pack()
+            label.pack(ipady=10)
         except Exception as inst:
             print(inst)
             print(os.listdir())
@@ -1183,9 +1270,9 @@ class AES_Disclaimer_Page(Frame):
         title_label.pack(fill='x', ipady=10)
 
         disclaimer_text = "The program does not show each round performed by the AES cipher but instead visualises " \
-                          "the first round of every encryption/decryption, as to help learn the cipher only one \n" \
+                          "the first round of every encryption/decryption,\nas to help learn the cipher only one " \
                           "round needs to be visualised. The diagram below shows what this program actually visualises."
-        disclaimer_label = Label(self, text=disclaimer_text, font=("Arial", 10))
+        disclaimer_label = Label(self, text=disclaimer_text, font=("Calibri", 15))
         disclaimer_label.pack()
 
         try:
@@ -1193,7 +1280,7 @@ class AES_Disclaimer_Page(Frame):
             img = ImageTk.PhotoImage(img.resize((700, 400)))
             label = Label(self, image=img)
             label.image = img
-            label.pack()
+            label.pack(ipady=10)
         except Exception as inst:
             print(inst)
             print(os.listdir())
@@ -1310,10 +1397,10 @@ class AES_Encrypt_Page_1(Frame):
                             font=("Arial", 25), bg="#cf3030", fg="white")
         title_label.pack(fill='x', ipady=10)
 
-        explanation_txt = "arrangement =\n [[b0, b4, b8, b12],\n[b1, b5, b9, b13],\n" \
-                          "[b2, b6, b10, b14],\n[b3, b7, b11, b15]"
-        explanation_label = Label(self, text=explanation_txt, font=("Arial", 12))
-        explanation_label.pack()
+        explanation_txt = "The plaintext and keys are shown in the arrangement seen below, in 4x4 tables.\n" \
+                          "The plaintext is known as the State, once the AES algorithms operations are performed on it."
+        explanation_label = Label(self, text=explanation_txt, font=("Arial", 14))
+        explanation_label.pack(ipady=20)
 
         plaintext_label = Label(self)
         plaintext_label.pack()
@@ -1336,24 +1423,24 @@ class AES_Encrypt_Page_1(Frame):
         key_1 = self.controller.shared_data["AES_key_1"].get()
         key_2 = self.controller.shared_data["AES_key_2"].get()
 
-        plaintext = aes_logic.make_table((plaintext))
+        plaintext = aes_logic.make_table(plaintext)
         key_1 = aes_logic.make_table(key_1)
         key_2 = aes_logic.make_table(key_2)
 
         ptxt = "Plaintext: \n" + str(plaintext[0]) + ',\n' + str(plaintext[1]) + ',\n' + \
                str(plaintext[2]) + ',\n' + str(plaintext[3]) + '\n'
 
-        self.plaintext_label = Label(self, text=ptxt, font=("Arial", 15))
+        self.plaintext_label = Label(self, text=ptxt, font=("Calibri", 15))
         self.plaintext_label.pack(side='left', ipadx=120)
 
         k_1 = "Key 1: \n" + str(key_1[0]) + ',\n' + str(key_1[1]) + ',\n' + \
               str(key_1[2]) + ',\n' + str(key_1[3]) + '\n'
-        self.key_1_label = Label(self, text=k_1, font=("Arial", 15))
+        self.key_1_label = Label(self, text=k_1, font=("Calibri", 15))
         self.key_1_label.pack(side='left', ipadx=120)
 
         k_2 = "Key 2: \n" + str(key_2[0]) + ',\n' + str(key_2[1]) + ',\n' + \
               str(key_2[2]) + ',\n' + str(key_2[3]) + '\n'
-        self.key_2_label = Label(self, text=k_2, font=("Arial", 15))
+        self.key_2_label = Label(self, text=k_2, font=("Calibri", 15))
         self.key_2_label.pack(side='left', ipadx=120)
 
         self.controller.shared_data["AES_plaintext_table"] = plaintext
@@ -1369,11 +1456,15 @@ class AES_Encrypt_Page_2(Frame):
         title_label = Label(self, text="Plaintext XORed with Key 1", font=("Arial", 25), bg="#cf3030", fg="white")
         title_label.pack(fill='x', ipady=10)
 
+        explanation_text = "\nThe First step is XOR the plaintext with the first key"
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 14))
+        explanation_label.pack(ipady=10)
+
         plaintext_xor_key_label = Label(self)
         plaintext_xor_key_label.pack()
         self.plaintext_xor_key_label = plaintext_xor_key_label
 
-        result_label = Label(self)
+        result_label = Label(self, bg='orange')
         result_label.pack()
         self.result_label = result_label
 
@@ -1391,14 +1482,14 @@ class AES_Encrypt_Page_2(Frame):
                str(plaintext[2]) + '         ' + str(key_1[2]) + '\n' + \
                str(plaintext[3]) + '         ' + str(key_1[3]) + '\n'
 
-        updated_plaintext_xor_key_label = Label(self.plaintext_xor_key_label, text=text, font=("Arial", 15))
+        updated_plaintext_xor_key_label = Label(self.plaintext_xor_key_label, text=text, font=("Calibri", 15))
         updated_plaintext_xor_key_label.pack()
 
         result = aes_logic.add_round_key(plaintext, key_1)
         result_text = "Result: \n" + str(result[0]) + ',\n' + str(result[1]) + ',\n' + \
                       str(result[2]) + ',\n' + str(result[3]) + '\n'
 
-        updated_result_label = Label(self.result_label, text=result_text, font=("Arial", 15))
+        updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15))
         updated_result_label.pack()
 
 
@@ -1408,12 +1499,11 @@ class AES_Encrypt_Page_3(Frame):
         self.controller = controller
 
         title_label = Label(self, text="Substitution of Bytes", font=("Arial", 25), bg="#cf3030", fg="white")
-        title_label.grid(column=0, columnspan=3, row=0, ipadx=500, ipady=10)
+        title_label.grid(column=0, columnspan=3, row=0, ipadx=450, ipady=5)
 
-        explanation_text = "Each byte in the plaintext is substituted with another one found in the lookup table\n" \
-                           "The leftmost digit of the hexadecimal value corresponds to the vertical axis of " \
-                           "the lookup table and the rightmost digit corresponds to the horizontal axis."
-        explanation_label = Label(self, text=explanation_text, font=("Arial", 10))
+        explanation_text = "Each byte in the State acts as the coordinates for the value in the lookup table that " \
+                           "it will be substituted with."
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 14))
         explanation_label.grid(column=0, row=1, columnspan=3)
 
         plaintext_label = Label(self)
@@ -1455,12 +1545,12 @@ class AES_Encrypt_Page_3(Frame):
         lookup_text = ""
         for i in range(0, 16):
             lookup_text += (str(i) + ' ' + s_box[i].lower()) + '\n'
-        lookup_table_label = Label(self, text=lookup_text, font=("Arial", 10))
+        lookup_table_label = Label(self, text=lookup_text, font=("Calibri", 11))
         lookup_table_label.grid(row=4, column=0, columnspan=3)
 
         next_button = Button(self, text="NEXT", command=lambda: self.controller.show_frame("AES_Encrypt_Page_4"),
                              font=("Arial", 10), bg="#cf3030", fg="white")
-        next_button.grid(row=5, column=1, pady=15)
+        next_button.grid(row=5, column=1)
 
     def updateText(self):
         plaintext = self.controller.shared_data["AES_plaintext_table"]
@@ -1469,11 +1559,11 @@ class AES_Encrypt_Page_3(Frame):
         ptxt = "Plaintext: \n" + str(plaintext[0]) + ',\n' + str(plaintext[1]) + ',\n' + \
                str(plaintext[2]) + ',\n' + str(plaintext[3])
 
-        updated_plaintext_label = Label(self.plaintext_label, text=ptxt, font=("Arial", 15))
+        updated_plaintext_label = Label(self.plaintext_label, text=ptxt, font=("Calibri", 15))
         updated_plaintext_label.grid(column=0, row=2)
 
         ptxt_bytes = "Plaintext value at plaintext[0,0]: " + str(first_bytes)
-        updated_plaintext_bytes = Label(self.plaintext_bytes, text=ptxt_bytes, font=("Arial", 12))
+        updated_plaintext_bytes = Label(self.plaintext_bytes, text=ptxt_bytes, font=("Calibri", 14))
         updated_plaintext_bytes.grid(column=0, row=3)
 
         s_box = [[0x63, 0x7C, 0x77, 0x7B, 0xF2, 0x6B, 0x6F, 0xC5, 0x30, 0x01, 0x67, 0x2B, 0xFE, 0xD7, 0xAB, 0x76],
@@ -1495,17 +1585,17 @@ class AES_Encrypt_Page_3(Frame):
 
         lookup_bytes_text = "Lookup value at lookup[" + str(first_bytes[0]) + ", " + str(first_bytes[1]) + "]" + \
                             ":" + hex(s_box[int(first_bytes[0], base=16)][int(first_bytes[1], base=16)])
-        updated_lookup_bytes = Label(self.lookup_bytes, text=lookup_bytes_text, font=("Arial", 12))
+        updated_lookup_bytes = Label(self.lookup_bytes, text=lookup_bytes_text, font=("Calibri", 14))
         updated_lookup_bytes.grid(column=2, row=3)
 
         result = aes_logic.s_box(plaintext)
         result_text = "Result: \n" + str(result[0]) + ',\n' + str(result[1]) + ',\n' + \
                       str(result[2]) + ',\n' + str(result[3])
-        updated_result_label = Label(self.result_label, text=result_text, font=("Arial", 15))
+        updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15))
         updated_result_label.grid(column=2, row=2)
 
         result_bytes_text = "Substituted plaintext at [0,0]: " + result[0][0]
-        updated_result_bytes = Label(self.result_bytes, text=result_bytes_text, font=("Arial", 12))
+        updated_result_bytes = Label(self.result_bytes, text=result_bytes_text, font=("Calibri", 14))
         updated_result_bytes.grid(column=2, row=3)
 
 
@@ -1517,18 +1607,18 @@ class AES_Encrypt_Page_4(Frame):
         title_label = Label(self, text="Shifting of Rows", font=("Arial", 25), bg="#cf3030", fg="white")
         title_label.pack(fill='x', ipady=10)
 
-        explanation_text = "The rows of the plaintext are shifted a certain amount of spaces to the left depending on" \
-                           " the row.\nThe First Row is not shifted.\n The Second Row is shifted one space to the " \
-                           "left.\nThe Third Row is shifted two spaces to the left\n. And the Final Row is shifted " \
-                           "3 spaces to the left.\n"
-        explanation_label = Label(self, text=explanation_text, font=("Arial", 10))
+        explanation_text = "\nThe rows of the plaintext are shifted a certain amount of spaces to the left depending " \
+                           "on the row.\nThe First Row is not shifted.\n The Second Row is shifted one space to the " \
+                           "left.\nThe Third Row is shifted two spaces to the left.\n And the Final Row is shifted " \
+                           "three spaces to the left.\n"
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 14))
         explanation_label.pack()
 
         plaintext_label = Label(self)
         plaintext_label.pack()
         self.plaintext_label = plaintext_label
 
-        result_label = Label(self)
+        result_label = Label(self, bg='orange')
         result_label.pack()
         self.result_label = result_label
 
@@ -1540,13 +1630,13 @@ class AES_Encrypt_Page_4(Frame):
         plaintext = self.controller.shared_data["AES_plaintext_table"]
         ptxt = "Plaintext: \n" + str(plaintext[0]) + ',\n' + str(plaintext[1]) + ',\n' + \
                str(plaintext[2]) + ',\n' + str(plaintext[3]) + '\n'
-        updated_plaintext_label = Label(self.plaintext_label, text=ptxt, font=("Arial", 15))
+        updated_plaintext_label = Label(self.plaintext_label, text=ptxt, font=("Calibri", 15))
         updated_plaintext_label.pack()
 
         result = aes_logic.shift_rows(plaintext)
         result_text = "Result: \n" + str(result[0]) + ',\n' + str(result[1]) + ',\n' + \
                       str(result[2]) + ',\n' + str(result[3]) + '\n'
-        updated_result_label = Label(self.result_label, text=result_text, font=("Arial", 15))
+        updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15))
         updated_result_label.pack()
 
         self.controller.shared_data["AES_plaintext_table"] = result
@@ -1560,19 +1650,25 @@ class AES_Encrypt_Page_5(Frame):
         title_label = Label(self, text="Mixing of Columns", font=("Arial", 25), bg="#cf3030", fg="white")
         title_label.grid(columnspan=2, row=0, ipadx=500, ipady=10)
 
+        explanation_text = "Each column in the state is multiplied, over GF(28), by the matrix seen below to produce " \
+                           "the column it gets substituted with.\n" \
+                           "In the actual AES cipher, this does not happen on the last round"
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 14))
+        explanation_label.grid(column=0, row=1, columnspan=2)
+
         plaintext_label = Label(self)
-        plaintext_label.grid(column=0, row=1)
+        plaintext_label.grid(column=0, row=2)
         self.plaintext_label = plaintext_label
 
         result_label = Label(self, bg="orange")
-        result_label.grid(column=1, row=1)
+        result_label.grid(column=1, row=2)
         self.result_label = result_label
 
         explanation_label = Label(self, text="Each column is multiplied by this matrix:", font=("Arial", 10))
-        explanation_label.grid(column=0, row=2)
+        explanation_label.grid(column=0, row=3)
 
         example_label = Label(self)
-        example_label.grid(column=0, row=3)
+        example_label.grid(column=0, row=4)
         self.example_label = example_label
 
         # matrix = [[2, 3, 1, 1],
@@ -1584,28 +1680,28 @@ class AES_Encrypt_Page_5(Frame):
         # matrix_label.grid(column=1, row=3)
         explanation_result_label = Label(self, text="To produce the new column in the resulting state:",
                                          font=("Arial", 10))
-        explanation_result_label.grid(column=1, row=2)
+        explanation_result_label.grid(column=1, row=3)
 
         answer_label = Label(self)
-        answer_label.grid(column=1, row=3)
+        answer_label.grid(column=1, row=4)
         self.answer_label = answer_label
 
         next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Encrypt_Page_6"),
                              font=("Arial", 10), bg="#cf3030", fg="white")
-        next_button.grid(column=1, row=4, pady=210)
+        next_button.grid(column=1, row=5)
 
     def updateText(self):
         plaintext = self.controller.shared_data["AES_plaintext_table"]
         ptxt = "Plaintext: \n" + str(plaintext[0]) + ',\n' + str(plaintext[1]) + ',\n' + \
                str(plaintext[2]) + ',\n' + str(plaintext[3]) + '\n'
         updated_plaintext_label = Label(self.plaintext_label, text=ptxt, font=("Arial", 15))
-        updated_plaintext_label.grid(column=0, row=1)
+        updated_plaintext_label.grid(column=0, row=2)
 
         result = aes_logic.mix_columns(plaintext)
         result_text = "Result: \n" + str(result[0]) + ',\n' + str(result[1]) + ',\n' + \
                       str(result[2]) + ',\n' + str(result[3]) + '\n'
         updated_result_label = Label(self.result_label, text=result_text, font=("Arial", 15))
-        updated_result_label.grid(column=1, row=1)
+        updated_result_label.grid(column=1, row=2)
 
         plaintext = aes_logic.inv_mix_columns(plaintext)
 
@@ -1622,13 +1718,13 @@ class AES_Encrypt_Page_5(Frame):
         # example_text = str(plaintext[0][0]) + '    \n' + str(plaintext[1][0]) + '   *\n' +\
         #                str(plaintext[2][0]) + '    \n' + str(plaintext[3][0]) + '    '
         updated_example_label = Label(self.example_label, text=example_text, font=("Arial", 12))
-        updated_example_label.grid(column=0, row=3)
+        updated_example_label.grid(column=0, row=4)
 
         result = aes_logic.mix_columns(plaintext)
         answer_text = str(result[0][0]) + "\n" + str(result[1][0]) + "\n" + str(result[2][0]) + "\n" + \
                       str(result[3][0]) + "\n"
         updated_answer_label = Label(self.answer_label, text=answer_text, font=("Arial", 12))
-        updated_answer_label.grid(column=1, row=3)
+        updated_answer_label.grid(column=1, row=4)
 
 
 class AES_Encrypt_Page_6(Frame):
@@ -2357,7 +2453,7 @@ class DES_Key_Gen_Page_4(Frame):
 if __name__ == "__main__":
     app = TkinterApp()
     app.title("Visualisation tool")
-    app.geometry("1200x550")
+    app.geometry("1200x560")
 
     menubar = Menu(app)
     app.config(menu=menubar)
