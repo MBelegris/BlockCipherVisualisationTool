@@ -103,7 +103,7 @@ class TkinterApp(Tk):
             self.frames[page_name] = frame
             frame.grid(row=0, column=0, sticky="nsew")
 
-        self.show_frame("Explanation_Page")
+        self.show_frame("AES_Page")
 
     def show_frame(self, container):
         frame = self.frames[container]
@@ -140,51 +140,60 @@ class DES_Info_Page(Frame):
         title_label.pack(fill='x', ipady=10)
 
         label_1_text = "\nThe Data Encryption Standard (DES) is a Symmetric Key Block Cipher created in 1976\n"
-        label_1 = Label(self, text=label_1_text, font=("Calibri", 15), anchor='w')
+        label_1 = Label(self, text=label_1_text, font=("Calibri", 15), justify='left')
         label_1.pack()
 
         input_text = "Inputs: 64-bit Plaintext and 64-bit Key (including 8 parity bits)"
-        inputs_label = Label(self, text=input_text, font=("Calibri", 15), anchor='w')
+        inputs_label = Label(self, text=input_text, font=("Calibri", 15), justify='left')
         inputs_label.pack()
 
         output_text = "Output: 64-bit Ciphertext.\n"
-        output_label = Label(self, text=output_text, font=("Calibri", 15), anchor='w')
+        output_label = Label(self, text=output_text, font=("Calibri", 15), justify='left')
         output_label.pack()
 
         label_2_text = "It is an implementation of a Feistel Network, meaning that reversing the steps taken to " \
                        "produce the output, the input can be found.\n"
-        label_2 = Label(self, text=label_2_text, font=("Calibri", 15), anchor='w')
+        label_2 = Label(self, text=label_2_text, font=("Calibri", 15), justify='left')
         label_2.pack()
 
         label_3_text = "The DES cipher is made up of an initial permutation, then 16 rounds of encryption through a " \
                        "Function and a final permutation.\n"
-        label_3 = Label(self, text=label_3_text, font=("Calibri", 15), anchor='w')
+        label_3 = Label(self, text=label_3_text, font=("Calibri", 15), justify='left')
         label_3.pack()
 
-        label_4_text = "Each round is made up of 5 Steps:"
-        label_4 = Label(self, text=label_4_text, font=("Calibri", 15), anchor='w')
-        label_4.pack()
+        each_round_text = "Each round is made up of 5 Steps:\n1. Expansion of the right side of the permuted text.\n" \
+                          "2. XORing the expanded text with a 48-bit round key.\n3. Passing the right side into the " \
+                          "S Box to shrink it down to 32-bits again.\n4. XORing the right side with the original" \
+                          " permuted left side.\n5. The original permuted right side becomes the new left side and" \
+                          " the new right side is the result of the XORing of the\n    right side with the original " \
+                          "permuted left side."
+        each_round_label = Label(self, text=each_round_text, font=("Calibri", 15), justify='left')
+        each_round_label.pack()
 
-        step_1_text = "1. Expansion of the right side of the permuted text."
-        step_1_label = Label(self, text=step_1_text, font=("Calibri", 15), anchor='w')
-        step_1_label.pack()
-
-        step_2_text = "2. XORing the expanded text with a 48-bit round key."
-        step_2_label = Label(self, text=step_2_text, font=("Calibri", 15), anchor='w')
-        step_2_label.pack()
-
-        step_3_text = "3. Passing the right side into the S Box to shrink it down to 32-bits again."
-        step_3_label = Label(self, text=step_3_text, font=("Calibri", 15), anchor='w')
-        step_3_label.pack()
-
-        step_4_text = "4. XORing the right side with the original permuted left side."
-        step_4_label = Label(self, text=step_4_text, font=("Calibri", 15), anchor='w')
-        step_4_label.pack()
-
-        step_5_text = "5. The original permuted right side becomes the new left side and the new right " \
-                      "side is the result of the XORing of the right side with the\n original permuted left side."
-        step_5_label = Label(self, text=step_5_text, font=("Calibri", 15), anchor='w')
-        step_5_label.pack()
+        # label_4_text = "Each round is made up of 5 Steps:"
+        # label_4 = Label(self, text=label_4_text, font=("Calibri", 15), justify='left')
+        # label_4.pack()
+        #
+        # step_1_text = "1. Expansion of the right side of the permuted text."
+        # step_1_label = Label(self, text=step_1_text, font=("Calibri", 15), justify='left')
+        # step_1_label.pack()
+        #
+        # step_2_text = "2. XORing the expanded text with a 48-bit round key."
+        # step_2_label = Label(self, text=step_2_text, font=("Calibri", 15), anchor='w')
+        # step_2_label.pack()
+        #
+        # step_3_text = "3. Passing the right side into the S Box to shrink it down to 32-bits again."
+        # step_3_label = Label(self, text=step_3_text, font=("Calibri", 15), anchor='w')
+        # step_3_label.pack()
+        #
+        # step_4_text = "4. XORing the right side with the original permuted left side."
+        # step_4_label = Label(self, text=step_4_text, font=("Calibri", 15), anchor='w')
+        # step_4_label.pack()
+        #
+        # step_5_text = "5. The original permuted right side becomes the new left side and the new right " \
+        #               "side is the result of the XORing of the right side with the\n original permuted left side."
+        # step_5_label = Label(self, text=step_5_text, font=("Calibri", 15), anchor='w')
+        # step_5_label.pack()
 
         next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Image_Page"),
                              font=("Arial", 10), bg="#cf3030", fg="white")
@@ -235,7 +244,7 @@ class DES_Disclaimer_Page(Frame):
         disclaimer_text = "\nThe program does not show each round performed by the DES cipher but instead visualises " \
                           "the first round of every encryption/decryption,\nas to learn the cipher only one round " \
                           "needs to be visualised. The diagram below shows what this program actually visualises.\n"
-        disclaimer_label = Label(self, text=disclaimer_text, font=("Calibri", 15))
+        disclaimer_label = Label(self, text=disclaimer_text, font=("Calibri", 15), justify='left')
         disclaimer_label.pack()
 
         try:
@@ -552,7 +561,7 @@ class DES_Encrypt_Page_5(Frame):
             "This number is the new value for the the block.\n\n" \
             "Therefore, there will now be 8 4-bit blocks meaning there are 32-bits on the right side now, " \
             "not 48 (the number of bits after the expansion)"
-        explanation_label = Label(self, text=explanation_text, font=("Arial", 13))
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 13), justify='left')
         explanation_label.pack()
 
         right_after_e_xor_label = Label(self, text="RIGHT AFTER EXPANSION AND XOR")
@@ -798,12 +807,12 @@ class DES_Decrypt_Page_1(Frame):
         title_label.pack(fill='x', ipady=10)
 
         explanation_text = "\nThe text is split in half. This is because the right side will go through several steps " \
-                           "different to the left side.\n\nBy having the right side go through the same steps it did " \
-                           "to encrypt it, the original permuted left side can be found by\n\nXORing the result of " \
-                           "the right side after going through the encryption steps and the ciphertext’s left side." \
-                           "\n\nSince the original permuted right side is the same as the ciphertext’s right side, " \
+                           "different to the left side. By having the right\n\nside go through the same steps it did " \
+                           "to encrypt it, the original permuted left side can be found by XORing the result of " \
+                           "the\n\nright side after going through the encryption steps and the ciphertext’s left side." \
+                           "Since the original permuted right side is the\n\nsame as the ciphertext’s right side, " \
                            "the original permuted plaintext can be found.\n"
-        explanation_label = Label(self, text=explanation_text, font=("Arial", 14))
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 14), justify='left')
         explanation_label.pack()
 
         next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Decrypt_Page_2"),
@@ -931,7 +940,7 @@ class DES_Decrypt_Page_4(Frame):
             "This number is the new value for the the block.\n\n" \
             "Therefore, there will now be 8 4-bit blocks meaning there are 32-bits on the right side now, " \
             "not 48 (the number of bits after the expansion)"
-        explanation_label = Label(self, text=explanation_text, font=("Arial", 13))
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 13), justify='left')
         explanation_label.pack()
 
         right_side_label = Label(self, text="ciphertext")
@@ -1201,29 +1210,39 @@ class AES_Info_Page(Frame):
         process_label = Label(self, text=process_text, font=("Calibri", 15))
         process_label.pack()
 
-        label_4_text = "Each round is made up of 5 Steps:"
-        label_4 = Label(self, text=label_4_text, font=("Calibri", 15), anchor='w')
-        label_4.pack()
+        each_round_text = "Each round is made up of 5 Steps:\n" \
+                          "1. Substitute the bytes in the Plaintext.\n" \
+                          "2. Shift the rows accordingly.\n" \
+                          "3. Mix the columns by multiplying them by a certain matrix.\n" \
+                          "4. Add the round key by XORing it with the plaintext.\n" \
+                          "5. On the last round, repeat all these steps except for the mix columns step."
+        each_round_label = Label(self, text=each_round_text, font=("Calibri", 15), justify='left')
+        each_round_label.pack()
 
-        step_1_text = "1. Substitute the bytes in the Plaintext."
-        step_1_label = Label(self, text=step_1_text, font=("Calibri", 15), anchor='w')
-        step_1_label.pack()
 
-        step_2_text = "2. Shift the rows accordingly."
-        step_2_label = Label(self, text=step_2_text, font=("Calibri", 15), anchor='w')
-        step_2_label.pack()
-
-        step_3_text = "3. Mix the columns by multiplying them by a certain matrix."
-        step_3_label = Label(self, text=step_3_text, font=("Calibri", 15), anchor='w')
-        step_3_label.pack()
-
-        step_4_text = "4. Add the round key by XORing it with the plaintext."
-        step_4_label = Label(self, text=step_4_text, font=("Calibri", 15), anchor='w')
-        step_4_label.pack()
-
-        step_5_text = "5. On the last round, repeat all these steps except for the mix columns step."
-        step_5_label = Label(self, text=step_5_text, font=("Calibri", 15), anchor='w')
-        step_5_label.pack()
+        # label_4_text = "Each round is made up of 5 Steps:"
+        # label_4 = Label(self, text=label_4_text, font=("Calibri", 15), anchor='w')
+        # label_4.pack()
+        #
+        # step_1_text = "1. Substitute the bytes in the Plaintext."
+        # step_1_label = Label(self, text=step_1_text, font=("Calibri", 15), anchor='w')
+        # step_1_label.pack()
+        #
+        # step_2_text = "2. Shift the rows accordingly."
+        # step_2_label = Label(self, text=step_2_text, font=("Calibri", 15), anchor='w')
+        # step_2_label.pack()
+        #
+        # step_3_text = "3. Mix the columns by multiplying them by a certain matrix."
+        # step_3_label = Label(self, text=step_3_text, font=("Calibri", 15), anchor='w')
+        # step_3_label.pack()
+        #
+        # step_4_text = "4. Add the round key by XORing it with the plaintext."
+        # step_4_label = Label(self, text=step_4_text, font=("Calibri", 15), anchor='w')
+        # step_4_label.pack()
+        #
+        # step_5_text = "5. On the last round, repeat all these steps except for the mix columns step."
+        # step_5_label = Label(self, text=step_5_text, font=("Calibri", 15), anchor='w')
+        # step_5_label.pack()
 
         next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Image_Page"),
                              font=("Arial", 10), bg="#cf3030", fg="white")
@@ -1273,7 +1292,7 @@ class AES_Disclaimer_Page(Frame):
         disclaimer_text = "The program does not show each round performed by the AES cipher but instead visualises " \
                           "the first round of every encryption/decryption,\nas to help learn the cipher only one " \
                           "round needs to be visualised. The diagram below shows what this program actually visualises."
-        disclaimer_label = Label(self, text=disclaimer_text, font=("Calibri", 15))
+        disclaimer_label = Label(self, text=disclaimer_text, font=("Calibri", 15), justify='left')
         disclaimer_label.pack()
 
         try:
@@ -1431,17 +1450,17 @@ class AES_Encrypt_Page_1(Frame):
         ptxt = "Plaintext: \n" + str(plaintext[0]) + ',\n' + str(plaintext[1]) + ',\n' + \
                str(plaintext[2]) + ',\n' + str(plaintext[3]) + '\n'
 
-        self.plaintext_label = Label(self, text=ptxt, font=("Calibri", 15))
+        self.plaintext_label = Label(self, text=ptxt, font=("Calibri", 15), justify='left')
         self.plaintext_label.pack(side='left', ipadx=120)
 
         k_1 = "Key 1: \n" + str(key_1[0]) + ',\n' + str(key_1[1]) + ',\n' + \
               str(key_1[2]) + ',\n' + str(key_1[3]) + '\n'
-        self.key_1_label = Label(self, text=k_1, font=("Calibri", 15))
+        self.key_1_label = Label(self, text=k_1, font=("Calibri", 15), justify='left')
         self.key_1_label.pack(side='left', ipadx=120)
 
         k_2 = "Key 2: \n" + str(key_2[0]) + ',\n' + str(key_2[1]) + ',\n' + \
               str(key_2[2]) + ',\n' + str(key_2[3]) + '\n'
-        self.key_2_label = Label(self, text=k_2, font=("Calibri", 15))
+        self.key_2_label = Label(self, text=k_2, font=("Calibri", 15), justify='left')
         self.key_2_label.pack(side='left', ipadx=120)
 
         self.controller.shared_data["AES_plaintext_table"] = plaintext
@@ -1490,7 +1509,7 @@ class AES_Encrypt_Page_2(Frame):
         result_text = "Result: \n" + str(result[0]) + ',\n' + str(result[1]) + ',\n' + \
                       str(result[2]) + ',\n' + str(result[3]) + '\n'
 
-        updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15))
+        updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15), justify='left')
         updated_result_label.pack()
 
 
@@ -1546,8 +1565,8 @@ class AES_Encrypt_Page_3(Frame):
 
         lookup_text = ""
         for i in range(0, 16):
-            lookup_text += (str(i) + ' ' + s_box[i].lower()) + '\n'
-        lookup_table_label = Label(self, text=lookup_text, font=("Calibri", 11), anchor='w')
+            lookup_text += (s_box[i].lower()) + '\n'
+        lookup_table_label = Label(self, text=lookup_text, font=("Calibri", 11), justify='left')
         lookup_table_label.grid(row=4, column=0, columnspan=3)
 
         next_button = Button(self, text="NEXT", command=lambda: self.controller.show_frame("AES_Encrypt_Page_4"),
@@ -1561,7 +1580,7 @@ class AES_Encrypt_Page_3(Frame):
         ptxt = "Plaintext: \n" + str(plaintext[0]) + ',\n' + str(plaintext[1]) + ',\n' + \
                str(plaintext[2]) + ',\n' + str(plaintext[3])
 
-        updated_plaintext_label = Label(self.plaintext_label, text=ptxt, font=("Calibri", 15))
+        updated_plaintext_label = Label(self.plaintext_label, text=ptxt, font=("Calibri", 15), justify='left')
         updated_plaintext_label.grid(column=0, row=2)
 
         ptxt_bytes = "Plaintext value at plaintext[0,0]: " + str(first_bytes)
@@ -1593,7 +1612,7 @@ class AES_Encrypt_Page_3(Frame):
         result = aes_logic.s_box(plaintext)
         result_text = "Result: \n" + str(result[0]) + ',\n' + str(result[1]) + ',\n' + \
                       str(result[2]) + ',\n' + str(result[3])
-        updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15))
+        updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15), justify='left')
         updated_result_label.grid(column=2, row=2)
 
         result_bytes_text = "Substituted plaintext at [0,0]: " + result[0][0]
@@ -1610,10 +1629,10 @@ class AES_Encrypt_Page_4(Frame):
         title_label.pack(fill='x', ipady=10)
 
         explanation_text = "\nThe rows of the plaintext are shifted a certain amount of spaces to the left depending " \
-                           "on the row.\nThe First Row is not shifted.\n The Second Row is shifted one space to the " \
-                           "left.\nThe Third Row is shifted two spaces to the left.\n And the Final Row is shifted " \
+                           "on the row.\nThe First Row is not shifted.\nThe Second Row is shifted one space to the " \
+                           "left.\nThe Third Row is shifted two spaces to the left.\nAnd the Final Row is shifted " \
                            "three spaces to the left.\n"
-        explanation_label = Label(self, text=explanation_text, font=("Arial", 14))
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 14), justify='left')
         explanation_label.pack()
 
         plaintext_label = Label(self)
@@ -1632,13 +1651,13 @@ class AES_Encrypt_Page_4(Frame):
         plaintext = self.controller.shared_data["AES_plaintext_table"]
         ptxt = "Plaintext: \n" + str(plaintext[0]) + ',\n' + str(plaintext[1]) + ',\n' + \
                str(plaintext[2]) + ',\n' + str(plaintext[3]) + '\n'
-        updated_plaintext_label = Label(self.plaintext_label, text=ptxt, font=("Calibri", 15))
+        updated_plaintext_label = Label(self.plaintext_label, text=ptxt, font=("Calibri", 15), justify='left')
         updated_plaintext_label.pack()
 
         result = aes_logic.shift_rows(plaintext)
         result_text = "Result: \n" + str(result[0]) + ',\n' + str(result[1]) + ',\n' + \
                       str(result[2]) + ',\n' + str(result[3]) + '\n'
-        updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15))
+        updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15), justify='left')
         updated_result_label.pack()
 
         self.controller.shared_data["AES_plaintext_table"] = result
@@ -1689,13 +1708,13 @@ class AES_Encrypt_Page_5(Frame):
         plaintext = self.controller.shared_data["AES_plaintext_table"]
         ptxt = "Plaintext: \n" + str(plaintext[0]) + ',\n' + str(plaintext[1]) + ',\n' + \
                str(plaintext[2]) + ',\n' + str(plaintext[3]) + '\n'
-        updated_plaintext_label = Label(self.plaintext_label, text=ptxt, font=("Calibri", 15))
+        updated_plaintext_label = Label(self.plaintext_label, text=ptxt, font=("Calibri", 15), justify='left')
         updated_plaintext_label.grid(column=0, row=2)
 
         result = aes_logic.mix_columns(plaintext)
         result_text = "Result: \n" + str(result[0]) + ',\n' + str(result[1]) + ',\n' + \
                       str(result[2]) + ',\n' + str(result[3]) + '\n'
-        updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15))
+        updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15), justify='left')
         updated_result_label.grid(column=1, row=2)
 
         plaintext = aes_logic.inv_mix_columns(plaintext)
@@ -1763,7 +1782,7 @@ class AES_Encrypt_Page_6(Frame):
         result_text = "Result: \n" + str(result[0]) + ',\n' + str(result[1]) + ',\n' + \
                       str(result[2]) + ',\n' + str(result[3]) + '\n'
 
-        updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15))
+        updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15), justify='left')
         updated_result_label.pack()
 
         self.controller.shared_data["AES_plaintext_table"] = result
@@ -1789,7 +1808,8 @@ class AES_Encrypt_Page_7(Frame):
         ciphertext_table = self.controller.shared_data["AES_plaintext_table"]
         ctxt = "Ciphertext: \n" + str(ciphertext_table[0]) + ',\n' + str(ciphertext_table[1]) + ',\n' + \
                str(ciphertext_table[2]) + ',\n' + str(ciphertext_table[3]) + '\n'
-        updated_ciphertext_table_label = Label(self.ciphertext_table_label, text=ctxt, font=("Calibri", 15))
+        updated_ciphertext_table_label = Label(self.ciphertext_table_label, text=ctxt, font=("Calibri", 15),
+                                               justify='left')
         updated_ciphertext_table_label.pack(ipady=25)
 
         ciphertext = ""
@@ -1843,17 +1863,17 @@ class AES_Decrypt_Page_1(Frame):
         ctxt = "Ciphertext: \n" + str(ciphertext[0]) + ',\n' + str(ciphertext[1]) + ',\n' + \
                str(ciphertext[2]) + ',\n' + str(ciphertext[3]) + '\n'
 
-        self.ciphertext_label = Label(self, text=ctxt, font=("Calibri", 15))
+        self.ciphertext_label = Label(self, text=ctxt, font=("Calibri", 15), justify='left')
         self.ciphertext_label.pack(side='left', ipadx=120)
 
         k_1 = "Key 1: \n" + str(key_1[0]) + ',\n' + str(key_1[1]) + ',\n' + \
               str(key_1[2]) + ',\n' + str(key_1[3]) + '\n'
-        self.key_1_label = Label(self, text=k_1, font=("Calibri", 15))
+        self.key_1_label = Label(self, text=k_1, font=("Calibri", 15), justify='left')
         self.key_1_label.pack(side='left', ipadx=120)
 
         k_2 = "Key 2: \n" + str(key_2[0]) + ',\n' + str(key_2[1]) + ',\n' + \
               str(key_2[2]) + ',\n' + str(key_2[3]) + '\n'
-        self.key_2_label = Label(self, text=k_2, font=("Calibri", 15))
+        self.key_2_label = Label(self, text=k_2, font=("Calibri", 15), justify='left')
         self.key_2_label.pack(side='left', ipadx=120)
 
         self.controller.shared_data["AES_ciphertext_table"] = ciphertext
@@ -1890,7 +1910,7 @@ class AES_Decrypt_Page_2(Frame):
         ciphertext = self.controller.shared_data["AES_ciphertext_table"]
         key_2 = self.controller.shared_data["AES_key_2_table"]
 
-        text = "ciphertext:" + '         ' + "Key 2:" + '\n' + \
+        text = "Ciphertext:" + '         ' + "Key 2:" + '\n' + \
                str(ciphertext[0]) + '         ' + str(key_2[0]) + '\n' + \
                str(ciphertext[1]) + '  ⊕     ' + str(key_2[1]) + '\n' + \
                str(ciphertext[2]) + '         ' + str(key_2[2]) + '\n' + \
@@ -1903,7 +1923,7 @@ class AES_Decrypt_Page_2(Frame):
         result_text = "Result: \n" + str(result[0]) + ',\n' + str(result[1]) + ',\n' + \
                       str(result[2]) + ',\n' + str(result[3]) + '\n'
 
-        updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15))
+        updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15), justify='left')
         updated_result_label.pack()
 
 
@@ -1950,18 +1970,18 @@ class AES_Decrypt_Page_3(Frame):
 
     def updateText(self):
         ciphertext = self.controller.shared_data["AES_ciphertext_table"]
-        ctxt = "ciphertext: \n" + str(ciphertext[0]) + ',\n' + str(ciphertext[1]) + ',\n' + \
+        ctxt = "Ciphertext: \n" + str(ciphertext[0]) + ',\n' + str(ciphertext[1]) + ',\n' + \
                str(ciphertext[2]) + ',\n' + str(ciphertext[3]) + '\n'
-        updated_ciphertext_label = Label(self.ciphertext_label, text=ctxt, font=("Arial", 15))
+        updated_ciphertext_label = Label(self.ciphertext_label, text=ctxt, font=("Arial", 15), justify='left')
         updated_ciphertext_label.grid(column=0, row=2)
 
         result = aes_logic.inv_mix_columns(ciphertext)
         result_text = "Result: \n" + str(result[0]) + ',\n' + str(result[1]) + ',\n' + \
                       str(result[2]) + ',\n' + str(result[3]) + '\n'
-        updated_result_label = Label(self.result_label, text=result_text, font=("Arial", 15))
+        updated_result_label = Label(self.result_label, text=result_text, font=("Arial", 15), justify='left')
         updated_result_label.grid(column=1, row=2)
 
-        ciphertext = aes_logic.inv_mix_columns(ciphertext)
+        ciphertext = aes_logic.mix_columns(ciphertext)
 
         matrix = [[2, 3, 1, 1],
                   [1, 2, 3, 1],
@@ -1976,7 +1996,7 @@ class AES_Decrypt_Page_3(Frame):
         updated_example_label = Label(self.example_label, text=example_text, font=("Arial", 12))
         updated_example_label.grid(column=0, row=4)
 
-        result = aes_logic.mix_columns(ciphertext)
+        result = aes_logic.inv_mix_columns(ciphertext)
         answer_text = str(result[0][0]) + "\n" + str(result[1][0]) + "\n" + str(result[2][0]) + "\n" + \
                       str(result[3][0]) + "\n"
         updated_answer_label = Label(self.answer_label, text=answer_text, font=("Arial", 12))
@@ -1993,10 +2013,10 @@ class AES_Decrypt_Page_4(Frame):
         title_label.pack(fill='x', ipady=10)
 
         explanation_text = "\nThe rows of the plaintext are shifted a certain amount of spaces to the left depending " \
-                           "on the row.\nThe First Row is not shifted.\n The Second Row is shifted one space to the " \
-                           "left.\nThe Third Row is shifted two spaces to the left.\n And the Final Row is shifted " \
+                           "on the row.\nThe First Row is not shifted.\nThe Second Row is shifted one space to the " \
+                           "left.\nThe Third Row is shifted two spaces to the left.\nAnd the Final Row is shifted " \
                            "three spaces to the left.\n"
-        explanation_label = Label(self, text=explanation_text, font=("Arial", 14))
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 14), justify='left')
         explanation_label.pack()
 
         ciphertext_label = Label(self)
@@ -2015,13 +2035,13 @@ class AES_Decrypt_Page_4(Frame):
         ciphertext = self.controller.shared_data["AES_ciphertext_table"]
         ctxt = "Ciphertext: \n" + str(ciphertext[0]) + ',\n' + str(ciphertext[1]) + ',\n' + \
                str(ciphertext[2]) + ',\n' + str(ciphertext[3]) + '\n'
-        updated_ciphertext_label = Label(self.ciphertext_label, text=ctxt, font=("Calibri", 15))
+        updated_ciphertext_label = Label(self.ciphertext_label, text=ctxt, font=("Calibri", 15), justify='left')
         updated_ciphertext_label.pack()
 
         result = aes_logic.inv_shift_rows(ciphertext)
         result_text = "Result: \n" + str(result[0]) + ',\n' + str(result[1]) + ',\n' + \
                       str(result[2]) + ',\n' + str(result[3]) + '\n'
-        updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15))
+        updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15), justify='left')
         updated_result_label.pack()
 
         self.controller.shared_data["AES_ciphertext_table"] = result
@@ -2037,7 +2057,7 @@ class AES_Decrypt_Page_5(Frame):
 
         explanation_text = "Each byte in the State acts as the coordinates for the value in the lookup table that " \
                            "it will be substituted with."
-        explanation_label = Label(self, text=explanation_text, font=("Arial", 14))
+        explanation_label = Label(self, text=explanation_text, font=("Arial", 14), justify='left')
         explanation_label.grid(column=0, row=1, columnspan=3)
 
         ciphertext_label = Label(self)
@@ -2079,8 +2099,8 @@ class AES_Decrypt_Page_5(Frame):
             "[0x17, 0x2B, 0x04, 0x7E, 0xBA, 0x77, 0xD6, 0x26, 0xE1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0C, 0x7D]"]
         lookup_text = ""
         for i in range(0, 16):
-            lookup_text += (str(i) + ' ' + inverted_s_box[i].lower()) + '\n'
-        lookup_table_label = Label(self, text=lookup_text, font=("Calibri", 11))
+            lookup_text += (inverted_s_box[i].lower()) + '\n'
+        lookup_table_label = Label(self, text=lookup_text, font=("Calibri", 11), justify='left')
         lookup_table_label.grid(row=4, column=0, columnspan=3)
 
         next_button = Button(self, text="NEXT", command=lambda: self.controller.show_frame("AES_Decrypt_Page_6"),
@@ -2094,7 +2114,7 @@ class AES_Decrypt_Page_5(Frame):
         ctxt = "Ciphertext: \n" + str(ciphertext[0]) + ',\n' + str(ciphertext[1]) + ',\n' + \
                str(ciphertext[2]) + ',\n' + str(ciphertext[3])
 
-        updated_ciphertext_label = Label(self.ciphertext_label, text=ctxt, font=("Calibri", 15))
+        updated_ciphertext_label = Label(self.ciphertext_label, text=ctxt, font=("Calibri", 15), justify='left')
         updated_ciphertext_label.grid(column=0, row=2)
 
         ctxt_bytes = "Ciphertext value at plaintext[0,0]: " + str(first_bytes)
@@ -2127,7 +2147,7 @@ class AES_Decrypt_Page_5(Frame):
         result = aes_logic.inv_s_box(ciphertext)
         result_text = "Result: \n" + str(result[0]) + ',\n' + str(result[1]) + ',\n' + \
                       str(result[2]) + ',\n' + str(result[3])
-        updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15))
+        updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15), justify='left')
         updated_result_label.grid(column=2, row=2)
 
         result_bytes_text = "Substituted plaintext at [0,0]: " + result[0][0]
@@ -2177,7 +2197,7 @@ class AES_Decrypt_Page_6(Frame):
         result_text = "Result: \n" + str(result[0]) + ',\n' + str(result[1]) + ',\n' + \
                       str(result[2]) + ',\n' + str(result[3]) + '\n'
 
-        updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15))
+        updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15), justify='left')
         updated_result_label.pack()
 
 
@@ -2201,7 +2221,8 @@ class AES_Decrypt_Page_7(Frame):
         ciphertext_table = self.controller.shared_data["AES_ciphertext_table"]
         ptxt = "Plaintext: \n" + str(ciphertext_table[0]) + ',\n' + str(ciphertext_table[1]) + ',\n' + \
                str(ciphertext_table[2]) + ',\n' + str(ciphertext_table[3]) + '\n'
-        updated_ciphertext_table_label = Label(self.ciphertext_table_label, text=ptxt, font=("Calibri", 15))
+        updated_ciphertext_table_label = Label(self.ciphertext_table_label, text=ptxt, font=("Calibri", 15),
+                                               justify='left')
         updated_ciphertext_table_label.pack(ipady=25)
 
         plaintext = ""
