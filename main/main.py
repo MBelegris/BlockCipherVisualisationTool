@@ -93,6 +93,7 @@ class TkinterApp(Tk):
                   DES_Encrypt_Page_8, DES_Decrypt_Page_1, DES_Decrypt_Page_2, DES_Decrypt_Page_3, DES_Decrypt_Page_4,
                   DES_Decrypt_Page_5, DES_Decrypt_Page_6, DES_Decrypt_Page_7, DES_Info_Page,
                   DES_Key_Gen_Page, DES_Key_Gen_Page_1, DES_Key_Gen_Page_2, DES_Key_Gen_Page_3, DES_Key_Gen_Page_4,
+                  Explanation_Page,
                   AES_Page, AES_Info_Page, AES_Image_Page, AES_Disclaimer_Page, AES_Encrypt_Page_1, AES_Encrypt_Page_2,
                   AES_Encrypt_Page_3, AES_Encrypt_Page_4, AES_Encrypt_Page_5, AES_Encrypt_Page_6, AES_Encrypt_Page_7,
                   AES_Decrypt_Page_1, AES_Decrypt_Page_2, AES_Decrypt_Page_3, AES_Decrypt_Page_4, AES_Decrypt_Page_5,
@@ -102,7 +103,7 @@ class TkinterApp(Tk):
             self.frames[page_name] = frame
             frame.grid(row=0, column=0, sticky="nsew")
 
-        self.show_frame("Home_Page")
+        self.show_frame("Explanation_Page")
 
     def show_frame(self, container):
         frame = self.frames[container]
@@ -2459,6 +2460,71 @@ class DES_Key_Gen_Page_4(Frame):
         round_2_text = "Round 10: " + ''.join(des_key.gen_key(original, 10))
         round_2_label = Label(self, text=round_2_text, font=("Arial", 10))
         round_2_label.pack(ipady=10)
+
+
+class Explanation_Page(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
+        self.controller = controller
+
+        title_label = Label(self, text="How this Tool Works", font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label.pack(fill='x', ipady=10)
+
+        text_1 = "Cryptography is the encrypting and decrypting of informaton, to secure it from malicious " \
+                 "third-parties.\nThis is either done through asymmetric or symmetric encryption algorithms.\n"
+        text_1_label = Label(self, text=text_1, font=("Calibri", 13), justify='left')
+        text_1_label.pack()
+
+        text_2 = "Asymmetric cryptographic algorithms use a pair of keys, known as the Public and the Private Key, " \
+                 "where one key can only encrypt and the other one can only decrypt.\n" \
+                 "Examples include RSA, Diffie-Hellman and ECC.\n"
+        text_2_label = Label(self, text=text_2, font=("Calibri", 13))
+        text_2_label.pack()
+
+        text_3 = "Symmetric cryptographic algorithms use the same key for encryption and decryption.\nExamples " \
+                 "include Stream ciphers and Block Ciphers.\n"
+        text_3_label = Label(self, text=text_3, font=("Calibri", 13))
+        text_3_label.pack()
+
+        text_4 = "This program is a visualisation tool for Block Ciphers, specifically the DES and the AES block " \
+                 "ciphers. This means that the program will take a potential plaintext\nor ciphertext, as well as the" \
+                 " necessary keys,and will show how each step on the process to encryption or decryption changes the" \
+                 " data. For example, how the\narrangement of the data is changed based on a permutation order.\n"
+        text_4_label = Label(self, text=text_4, font=("Calibri", 13), justify='left')
+        text_4_label.pack()
+
+        text_5 = "How to use this program:"
+        text_5_label = Label(self, text=text_5, font=("Calibri", 13), justify='left')
+        text_5_label.pack()
+
+        text_6 = "By selecting AES or DES on the Home screen, a small explanation of the Block Ciphers will show up, " \
+                 "next a diagram depicting the steps taken to encrypt and\ndecrypt will be displayed, and then a " \
+                 "small disclaimer about what each block cipher visualisation is actually visualising. The next " \
+                 "page will be the appropriate\ninput page for either the AES or DES cipher, where user input will " \
+                 "be requested so that the plaintext/ciphertext and the necessary keys can be entered. Once\n" \
+                 "completed, to start the visualisation either encrypt or decrypt can be pressed. The visualisation " \
+                 "shows each step with the value of the plaintext and the result\nof each stage. Each page has a " \
+                 "small description of the process to assist with the understanding."
+        text_6_label = Label(self, text=text_6, font=("Calibri", 13), justify='left')
+        text_6_label.pack()
+
+        # text_6 = "By selecting AES or DES on the Home screen, a small explanation of the Block Ciphers will show up," \
+        #          "next a diagram depicting the steps taken to encrypt and decrypt\nwill be displayed, and then a small"\
+        #          " disclaimer about what each block cipher visualisation is actually visualising."
+        # text_6_label = Label(self, text=text_6, font=("Calibri", 13), justify='left')
+        # text_6_label.pack()
+        #
+        # text_7 = "The next page will be the appropriate input page for either the AES or DES cipher, where user input" \
+        #          " will be requested so that the plaintext/ciphertext and the necessary\nkeys can be entered."
+        # text_7_label = Label(self, text=text_7, font=("Calibri", 13), justify='left')
+        # text_7_label.pack()
+
+        home_button = Button(self, text="HOME", font=("Arial", 10), bg='#cf3030', fg='white',
+                             command=lambda: controller.show_frame("Home_Page"))
+        home_button.pack(side='bottom')
+
+    def updateText(self):
+        pass
 
 
 if __name__ == "__main__":
