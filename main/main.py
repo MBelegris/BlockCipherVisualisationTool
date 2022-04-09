@@ -103,7 +103,7 @@ class TkinterApp(Tk):
             self.frames[page_name] = frame
             frame.grid(row=0, column=0, sticky="nsew")
 
-        self.show_frame("AES_Page")
+        self.show_frame("Explanation_Page")
 
     def show_frame(self, container):
         frame = self.frames[container]
