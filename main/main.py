@@ -102,7 +102,7 @@ class TkinterApp(Tk):
             self.frames[page_name] = frame
             frame.grid(row=0, column=0, sticky="nsew")
 
-        self.show_frame("AES_Page")
+        self.show_frame("Home_Page")
 
     def show_frame(self, container):
         frame = self.frames[container]
@@ -732,7 +732,7 @@ class DES_Encrypt_Page_7(Frame):
         left_side = self.controller.shared_data["initial_left_side"]
         new_right = des_logic.right_xor_left(right_side, left_side)
 
-        right_side_xored_with_left_side_text = ' '.join(right_side) + "  ⊕  " + ' '.join(left_side) + "\n→\n" + \
+        right_side_xored_with_left_side_text = ' '.join(right_side) + "\n⊕\n" + ' '.join(left_side) + "\n→\n" + \
                                                ' '.join(new_right)
 
         updated_right_side_xored_with_left_side_label = Label(self.right_side_xored_with_left_side_label,
@@ -799,8 +799,8 @@ class DES_Decrypt_Page_1(Frame):
         explanation_text = "\nThe text is split in half. This is because the right side will go through several steps " \
                            "different to the left side.\n\nBy having the right side go through the same steps it did " \
                            "to encrypt it, the original permuted left side can be found by\n\nXORing the result of " \
-                           "the right side going through the encryption steps and the ciphertext’s left side.\n\n" \
-                           "Since the original permuted right side is the same as the ciphertext’s right side, " \
+                           "the right side after going through the encryption steps and the ciphertext’s left side." \
+                           "\n\nSince the original permuted right side is the same as the ciphertext’s right side, " \
                            "the original permuted plaintext can be found.\n"
         explanation_label = Label(self, text=explanation_text, font=("Arial", 14))
         explanation_label.pack()
@@ -1195,7 +1195,7 @@ class AES_Info_Page(Frame):
         label_3 = Label(self, text=label_3_text, font=("Calibri", 15), anchor='w')
         label_3.pack()
 
-        process_text = "To encrypt the plaintext is first XORed by the initial round key and then goes " \
+        process_text = "To encrypt, the plaintext is first XORed by the initial round key and then goes " \
                        "through several stages for each round"
         process_label = Label(self, text=process_text, font=("Calibri", 15))
         process_label.pack()
@@ -1242,7 +1242,7 @@ class AES_Image_Page(Frame):
 
         try:
             img = Image.open("./images/AES_Drawing.png")
-            img = ImageTk.PhotoImage(img.resize((750, 400)))
+            img = ImageTk.PhotoImage(img.resize((700, 400)))
             label = Label(self, image=img)
             label.image = img
             label.pack(ipady=10)
@@ -1265,7 +1265,7 @@ class AES_Disclaimer_Page(Frame):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Disclaimer about the DES Visualisation",
+        title_label = Label(self, text="Disclaimer about the AES Visualisation",
                             font=("Arial", 25), bg="#cf3030", fg="white")
         title_label.pack(fill='x', ipady=10)
 
@@ -1456,7 +1456,7 @@ class AES_Encrypt_Page_2(Frame):
         title_label = Label(self, text="Plaintext XORed with Key 1", font=("Arial", 25), bg="#cf3030", fg="white")
         title_label.pack(fill='x', ipady=10)
 
-        explanation_text = "\nThe First step is XOR the plaintext with the first key"
+        explanation_text = "\nThe First step is to XOR the plaintext with the first key"
         explanation_label = Label(self, text=explanation_text, font=("Arial", 14))
         explanation_label.pack(ipady=10)
 
@@ -1542,10 +1542,11 @@ class AES_Encrypt_Page_3(Frame):
                  "[0x70, 0x3E, 0xB5, 0x66, 0x48, 0x03, 0xF6, 0x0E, 0x61, 0x35, 0x57, 0xB9, 0x86, 0xC1, 0x1D, 0x9E]",
                  "[0xE1, 0xF8, 0x98, 0x11, 0x69, 0xD9, 0x8E, 0x94, 0x9B, 0x1E, 0x87, 0xE9, 0xCE, 0x55, 0x28, 0xDF]",
                  "[0x8C, 0xA1, 0x89, 0x0D, 0xBF, 0xE6, 0x42, 0x68, 0x41, 0x99, 0x2D, 0x0F, 0xB0, 0x54, 0xBB, 0x16]"]
+
         lookup_text = ""
         for i in range(0, 16):
             lookup_text += (str(i) + ' ' + s_box[i].lower()) + '\n'
-        lookup_table_label = Label(self, text=lookup_text, font=("Calibri", 11))
+        lookup_table_label = Label(self, text=lookup_text, font=("Calibri", 11), anchor='w')
         lookup_table_label.grid(row=4, column=0, columnspan=3)
 
         next_button = Button(self, text="NEXT", command=lambda: self.controller.show_frame("AES_Encrypt_Page_4"),
@@ -1868,7 +1869,7 @@ class AES_Decrypt_Page_2(Frame):
                             font=("Arial", 25), bg="#cf3030", fg="white")
         title_label.pack(fill='x', ipady=10)
 
-        explanation_text = "\nThe First step is XOR the ciphertext with the second key"
+        explanation_text = "\nThe First step is to XOR the ciphertext with the second key"
         explanation_label = Label(self, text=explanation_text, font=("Arial", 14))
         explanation_label.pack(ipady=10)
 
