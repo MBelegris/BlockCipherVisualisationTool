@@ -2,6 +2,7 @@ import os
 import random
 import string
 import tkinter
+import pygame
 from tkinter import *
 from tkinter import messagebox
 from PIL import Image, ImageTk
@@ -53,6 +54,17 @@ def get_decimal_value(binary_string):
         return "15"
 
 
+def play(location):
+    pygame.init()
+    pygame.mixer.music.load(location)
+    pygame.mixer.music.play(loops=0)
+
+
+def stop_sound():
+    pygame.init()
+    pygame.mixer.music.stop()
+
+
 class TkinterApp(Tk):
     def __init__(self, *args, **kwargs):
         Tk.__init__(self, *args, **kwargs)
@@ -92,8 +104,7 @@ class TkinterApp(Tk):
                   DES_Encrypt_Page_3, DES_Encrypt_Page_4, DES_Encrypt_Page_5, DES_Encrypt_Page_6, DES_Encrypt_Page_7,
                   DES_Encrypt_Page_8, DES_Decrypt_Page_1, DES_Decrypt_Page_2, DES_Decrypt_Page_3, DES_Decrypt_Page_4,
                   DES_Decrypt_Page_5, DES_Decrypt_Page_6, DES_Decrypt_Page_7, DES_Info_Page,
-                  DES_Key_Gen_Page, DES_Key_Gen_Page_1, DES_Key_Gen_Page_2, DES_Key_Gen_Page_3, DES_Key_Gen_Page_4,
-                  Explanation_Page,
+                  Explanation_Page, Background,
                   AES_Page, AES_Info_Page, AES_Image_Page, AES_Disclaimer_Page, AES_Encrypt_Page_1, AES_Encrypt_Page_2,
                   AES_Encrypt_Page_3, AES_Encrypt_Page_4, AES_Encrypt_Page_5, AES_Encrypt_Page_6, AES_Encrypt_Page_7,
                   AES_Decrypt_Page_1, AES_Decrypt_Page_2, AES_Decrypt_Page_3, AES_Decrypt_Page_4, AES_Decrypt_Page_5,
@@ -136,7 +147,8 @@ class DES_Info_Page(Frame):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="DES", font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Button(self, text="DES", font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/DES_information_audio.ogg'))
         title_label.pack(fill='x', ipady=10)
 
         label_1_text = "\nThe Data Encryption Standard (DES) is a Symmetric Key Block Cipher created in 1976\n"
@@ -170,37 +182,16 @@ class DES_Info_Page(Frame):
         each_round_label = Label(self, text=each_round_text, font=("Calibri", 15), justify='left')
         each_round_label.pack()
 
-        # label_4_text = "Each round is made up of 5 Steps:"
-        # label_4 = Label(self, text=label_4_text, font=("Calibri", 15), justify='left')
-        # label_4.pack()
-        #
-        # step_1_text = "1. Expansion of the right side of the permuted text."
-        # step_1_label = Label(self, text=step_1_text, font=("Calibri", 15), justify='left')
-        # step_1_label.pack()
-        #
-        # step_2_text = "2. XORing the expanded text with a 48-bit round key."
-        # step_2_label = Label(self, text=step_2_text, font=("Calibri", 15), anchor='w')
-        # step_2_label.pack()
-        #
-        # step_3_text = "3. Passing the right side into the S Box to shrink it down to 32-bits again."
-        # step_3_label = Label(self, text=step_3_text, font=("Calibri", 15), anchor='w')
-        # step_3_label.pack()
-        #
-        # step_4_text = "4. XORing the right side with the original permuted left side."
-        # step_4_label = Label(self, text=step_4_text, font=("Calibri", 15), anchor='w')
-        # step_4_label.pack()
-        #
-        # step_5_text = "5. The original permuted right side becomes the new left side and the new right " \
-        #               "side is the result of the XORing of the right side with the\n original permuted left side."
-        # step_5_label = Label(self, text=step_5_text, font=("Calibri", 15), anchor='w')
-        # step_5_label.pack()
-
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Image_Page"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(controller),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side='bottom')
 
     def updateText(self):
         pass
+
+    def next_page(self, controller):
+        stop_sound()
+        controller.show_frame("DES_Image_Page")
 
 
 class DES_Image_Page(Frame):
@@ -237,8 +228,9 @@ class DES_Disclaimer_Page(Frame):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Disclaimer about the DES Visualisation",
-                            font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Button(self, text="Disclaimer about the DES Visualisation",
+                             command=lambda: play('./Audio/DES_disclaimer.ogg'), font=("Arial", 25), bg="#cf3030",
+                             fg="white")
         title_label.pack(fill='x', ipady=10)
 
         disclaimer_text = "\nThe program does not show each round performed by the DES cipher but instead visualises " \
@@ -259,12 +251,16 @@ class DES_Disclaimer_Page(Frame):
             label = Label(self, text="IMAGE MISSING", font=("Arial", 15))
             label.pack()
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Page"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(controller),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side='bottom')
 
     def updateText(self):
         pass
+
+    def next_page(self, controller):
+        stop_sound()
+        controller.show_frame("DES_Page")
 
 
 class DES_Page(Frame):
@@ -386,7 +382,8 @@ class DES_Encrypt_Page_1(Frame):
                                   8, 57, 49, 41, 33, 25, 17, 9, 1, 59, 51, 43, 35, 27, 19, 11,
                                   3, 61, 33, 45, 37, 29, 21, 13, 5, 63, 55, 47, 39, 31, 23, 15, 7]
 
-        title_label = Label(self, text="Initial Permutation", font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Button(self, text="Initial Permutation", font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/DES_Encryption_IP.ogg'))
         title_label.pack(fill='x', ipady=10)
 
         explanation_text = "\nThe first step of encryption is to change the position of the data according to the order" \
@@ -401,7 +398,7 @@ class DES_Encrypt_Page_1(Frame):
         permuted_label = Label(self, text=("Permutation Order\n" + str(permutation_order_no_1)), font=("Calibri", 9))
         permuted_label.pack(expand=True)
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Encrypt_Page_2"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(controller),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side='bottom')
 
@@ -412,14 +409,19 @@ class DES_Encrypt_Page_1(Frame):
                               font=("Calibri", 17))
         updated_label.pack(expand=True, side=TOP)
 
+    def next_page(self, controller):
+        stop_sound()
+        controller.show_frame("DES_Encrypt_Page_2")
+
 
 class DES_Encrypt_Page_2(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Splitting in half of permuted plaintext",
-                            font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Button(self, text="Splitting in half of permuted plaintext",
+                             font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/DES_Encryption_split.ogg'))
         title_label.pack(fill='x', ipady=10)
 
         explanation_text = "\nThe right and left side are split. This is because the right side will go through " \
@@ -468,13 +470,18 @@ class DES_Encrypt_Page_2(Frame):
 
         controller.show_frame("DES_Encrypt_Page_3")
 
+    def next_page(self, controller):
+        stop_sound()
+        controller.show_frame("DES_Encrypt_Page_3")
+
 
 class DES_Encrypt_Page_3(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Expansion of Right side", font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Button(self, text="Expansion of Right side", font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/DES_Encryption_Expansion.ogg'))
         title_label.pack(fill='x', ipady=10)
 
         explanation_text = "\nThe right side is expanded from 32-bits to 48-bits, " \
@@ -494,7 +501,7 @@ class DES_Encrypt_Page_3(Frame):
         permutation_order_label = Label(self, text=("Expansion Order\n" + str(expansion_order)), font=("Calibri", 13))
         permutation_order_label.pack(expand=1)
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Encrypt_Page_4"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(controller),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
@@ -510,14 +517,19 @@ class DES_Encrypt_Page_3(Frame):
         updated_expansion_label = Label(self.expansion_label, text=text, font=("Calibri", 17))
         updated_expansion_label.pack()
 
+    def next_page(self, controller):
+        stop_sound()
+        controller.show_frame("DES_Encrypt_Page_4")
+
 
 class DES_Encrypt_Page_4(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Expanded Right Side XORed with Key",
-                            font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Button(self, text="Expanded Right Side XORed with Key",
+                             font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/DES_Encryption_Right_XOR_key.ogg'))
         title_label.pack(fill='x', ipady=10)
 
         explanation_text = "\nThe expanded right side is XORed with the subkey\n\n" \
@@ -529,7 +541,7 @@ class DES_Encrypt_Page_4(Frame):
         right_label.pack()
         self.right_label = right_label
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Encrypt_Page_5"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(controller),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
@@ -545,14 +557,19 @@ class DES_Encrypt_Page_4(Frame):
         updated_right_label = Label(self.right_label, text=right_label_text, font=("Calibri", 17))
         updated_right_label.pack(ipadx=10)
 
+    def next_page(self, controller):
+        stop_sound()
+        controller.show_frame("DES_Encrypt_Page_5")
+
 
 class DES_Encrypt_Page_5(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="S Box", font=("Arial", 25), bg="#cf3030", fg="white")
-        title_label.pack(fill='x', ipady=10)
+        title_label = Button(self, text="S Box", font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/DES_Encryption_S_Box.ogg'))
+        title_label.pack(fill='x')
 
         explanation_text = \
             "Right side is split into 8 6-bit blocks. The first and last digits of each block are combined as well " \
@@ -612,7 +629,7 @@ class DES_Encrypt_Page_5(Frame):
         lookup_table_Label = Label(self, text=lookup_table_text, font=("Calibri", 11))
         lookup_table_Label.pack(fill='x')
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Encrypt_Page_6"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(controller),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side='bottom')
 
@@ -671,13 +688,18 @@ class DES_Encrypt_Page_5(Frame):
         updated_shrunk_right_label.pack()
         self.controller.shared_data["changed_right_side"] = shrunk_right_side
 
+    def next_page(self, controller):
+        stop_sound()
+        controller.show_frame("DES_Encrypt_Page_6")
+
 
 class DES_Encrypt_Page_6(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Right Side Permutation", font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Button(self, text="Right Side Permutation", font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/DES_Encryption_Right_perm.ogg'))
         title_label.pack(fill='x', ipady=10)
 
         explanation_text = "\nThe right side is permuted based on the permutation order shown below. For example, " \
@@ -697,7 +719,7 @@ class DES_Encrypt_Page_6(Frame):
                                         font=("Calibri", 16))
         permutation_order_label.pack(expand=True)
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Encrypt_Page_7"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
@@ -713,14 +735,19 @@ class DES_Encrypt_Page_6(Frame):
 
         self.controller.shared_data["changed_right_side"] = permuted_right_side
 
+    def next_page(self):
+        stop_sound()
+        self.controller.show_frame("DES_Encrypt_Page_7")
+
 
 class DES_Encrypt_Page_7(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Right Side XORed with Initial Left Side",
-                            font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Button(self, text="Right Side XORed with Initial Left Side",
+                             font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/DES_Encryption_Right_XOR_Left.ogg'))
         title_label.pack(fill='x', ipady=10)
 
         explanation_text = "The Left side and the Right side are XORed together. The result of this calculation is " \
@@ -733,7 +760,7 @@ class DES_Encrypt_Page_7(Frame):
         right_side_xored_with_left_side_label.pack()
         self.right_side_xored_with_left_side_label = right_side_xored_with_left_side_label
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Encrypt_Page_8"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
@@ -752,14 +779,19 @@ class DES_Encrypt_Page_7(Frame):
 
         self.controller.shared_data["changed_right_side"] = new_right
 
+    def next_page(self):
+        stop_sound()
+        self.controller.show_frame("DES_Encrypt_Page_8")
+
 
 class DES_Encrypt_Page_8(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Merging of Left and Right Side to make Ciphertext",
-                            font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Button(self, text="Merging of Left and Right Side to make Ciphertext",
+                             font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/DES_Encryption_Final.ogg'))
         title_label.pack(fill='x', ipady=10)
 
         explanation_text = "The left side of the ciphertext is the result of the permuted right side being " \
@@ -802,8 +834,9 @@ class DES_Decrypt_Page_1(Frame):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Splitting of Left and Right Side of Ciphertext ",
-                            font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Button(self, text="Splitting of Left and Right Side of Ciphertext ",
+                             font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/DES_Decryption_Split.ogg'))
         title_label.pack(fill='x', ipady=10)
 
         explanation_text = "\nThe text is split in half. This is because the right side will go through several steps " \
@@ -815,7 +848,7 @@ class DES_Decrypt_Page_1(Frame):
         explanation_label = Label(self, text=explanation_text, font=("Arial", 14), justify='left')
         explanation_label.pack()
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Decrypt_Page_2"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
@@ -852,13 +885,18 @@ class DES_Decrypt_Page_1(Frame):
         self.controller.shared_data["decryption_right_side"] = right_side
         self.controller.shared_data["decryption_left_side"] = left_side
 
+    def next_page(self):
+        stop_sound()
+        self.controller.show_frame("DES_Decrypt_Page_2")
+
 
 class DES_Decrypt_Page_2(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Expansion of the Right Side", font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Button(self, text="Expansion of the Right Side", font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/DES_Decryption_expansion.ogg'))
         title_label.pack(fill='x', ipady=10)
 
         explanation_text = "\nThe right side is expanded from 32-bits to 48-bits, based on the expansion order shown " \
@@ -878,7 +916,7 @@ class DES_Decrypt_Page_2(Frame):
         permutation_order_label = Label(self, text=("Expansion Order\n" + str(expansion_order)), font=("Calibri", 13))
         permutation_order_label.pack(expand=1)
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Decrypt_Page_3"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
@@ -891,14 +929,19 @@ class DES_Decrypt_Page_2(Frame):
         updated_expansion_label = Label(self.expansion_label, text=expansion_text, font=("Calibri", 17))
         updated_expansion_label.pack()
 
+    def next_page(self):
+        stop_sound()
+        self.controller.show_frame("DES_Decrypt_Page_3")
+
 
 class DES_Decrypt_Page_3(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Expanded Right Side XORed with Key",
-                            font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Button(self, text="Expanded Right Side XORed with Key",
+                             font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/DES_Decryption_Right_XOR_Key.ogg'))
         title_label.pack(fill='x', ipady=10)
 
         explanation_text = "The expanded right side is XORed with the subkey\n\n" \
@@ -910,7 +953,7 @@ class DES_Decrypt_Page_3(Frame):
         xored_right_label.pack()
         self.xored_right_label = xored_right_label
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Decrypt_Page_4"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
@@ -924,14 +967,19 @@ class DES_Decrypt_Page_3(Frame):
         updated_xored_right_label = Label(self.xored_right_label, text=xored_right_text, font=("Calibri", 17))
         updated_xored_right_label.pack(ipadx=10)
 
+    def next_page(self):
+        stop_sound()
+        self.controller.show_frame("DES_Decrypt_Page_4")
+
 
 class DES_Decrypt_Page_4(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="S Box", font=("Arial", 25), bg="#cf3030", fg="white")
-        title_label.pack(fill='x', ipady=10)
+        title_label = Button(self, text="S Box", font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/DES_Decryption_S_Box.ogg'))
+        title_label.pack(fill='x')
 
         explanation_text = \
             "Right side is split into 8 6-bit blocks. The first and last digits of each block are combined as well " \
@@ -989,7 +1037,7 @@ class DES_Decrypt_Page_4(Frame):
         lookup_table_Label = Label(self, text=lookup_table_text, font=("Calibri", 11))
         lookup_table_Label.pack(fill='x')
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Decrypt_Page_5"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side='bottom')
 
@@ -1044,13 +1092,18 @@ class DES_Decrypt_Page_4(Frame):
 
         self.controller.shared_data["decryption_changed_right_side"] = shrunk_right_side
 
+    def next_page(self):
+        stop_sound()
+        self.controller.show_frame("DES_Decrypt_Page_5")
+
 
 class DES_Decrypt_Page_5(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Permutation of Right side", font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Button(self, text="Permutation of Right side", font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/DES_Decryption_Right_perm.ogg'))
         title_label.pack(fill='x', ipady=10)
 
         explanation_text = "\nThe right side is permuted based on the permutation order shown below.\nFor example, " \
@@ -1069,7 +1122,7 @@ class DES_Decrypt_Page_5(Frame):
                                         font=("Calibri", 16))
         permutation_table_label.pack(expand=True)
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Decrypt_Page_6"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
@@ -1083,13 +1136,18 @@ class DES_Decrypt_Page_5(Frame):
 
         self.controller.shared_data["decryption_changed_right_side"] = permuted_right_side
 
+    def next_page(self):
+        stop_sound()
+        self.controller.show_frame("DES_Decrypt_Page_6")
+
 
 class DES_Decrypt_Page_6(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Left Side XORed with Right Side", font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Button(self, text="Left Side XORed with Right Side", font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/DES_Decryption_Right_XOR_Left.ogg'))
         title_label.pack(fill='x', ipady=10)
 
         explanation_text = "The Left side and the Right side are XORed together. The result of this calculation is " \
@@ -1102,7 +1160,7 @@ class DES_Decrypt_Page_6(Frame):
         visualisation_label.pack()
         self.visualisation_label = visualisation_label
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Decrypt_Page_7"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
@@ -1117,14 +1175,19 @@ class DES_Decrypt_Page_6(Frame):
 
         self.controller.shared_data["decryption_changed_left_side"] = new_left
 
+    def next_page(self):
+        stop_sound()
+        self.controller.show_frame("DES_Decrypt_Page_7")
+
 
 class DES_Decrypt_Page_7(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Concatenating of Calculated Left Side and Given Right Side",
-                            font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Button(self, text="Concatenating of Calculated Left Side and Given Right Side",
+                             font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/DES_Decryption_IP.ogg'))
         title_label.pack(fill='x', ipady=10)
 
         explanation_text = "\nBy combining the result of the calculations, i.e. the left side, and the ciphertext’s " \
@@ -1181,7 +1244,8 @@ class AES_Info_Page(Frame):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="AES", font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Button(self, text="AES", font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/AES_info.ogg'))
         title_label.pack(fill='x', ipady=10)
 
         label_1_text = "The Advanced Encryption Standard (AES) is a Symmetric Key Block Cipher established in 2001\n"
@@ -1219,37 +1283,16 @@ class AES_Info_Page(Frame):
         each_round_label = Label(self, text=each_round_text, font=("Calibri", 15), justify='left')
         each_round_label.pack()
 
-
-        # label_4_text = "Each round is made up of 5 Steps:"
-        # label_4 = Label(self, text=label_4_text, font=("Calibri", 15), anchor='w')
-        # label_4.pack()
-        #
-        # step_1_text = "1. Substitute the bytes in the Plaintext."
-        # step_1_label = Label(self, text=step_1_text, font=("Calibri", 15), anchor='w')
-        # step_1_label.pack()
-        #
-        # step_2_text = "2. Shift the rows accordingly."
-        # step_2_label = Label(self, text=step_2_text, font=("Calibri", 15), anchor='w')
-        # step_2_label.pack()
-        #
-        # step_3_text = "3. Mix the columns by multiplying them by a certain matrix."
-        # step_3_label = Label(self, text=step_3_text, font=("Calibri", 15), anchor='w')
-        # step_3_label.pack()
-        #
-        # step_4_text = "4. Add the round key by XORing it with the plaintext."
-        # step_4_label = Label(self, text=step_4_text, font=("Calibri", 15), anchor='w')
-        # step_4_label.pack()
-        #
-        # step_5_text = "5. On the last round, repeat all these steps except for the mix columns step."
-        # step_5_label = Label(self, text=step_5_text, font=("Calibri", 15), anchor='w')
-        # step_5_label.pack()
-
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Image_Page"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(controller),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side='bottom')
 
     def updateText(self):
         pass
+
+    def next_page(self, controller):
+        stop_sound()
+        controller.show_frame("AES_Image_Page")
 
 
 class AES_Image_Page(Frame):
@@ -1285,9 +1328,10 @@ class AES_Disclaimer_Page(Frame):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Disclaimer about the AES Visualisation",
-                            font=("Arial", 25), bg="#cf3030", fg="white")
-        title_label.pack(fill='x', ipady=10)
+        title_label = Button(self, text="Disclaimer about the AES Visualisation",
+                             font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/AES_Disclaimer.ogg'))
+        title_label.pack(fill='x')
 
         disclaimer_text = "The program does not show each round performed by the AES cipher but instead visualises " \
                           "the first round of every encryption/decryption,\nas to help learn the cipher only one " \
@@ -1307,12 +1351,16 @@ class AES_Disclaimer_Page(Frame):
             label = Label(self, text="IMAGE MISSING", font=("Arial", 15))
             label.pack()
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Page"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side='bottom')
 
     def updateText(self):
         pass
+
+    def next_page(self):
+        stop_sound()
+        self.controller.show_frame("AES_Page")
 
 
 class AES_Page(Frame):
@@ -1413,8 +1461,9 @@ class AES_Encrypt_Page_1(Frame):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Visualisation of Plaintext and Keys",
-                            font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Button(self, text="Visualisation of Plaintext and Keys",
+                             font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/AES_Visualisation.ogg'))
         title_label.pack(fill='x', ipady=10)
 
         explanation_txt = "The plaintext and keys are shown in the arrangement seen below, in 4x4 tables.\n" \
@@ -1434,7 +1483,7 @@ class AES_Encrypt_Page_1(Frame):
         key_2_label.pack()
         self.key_2_label = key_2_label
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Encrypt_Page_2"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
@@ -1447,19 +1496,41 @@ class AES_Encrypt_Page_1(Frame):
         key_1 = aes_logic.make_table(key_1)
         key_2 = aes_logic.make_table(key_2)
 
-        ptxt = "Plaintext: \n" + str(plaintext[0]) + ',\n' + str(plaintext[1]) + ',\n' + \
-               str(plaintext[2]) + ',\n' + str(plaintext[3]) + '\n'
+        ptxt = "Plaintext:\n"
+        for x in range(4):
+            ptxt += '['
+            for y in range(4):
+                if y != 3:
+                    ptxt += str(plaintext[x][y]) + '  '
+                else:
+                    ptxt += str(plaintext[x][y])
+            ptxt += ']\n'
 
         self.plaintext_label = Label(self, text=ptxt, font=("Calibri", 15), justify='left')
         self.plaintext_label.pack(side='left', ipadx=120)
 
-        k_1 = "Key 1: \n" + str(key_1[0]) + ',\n' + str(key_1[1]) + ',\n' + \
-              str(key_1[2]) + ',\n' + str(key_1[3]) + '\n'
+        k_1 = "Key 1:\n"
+        for x in range(4):
+            k_1 += '['
+            for y in range(4):
+                if y != 3:
+                    k_1 += str(key_1[x][y]) + '  '
+                else:
+                    k_1 += str(key_1[x][y])
+            k_1 += ']\n'
+
         self.key_1_label = Label(self, text=k_1, font=("Calibri", 15), justify='left')
         self.key_1_label.pack(side='left', ipadx=120)
 
-        k_2 = "Key 2: \n" + str(key_2[0]) + ',\n' + str(key_2[1]) + ',\n' + \
-              str(key_2[2]) + ',\n' + str(key_2[3]) + '\n'
+        k_2 = "Key 2:\n"
+        for x in range(4):
+            k_2 += '['
+            for y in range(4):
+                if y != 3:
+                    k_2 += str(key_2[x][y]) + '  '
+                else:
+                    k_2 += str(key_2[x][y])
+            k_2 += ']\n'
         self.key_2_label = Label(self, text=k_2, font=("Calibri", 15), justify='left')
         self.key_2_label.pack(side='left', ipadx=120)
 
@@ -1467,13 +1538,18 @@ class AES_Encrypt_Page_1(Frame):
         self.controller.shared_data["AES_key_1_table"] = key_1
         self.controller.shared_data["AES_key_2_table"] = key_2
 
+    def next_page(self):
+        stop_sound()
+        self.controller.show_frame("AES_Encrypt_Page_2")
+
 
 class AES_Encrypt_Page_2(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Plaintext XORed with Key 1", font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Button(self, text="Plaintext XORed with Key 1", font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/AES_Enc_Ptxt_XOR_K1.ogg'))
         title_label.pack(fill='x', ipady=10)
 
         explanation_text = "\nThe First step is to XOR the plaintext with the first key"
@@ -1488,7 +1564,7 @@ class AES_Encrypt_Page_2(Frame):
         result_label.pack()
         self.result_label = result_label
 
-        next_button = Button(self, text="NEXT", command=lambda: self.controller.show_frame("AES_Encrypt_Page_3"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
@@ -1496,21 +1572,51 @@ class AES_Encrypt_Page_2(Frame):
         plaintext = self.controller.shared_data["AES_plaintext_table"]
         key_1 = self.controller.shared_data["AES_key_1_table"]
 
-        text = "Plaintext:" + '         ' + "Key 1:" + '\n' + \
-               str(plaintext[0]) + '         ' + str(key_1[0]) + '\n' + \
-               str(plaintext[1]) + '  ⊕     ' + str(key_1[1]) + '\n' + \
-               str(plaintext[2]) + '         ' + str(key_1[2]) + '\n' + \
-               str(plaintext[3]) + '         ' + str(key_1[3]) + '\n'
+        # text = "Plaintext:" + '         ' + "Key 1:" + '\n' + \
+        #        str(plaintext[0]) + '         ' + str(key_1[0]) + '\n' + \
+        #        str(plaintext[1]) + '  ⊕     ' + str(key_1[1]) + '\n' + \
+        #        str(plaintext[2]) + '         ' + str(key_1[2]) + '\n' + \
+        #        str(plaintext[3]) + '         ' + str(key_1[3]) + '\n'
 
-        updated_plaintext_xor_key_label = Label(self.plaintext_xor_key_label, text=text, font=("Calibri", 15))
+        text = "Plaintext:                      Key:1:\n"
+        for x in range(4):
+            text += '['
+            for y in range(4):
+                if y != 3:
+                    text += str(plaintext[x][y]) + '  '
+                else:
+                    text += str(plaintext[x][y])
+            text += ']     ⊕    ['
+            for y in range(4):
+                if y != 3:
+                    text += str(key_1[x][y]) + '  '
+                else:
+                    text += str(key_1[x][y])
+            text += ']\n'
+
+        updated_plaintext_xor_key_label = Label(self.plaintext_xor_key_label, text=text, font=("Calibri", 15),
+                                                justify='left')
         updated_plaintext_xor_key_label.pack()
 
         result = aes_logic.add_round_key(plaintext, key_1)
-        result_text = "Result: \n" + str(result[0]) + ',\n' + str(result[1]) + ',\n' + \
-                      str(result[2]) + ',\n' + str(result[3]) + '\n'
+        # result_text = "Result: \n" + str(result[0]) + ',\n' + str(result[1]) + ',\n' + \
+        #               str(result[2]) + ',\n' + str(result[3]) + '\n'
+        result_text = "Result:\n"
+        for x in range(4):
+            result_text += '['
+            for y in range(4):
+                if y != 3:
+                    result_text += str(result[x][y]) + '  '
+                else:
+                    result_text += str(result[x][y])
+            result_text += ']\n'
 
         updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15), justify='left')
         updated_result_label.pack()
+
+    def next_page(self):
+        stop_sound()
+        self.controller.show_frame("AES_Encrypt_Page_3")
 
 
 class AES_Encrypt_Page_3(Frame):
@@ -1518,8 +1624,9 @@ class AES_Encrypt_Page_3(Frame):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Substitution of Bytes", font=("Arial", 25), bg="#cf3030", fg="white")
-        title_label.grid(column=0, columnspan=3, row=0, ipadx=450, ipady=5)
+        title_label = Button(self, text="Substitution of Bytes", font=("Arial", 20), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/AES_S_Box.ogg'))
+        title_label.grid(column=0, columnspan=3, row=0, ipadx=470)
 
         explanation_text = "Each byte in the State acts as the coordinates for the value in the lookup table that " \
                            "it will be substituted with."
@@ -1569,7 +1676,7 @@ class AES_Encrypt_Page_3(Frame):
         lookup_table_label = Label(self, text=lookup_text, font=("Calibri", 11), justify='left')
         lookup_table_label.grid(row=4, column=0, columnspan=3)
 
-        next_button = Button(self, text="NEXT", command=lambda: self.controller.show_frame("AES_Encrypt_Page_4"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.grid(row=5, column=1)
 
@@ -1577,8 +1684,18 @@ class AES_Encrypt_Page_3(Frame):
         plaintext = self.controller.shared_data["AES_plaintext_table"]
         first_bytes = plaintext[0][0]
 
-        ptxt = "Plaintext: \n" + str(plaintext[0]) + ',\n' + str(plaintext[1]) + ',\n' + \
-               str(plaintext[2]) + ',\n' + str(plaintext[3])
+        ptxt = "Plaintext:\n"
+        for x in range(4):
+            ptxt += '['
+            for y in range(4):
+                if y != 3:
+                    ptxt += str(plaintext[x][y]) + '  '
+                else:
+                    ptxt += str(plaintext[x][y])
+            if x != 3:
+                ptxt += ']\n'
+            else:
+                ptxt += ']'
 
         updated_plaintext_label = Label(self.plaintext_label, text=ptxt, font=("Calibri", 15), justify='left')
         updated_plaintext_label.grid(column=0, row=2)
@@ -1610,8 +1727,20 @@ class AES_Encrypt_Page_3(Frame):
         updated_lookup_bytes.grid(column=2, row=3)
 
         result = aes_logic.s_box(plaintext)
-        result_text = "Result: \n" + str(result[0]) + ',\n' + str(result[1]) + ',\n' + \
-                      str(result[2]) + ',\n' + str(result[3])
+
+        result_text = "Result:\n"
+        for x in range(4):
+            result_text += '['
+            for y in range(4):
+                if y != 3:
+                    result_text += str(result[x][y]) + '  '
+                else:
+                    result_text += str(result[x][y])
+            if x != 3:
+                result_text += ']\n'
+            else:
+                result_text += ']'
+
         updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15), justify='left')
         updated_result_label.grid(column=2, row=2)
 
@@ -1619,13 +1748,18 @@ class AES_Encrypt_Page_3(Frame):
         updated_result_bytes = Label(self.result_bytes, text=result_bytes_text, font=("Calibri", 14))
         updated_result_bytes.grid(column=2, row=3)
 
+    def next_page(self):
+        stop_sound()
+        self.controller.show_frame("AES_Encrypt_Page_4")
+
 
 class AES_Encrypt_Page_4(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Shifting of Rows", font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Button(self, text="Shifting of Rows", font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/AES_Enc_Shift.ogg'))
         title_label.pack(fill='x', ipady=10)
 
         explanation_text = "\nThe rows of the plaintext are shifted a certain amount of spaces to the left depending " \
@@ -1643,24 +1777,48 @@ class AES_Encrypt_Page_4(Frame):
         result_label.pack()
         self.result_label = result_label
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Encrypt_Page_5"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
     def updateText(self):
         plaintext = self.controller.shared_data["AES_plaintext_table"]
-        ptxt = "Plaintext: \n" + str(plaintext[0]) + ',\n' + str(plaintext[1]) + ',\n' + \
-               str(plaintext[2]) + ',\n' + str(plaintext[3]) + '\n'
+        ptxt = "Plaintext:\n"
+        for x in range(4):
+            ptxt += '['
+            for y in range(4):
+                if y != 3:
+                    ptxt += str(plaintext[x][y]) + '  '
+                else:
+                    ptxt += str(plaintext[x][y])
+            if x != 3:
+                ptxt += ']\n'
+            else:
+                ptxt += ']'
         updated_plaintext_label = Label(self.plaintext_label, text=ptxt, font=("Calibri", 15), justify='left')
         updated_plaintext_label.pack()
 
         result = aes_logic.shift_rows(plaintext)
-        result_text = "Result: \n" + str(result[0]) + ',\n' + str(result[1]) + ',\n' + \
-                      str(result[2]) + ',\n' + str(result[3]) + '\n'
+        result_text = "Result:\n"
+        for x in range(4):
+            result_text += '['
+            for y in range(4):
+                if y != 3:
+                    result_text += str(result[x][y]) + '  '
+                else:
+                    result_text += str(result[x][y])
+            if x != 3:
+                result_text += ']\n'
+            else:
+                result_text += ']'
         updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15), justify='left')
         updated_result_label.pack()
 
         self.controller.shared_data["AES_plaintext_table"] = result
+
+    def next_page(self):
+        stop_sound()
+        self.controller.show_frame("AES_Encrypt_Page_5")
 
 
 class AES_Encrypt_Page_5(Frame):
@@ -1668,8 +1826,9 @@ class AES_Encrypt_Page_5(Frame):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Mixing of Columns", font=("Arial", 25), bg="#cf3030", fg="white")
-        title_label.grid(columnspan=2, row=0, ipadx=500, ipady=10)
+        title_label = Button(self, text="Mixing of Columns", font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/AES_Mix.ogg'))
+        title_label.grid(columnspan=2, row=0, ipadx=500)
 
         explanation_text = "\nEach column in the state is multiplied, over GF(2^8), by the matrix seen below to " \
                            "produce the column it gets substituted with.\n" \
@@ -1700,20 +1859,40 @@ class AES_Encrypt_Page_5(Frame):
         answer_label.grid(column=1, row=4)
         self.answer_label = answer_label
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Encrypt_Page_6"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.grid(column=1, row=5, pady=100)
 
     def updateText(self):
         plaintext = self.controller.shared_data["AES_plaintext_table"]
-        ptxt = "Plaintext: \n" + str(plaintext[0]) + ',\n' + str(plaintext[1]) + ',\n' + \
-               str(plaintext[2]) + ',\n' + str(plaintext[3]) + '\n'
+        ptxt = "Plaintext:\n"
+        for x in range(4):
+            ptxt += '['
+            for y in range(4):
+                if y != 3:
+                    ptxt += str(plaintext[x][y]) + '  '
+                else:
+                    ptxt += str(plaintext[x][y])
+            if x != 3:
+                ptxt += ']\n'
+            else:
+                ptxt += ']'
         updated_plaintext_label = Label(self.plaintext_label, text=ptxt, font=("Calibri", 15), justify='left')
         updated_plaintext_label.grid(column=0, row=2)
 
         result = aes_logic.mix_columns(plaintext)
-        result_text = "Result: \n" + str(result[0]) + ',\n' + str(result[1]) + ',\n' + \
-                      str(result[2]) + ',\n' + str(result[3]) + '\n'
+        result_text = "Result:\n"
+        for x in range(4):
+            result_text += '['
+            for y in range(4):
+                if y != 3:
+                    result_text += str(result[x][y]) + '  '
+                else:
+                    result_text += str(result[x][y])
+            if x != 3:
+                result_text += ']\n'
+            else:
+                result_text += ']'
         updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15), justify='left')
         updated_result_label.grid(column=1, row=2)
 
@@ -1740,13 +1919,18 @@ class AES_Encrypt_Page_5(Frame):
         updated_answer_label = Label(self.answer_label, text=answer_text, font=("Calibri", 15))
         updated_answer_label.grid(column=1, row=4)
 
+    def next_page(self):
+        stop_sound()
+        self.controller.show_frame("AES_Encrypt_Page_6")
+
 
 class AES_Encrypt_Page_6(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Plaintext XORed with Key 2", font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Button(self, text="Plaintext XORed with Key 2", font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/AES_Enc_Ptxt_XOR_K2.ogg'))
         title_label.pack(fill='x', ipady=10)
 
         explanation_text = "\nThe final step is to XOR the State with the round key"
@@ -1761,7 +1945,7 @@ class AES_Encrypt_Page_6(Frame):
         result_label.pack()
         self.result_label = result_label
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Encrypt_Page_7"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
@@ -1769,23 +1953,47 @@ class AES_Encrypt_Page_6(Frame):
         plaintext = self.controller.shared_data["AES_plaintext_table"]
         key_2 = self.controller.shared_data["AES_key_2_table"]
 
-        text = "Plaintext:" + '         ' + "Key 2:" + '\n' + \
-               str(plaintext[0]) + '         ' + str(key_2[0]) + '\n' + \
-               str(plaintext[1]) + '  ⊕     ' + str(key_2[1]) + '\n' + \
-               str(plaintext[2]) + '         ' + str(key_2[2]) + '\n' + \
-               str(plaintext[3]) + '         ' + str(key_2[3]) + '\n'
+        text = "Plaintext:                      Key 2:\n"
+        for x in range(4):
+            text += '['
+            for y in range(4):
+                if y != 3:
+                    text += str(plaintext[x][y]) + '  '
+                else:
+                    text += str(plaintext[x][y])
+            text += ']     ⊕    ['
+            for y in range(4):
+                if y != 3:
+                    text += str(key_2[x][y]) + '  '
+                else:
+                    text += str(key_2[x][y])
+            text += ']\n'
 
         updated_plaintext_xor_key_label = Label(self.plaintext_xor_key_label, text=text, font=("Calibri", 15))
         updated_plaintext_xor_key_label.pack(ipady=20)
 
         result = aes_logic.add_round_key(plaintext, key_2)
-        result_text = "Result: \n" + str(result[0]) + ',\n' + str(result[1]) + ',\n' + \
-                      str(result[2]) + ',\n' + str(result[3]) + '\n'
+        result_text = "Result:\n"
+        for x in range(4):
+            result_text += '['
+            for y in range(4):
+                if y != 3:
+                    result_text += str(result[x][y]) + '  '
+                else:
+                    result_text += str(result[x][y])
+            if x != 3:
+                result_text += ']\n'
+            else:
+                result_text += ']'
 
         updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15), justify='left')
         updated_result_label.pack()
 
         self.controller.shared_data["AES_plaintext_table"] = result
+
+    def next_page(self):
+        stop_sound()
+        self.controller.show_frame("AES_Encrypt_Page_7")
 
 
 class AES_Encrypt_Page_7(Frame):
@@ -1806,8 +2014,18 @@ class AES_Encrypt_Page_7(Frame):
 
     def updateText(self):
         ciphertext_table = self.controller.shared_data["AES_plaintext_table"]
-        ctxt = "Ciphertext: \n" + str(ciphertext_table[0]) + ',\n' + str(ciphertext_table[1]) + ',\n' + \
-               str(ciphertext_table[2]) + ',\n' + str(ciphertext_table[3]) + '\n'
+        ctxt = "Ciphertext:\n"
+        for x in range(4):
+            ctxt += '['
+            for y in range(4):
+                if y != 3:
+                    ctxt += str(ciphertext_table[x][y]) + '  '
+                else:
+                    ctxt += str(ciphertext_table[x][y])
+            if x != 3:
+                ctxt += ']\n'
+            else:
+                ctxt += ']'
         updated_ciphertext_table_label = Label(self.ciphertext_table_label, text=ctxt, font=("Calibri", 15),
                                                justify='left')
         updated_ciphertext_table_label.pack(ipady=25)
@@ -1826,12 +2044,13 @@ class AES_Decrypt_Page_1(Frame):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Visualisation of Ciphertext and Keys",
-                            font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Button(self, text="Visualisation of Ciphertext and Keys",
+                             font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/AES_Dec_Vis.ogg'))
         title_label.pack(fill='x', ipady=10)
 
-        explanation_txt = "The plaintext and keys are shown in the arrangement seen below, in 4x4 tables.\n" \
-                          "The plaintext is known as the State, once the AES algorithms operations are performed on it."
+        explanation_txt = "The ciphertext and keys are shown in the arrangement seen below, in 4x4 tables.\nThe " \
+                          "Ciphertext is known as the State, once the AES algorithms operations are performed on it."
         explanation_label = Label(self, text=explanation_txt, font=("Arial", 14))
         explanation_label.pack(ipady=20)
 
@@ -1847,7 +2066,7 @@ class AES_Decrypt_Page_1(Frame):
         key_2_label.pack()
         self.key_2_label = key_2_label
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Decrypt_Page_2"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
@@ -1880,14 +2099,19 @@ class AES_Decrypt_Page_1(Frame):
         self.controller.shared_data["AES_key_1_table"] = key_1
         self.controller.shared_data["AES_key_2_table"] = key_2
 
+    def next_page(self):
+        stop_sound()
+        self.controller.show_frame("AES_Decrypt_Page_2")
+
 
 class AES_Decrypt_Page_2(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Ciphertext XORed with Key 2",
-                            font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Button(self, text="Ciphertext XORed with Key 2",
+                            font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/AES_Dec_XOR_K2.ogg'))
         title_label.pack(fill='x', ipady=10)
 
         explanation_text = "\nThe First step is to XOR the ciphertext with the second key"
@@ -1902,7 +2126,7 @@ class AES_Decrypt_Page_2(Frame):
         result_label.pack()
         self.result_label = result_label
 
-        next_button = Button(self, text="NEXT", command=lambda: self.controller.show_frame("AES_Decrypt_Page_3"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
@@ -1926,14 +2150,19 @@ class AES_Decrypt_Page_2(Frame):
         updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15), justify='left')
         updated_result_label.pack()
 
+    def next_page(self):
+        stop_sound()
+        self.controller.show_frame("AES_Decrypt_Page_3")
+
 
 class AES_Decrypt_Page_3(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Invert the Mixing of Columns", font=("Arial", 25), bg="#cf3030", fg="white")
-        title_label.grid(columnspan=3, row=0, column=0, ipadx=400, ipady=10)
+        title_label = Button(self, text="Invert the Mixing of Columns", font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/AES_Mix.ogg'))
+        title_label.grid(columnspan=3, row=0, column=0, ipadx=400)
 
         explanation_text = "\nEach column in the state is multiplied, over GF(2^8), by the matrix seen below to " \
                            "produce the column it gets substituted with.\n" \
@@ -1964,7 +2193,7 @@ class AES_Decrypt_Page_3(Frame):
         answer_label.grid(column=2, row=4)
         self.answer_label = answer_label
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Decrypt_Page_4"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.grid(column=1, row=5, pady=140)
 
@@ -2002,20 +2231,25 @@ class AES_Decrypt_Page_3(Frame):
         updated_answer_label = Label(self.answer_label, text=answer_text, font=("Arial", 12))
         updated_answer_label.grid(column=2, row=4)
 
+    def next_page(self):
+        stop_sound()
+        self.controller.show_frame("AES_Decrypt_Page_4")
+
 
 class AES_Decrypt_Page_4(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Invert the Shifting of Rows",
-                            font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Button(self, text="Invert the Shifting of Rows",
+                            font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/AES_Dec_Shift.ogg'))
         title_label.pack(fill='x', ipady=10)
 
         explanation_text = "\nThe rows of the plaintext are shifted a certain amount of spaces to the left depending " \
                            "on the row.\nThe First Row is not shifted.\nThe Second Row is shifted one space to the " \
-                           "left.\nThe Third Row is shifted two spaces to the left.\nAnd the Final Row is shifted " \
-                           "three spaces to the left.\n"
+                           "right.\nThe Third Row is shifted two spaces to the right.\nAnd the Final Row is shifted " \
+                           "three spaces to the right.\n"
         explanation_label = Label(self, text=explanation_text, font=("Arial", 14), justify='left')
         explanation_label.pack()
 
@@ -2027,7 +2261,7 @@ class AES_Decrypt_Page_4(Frame):
         result_label.pack()
         self.result_label = result_label
 
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Decrypt_Page_5"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
@@ -2046,14 +2280,19 @@ class AES_Decrypt_Page_4(Frame):
 
         self.controller.shared_data["AES_ciphertext_table"] = result
 
+    def next_page(self):
+        stop_sound()
+        self.controller.show_frame("AES_Decrypt_Page_5")
+
 
 class AES_Decrypt_Page_5(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Invert the Substitution of Bytes", font=("Arial", 25), bg="#cf3030", fg="white")
-        title_label.grid(column=0, columnspan=3, row=0, ipadx=400, ipady=5)
+        title_label = Button(self, text="Invert the Substitution of Bytes", font=("Arial", 20), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/AES_S_Box.ogg'))
+        title_label.grid(column=0, columnspan=3, row=0, ipadx=400)
 
         explanation_text = "Each byte in the State acts as the coordinates for the value in the lookup table that " \
                            "it will be substituted with."
@@ -2103,7 +2342,7 @@ class AES_Decrypt_Page_5(Frame):
         lookup_table_label = Label(self, text=lookup_text, font=("Calibri", 11), justify='left')
         lookup_table_label.grid(row=4, column=0, columnspan=3)
 
-        next_button = Button(self, text="NEXT", command=lambda: self.controller.show_frame("AES_Decrypt_Page_6"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.grid(row=5, column=1)
 
@@ -2154,14 +2393,19 @@ class AES_Decrypt_Page_5(Frame):
         updated_result_bytes = Label(self.result_bytes, text=result_bytes_text, font=("Calibri", 14))
         updated_result_bytes.grid(column=2, row=3)
 
+    def next_page(self):
+        stop_sound()
+        self.controller.show_frame("AES_Decrypt_Page_6")
+
 
 class AES_Decrypt_Page_6(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="Ciphertext XORed with Key 1",
-                            font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Button(self, text="Ciphertext XORed with Key 1",
+                            font=("Arial", 25), bg="#cf3030", fg="white",
+                             command=lambda: play('./Audio/AES_Dec_XOR_K1.ogg'))
         title_label.pack(fill='x', ipady=10)
 
         explanation_text = "\nThe final step is to XOR the State with the first key"
@@ -2176,7 +2420,7 @@ class AES_Decrypt_Page_6(Frame):
         result_label.pack()
         self.result_label = result_label
 
-        next_button = Button(self, text="NEXT", command=lambda: self.controller.show_frame("AES_Decrypt_Page_7"),
+        next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side=BOTTOM)
 
@@ -2199,6 +2443,10 @@ class AES_Decrypt_Page_6(Frame):
 
         updated_result_label = Label(self.result_label, text=result_text, font=("Calibri", 15), justify='left')
         updated_result_label.pack()
+
+    def next_page(self):
+        stop_sound()
+        self.controller.show_frame("AES_Decrypt_Page_7")
 
 
 class AES_Decrypt_Page_7(Frame):
@@ -2234,318 +2482,90 @@ class AES_Decrypt_Page_7(Frame):
         updated_ciphertext_label.pack()
 
 
-class DES_Key_Gen_Page(Frame):
-    def __init__(self, parent, controller):
-        Frame.__init__(self, parent)
-        self.controller = controller
-
-        key = self.controller.shared_data["Key_gen_Key"]
-
-        title_label = Label(self, text="DES Key Generation Page", font=("Arial", 25), bg="#cf3030", fg="white")
-        title_label.pack(fill='x', ipady=10)
-
-        input_label = Label(self, text="Input 64-Bit String:", font=("Arial", 20), fg="black")
-        input_label.pack(expand=True)
-
-        input_entry = Entry(self, textvariable=key, bg='white', font=("Arial", 10))
-        input_entry.pack(ipadx=155, ipady=10, expand=True)
-        input_entry.focus()
-        self.input_entry = input_entry
-        input_reg = self.register(self.input_callback)
-        input_entry.config(validate="key", validatecommand=(input_reg, '%P'))
-
-        random_input = Button(self, text="Random", bg='#cf3030', fg="white", font=("Arial", 10),
-                              command=lambda: self.make_random())
-        random_input.pack(ipadx=20, ipady=10, expand=True, fill="none")
-
-        generate_button = Button(self, text="Generate", font=("Arial", 20), bg="#e88a1a", fg="white",
-                                 command=lambda: self.num_check(controller))
-        generate_button.pack(ipadx=10, ipady=10, expand=True, fill="none", side=LEFT)
-
-    def updateText(self):
-        pass
-
-    def make_random(self):
-        random_text = ""
-        for x in range(0, 64):
-            random_text += str(random.randint(0, 1))
-        self.input_entry.delete(0, END)
-        self.input_entry.insert(0, random_text)
-
-    def input_callback(self, input):
-        if len(input) > 64:
-            messagebox.showwarning("Visualisation Tool", message="Reached 64 bits\nMessage too long")
-            return False
-        elif input.isdigit() or input == "":
-            if int(input[len(input) - 1]) > 1:
-                messagebox.showwarning("Visualisation Tool", message="Can only enter digits: 0, 1")
-                return False
-            return True
-        else:
-            messagebox.showwarning("Visualisation Tool", message="Can only enter digits: 0, 1")
-            return False
-
-    def num_check(self, controller):
-        key = self.controller.shared_data["Key_gen_Key"].get()
-
-        if len(key) != 64:
-            messagebox.showwarning("Visualisation Tool", "Check input length.\n Input must be 64 bits")
-            return False
-
-        self.controller.shared_data["Key_gen_original"] = key
-        controller.show_frame("DES_Key_Gen_Page_1")
-
-
-class DES_Key_Gen_Page_1(Frame):
-    def __init__(self, parent, controller):
-        Frame.__init__(self, parent)
-        self.controller = controller
-
-        title_label = Label(self, text="Initial Permutation", font=("Arial", 25), bg="#cf3030", fg="white")
-        title_label.pack(fill='x', ipady=10)
-
-        explanation_text = "Due to the permutation order shown below, the length of the key shrinks to be 56 bits " \
-                           "long as every eighth bit was a parity bit."
-        explanation_label = Label(self, text=explanation_text, font=("Arial", 10))
-        explanation_label.pack()
-
-        permutation_label = Label(self, bg="orange")
-        permutation_label.pack(expand=True)
-        self.permutation_label = permutation_label
-
-        permutation_order = [57, 49, 41, 33, 25, 17, 9, 1, 58, 50, 42, 34, 26, 18, 10, 2, 59, 51, 43, 35, 27, 19, 11, 3,
-                             60, 52, 44, 36, 63, 55, 47, 39, 31, 23, 15, 7, 62, 54, 46, 38, 30, 22, 14, 6, 61, 53, 45,
-                             37, 29, 21, 13, 5, 28, 20, 12, 4]
-        permutation_order_label = Label(self, text=("Permutation Order:\n" + str(permutation_order)),
-                                        font=("Arial", 10))
-        permutation_order_label.pack(expand=True)
-
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Key_Gen_Page_2"),
-                             font=("Arial", 10), bg="#cf3030", fg="white")
-        next_button.pack(side='bottom')
-
-    def updateText(self):
-        key = self.controller.shared_data["Key_gen_Key"].get()
-        permuted_key = des_key.permutation_order_1(list(key))
-
-        updated_label = Label(self.permutation_label, text=(key + "\n→\n" + ''.join(permuted_key)),
-                              font=("Arial", 10))
-        updated_label.pack(expand=True, side=TOP)
-        self.controller.shared_data["Key_gen_key"] = permuted_key
-
-
-class DES_Key_Gen_Page_2(Frame):
-    def __init__(self, parent, controller):
-        Frame.__init__(self, parent)
-        self.controller = controller
-
-        title_label = Label(self, text="Round N: Shifting of Left and Right Side",
-                            font=("Arial", 25), bg="#cf3030", fg="white")
-        title_label.grid(row=0, column=0, columnspan=3, ipadx=350, ipady=10)
-
-        explanation_text = "At the beginning of each round the key is split in half, and each side is shifted either " \
-                           "once or twice to the left, depending on the round."
-        explanation_label = Label(self, text=explanation_text, font=("Arial", 10))
-        explanation_label.grid(row=1, column=0, columnspan=3, pady=25)
-
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Key_Gen_Page_3"),
-                             font=("Arial", 10), bg="#cf3030", fg="white")
-        next_button.grid(row=5, column=1, pady=215)
-
-    def updateText(self):
-        key = self.controller.shared_data["Key_gen_Key"].get()
-        left_side = key[:28]
-        right_side = key[28:]
-
-        updated_original_label = Label(self, text="Permuted Key:\n" + key, font=("Arial", 10))
-        updated_original_label.grid(row=2, column=0, columnspan=3, pady=20)
-
-        updated_left_side_label = Label(self, text="Left Side:\n" + left_side, font=("Arial", 10))
-        updated_left_side_label.grid(row=3, column=0)
-
-        updated_right_side_label = Label(self, text="Right Side:\n" + right_side, font=("Arial", 10))
-        updated_right_side_label.grid(row=3, column=2)
-
-        shifted_left = list(des_key.left_shift(left_side))
-        shifted_right = list(des_key.left_shift(right_side))
-
-        updated_left_side_shift_label = Label(self, text="Shifted Left Side:\n" + (''.join(shifted_left)),
-                                              font=("Arial", 10))
-        updated_left_side_shift_label.grid(row=4, column=0, pady=20)
-
-        updated_right_side_shift_label = Label(self, text="Shifted Right Side:\n" + (''.join(shifted_right)),
-                                               font=("Arial", 10))
-        updated_right_side_shift_label.grid(row=4, column=2, pady=20)
-
-        self.controller.shared_data["Key_gen_left"] = shifted_left
-        self.controller.shared_data["Key_gen_right"] = shifted_right
-
-
-class DES_Key_Gen_Page_3(Frame):
-    def __init__(self, parent, controller):
-        Frame.__init__(self, parent)
-        self.controller = controller
-
-        title_label = Label(self, text="Round N: Combination and Permutation of Left and Right Side",
-                            font=("Arial", 25), bg="#cf3030", fg="white")
-        title_label.grid(row=0, column=0, columnspan=3, ipadx=160, ipady=10)
-
-        explanation_text = "After combining the left and right side together, they are permuted once again. This " \
-                           "permutation shrinks the key even more to have a length of 48 bits.\nBy repeating this " \
-                           "step and the previous one, new round keys are generated for the DES cipher."
-        explanation_label = Label(self, text=explanation_text, font=("Arial", 10))
-        explanation_label.grid(row=1, column=0, columnspan=3)
-
-        permutation_order = [14, 17, 11, 24, 1, 5, 3, 28, 15, 6, 21, 10, 23, 19, 12, 4, 26, 8, 16, 7, 27, 20, 13, 2, 41,
-                             52, 31, 37, 47, 55, 30, 40, 51, 45, 33, 48, 44, 49, 39, 56, 34, 53, 46, 42, 50, 36, 29, 32]
-        permutation_order_label = Label(self, text="Permutation Order:\n" + str(permutation_order), font=("Arial", 10))
-        permutation_order_label.grid(row=5, column=0, columnspan=3, ipady=137)
-
-        next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Key_Gen_Page_4"),
-                             font=("Arial", 10), bg="#cf3030", fg="white")
-        next_button.grid(row=6, column=1)
-
-    def updateText(self):
-        left_side = self.controller.shared_data["Key_gen_left"]
-        right_side = self.controller.shared_data["Key_gen_right"]
-
-        key = left_side + right_side
-        permuted_key = des_key.combine_left_and_right(list(left_side), list(right_side))
-
-        left_side_label = Label(self, text="Left Side:\n" + (''.join(left_side)), font=("Arial", 10))
-        left_side_label.grid(row=2, column=0, ipady=10)
-
-        right_side_label = Label(self, text="Right Side:\n" + (''.join(right_side)), font=("Arial", 10))
-        right_side_label.grid(row=2, column=2)
-
-        result_text = "Result:\n" + ''.join(key) + "\n->\n" + ''.join(permuted_key)
-        result_label = Label(self, text=result_text, font=("Arial", 10))
-        result_label.grid(row=3, column=1)
-
-        self.controller.shared_data["Key_gen_Key"] = permuted_key
-
-
-class DES_Key_Gen_Page_4(Frame):
-    def __init__(self, parent, controller):
-        Frame.__init__(self, parent)
-        self.controller = controller
-
-        title_label = Label(self, text="Results",
-                            font=("Arial", 25), bg="#cf3030", fg="white")
-        title_label.pack(fill='x', ipady=10)
-
-    def updateText(self):
-        original = self.controller.shared_data["Key_gen_original"]
-        key = self.controller.shared_data["Key_gen_Key"]
-
-        original_text = "Original Key: " + original
-        original_label = Label(self, text=original_text, font=("Arial", 10))
-        original_label.pack(ipady=10)
-
-        round_1_text = "Round 1: " + ''.join(key)
-        round_1_label = Label(self, text=round_1_text, font=("Arial", 10))
-        round_1_label.pack(ipady=10)
-
-        round_2_text = "Round 2: " + ''.join(des_key.gen_key(original, 2))
-        round_2_label = Label(self, text=round_2_text, font=("Arial", 10))
-        round_2_label.pack(ipady=10)
-
-        round_2_text = "Round 3: " + ''.join(des_key.gen_key(original, 3))
-        round_2_label = Label(self, text=round_2_text, font=("Arial", 10))
-        round_2_label.pack(ipady=10)
-
-        round_2_text = "Round 4: " + ''.join(des_key.gen_key(original, 4))
-        round_2_label = Label(self, text=round_2_text, font=("Arial", 10))
-        round_2_label.pack(ipady=10)
-
-        round_2_text = "Round 5: " + ''.join(des_key.gen_key(original, 5))
-        round_2_label = Label(self, text=round_2_text, font=("Arial", 10))
-        round_2_label.pack(ipady=10)
-
-        round_2_text = "Round 6: " + ''.join(des_key.gen_key(original, 6))
-        round_2_label = Label(self, text=round_2_text, font=("Arial", 10))
-        round_2_label.pack(ipady=10)
-
-        round_2_text = "Round 7: " + ''.join(des_key.gen_key(original, 7))
-        round_2_label = Label(self, text=round_2_text, font=("Arial", 10))
-        round_2_label.pack(ipady=10)
-
-        round_2_text = "Round 8: " + ''.join(des_key.gen_key(original, 8))
-        round_2_label = Label(self, text=round_2_text, font=("Arial", 10))
-        round_2_label.pack(ipady=10)
-
-        round_2_text = "Round 9: " + ''.join(des_key.gen_key(original, 9))
-        round_2_label = Label(self, text=round_2_text, font=("Arial", 10))
-        round_2_label.pack(ipady=10)
-
-        round_2_text = "Round 10: " + ''.join(des_key.gen_key(original, 10))
-        round_2_label = Label(self, text=round_2_text, font=("Arial", 10))
-        round_2_label.pack(ipady=10)
-
-
 class Explanation_Page(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Label(self, text="How this Tool Works", font=("Arial", 25), bg="#cf3030", fg="white")
+        title_label = Button(self, text="How this Tool Works", font=("Arial", 25), bg="#df3030", fg="white",
+                             command=lambda: play('./Audio/how_to_use_the_program.ogg'))
         title_label.pack(fill='x', ipady=10)
 
-        text_1 = "Cryptography is the encrypting and decrypting of informaton, to secure it from malicious " \
-                 "third-parties.\nThis is either done through asymmetric or symmetric encryption algorithms.\n"
-        text_1_label = Label(self, text=text_1, font=("Calibri", 13), justify='left')
+        text_1 = "\nBy selecting AES/DES on the home screen, a small explanation of each block cipher will appear." \
+                 "\n\nThen a diagram depicting each cipher will be displayed.\n\nThe next page is a small disclaimer " \
+                 "about what the visualisation tool is actually showing."
+        text_1_label = Label(self, text=text_1, font=("Calibri", 14))
         text_1_label.pack()
 
-        text_2 = "Asymmetric cryptographic algorithms use a pair of keys, known as the Public and the Private Key, " \
-                 "where one key can only encrypt and the other one can only decrypt.\n" \
-                 "Examples include RSA, Diffie-Hellman and ECC.\n"
-        text_2_label = Label(self, text=text_2, font=("Calibri", 13))
+        text_2 = "\nThe following page will require user input to come up with the plaintext/ciphertext and the " \
+                 "necessary keys.\n\nOnce completed and selected either encryption or decryption, the visualisation " \
+                 "begins.\n\nEach unique step will be depicted by showing the original value and then the result of " \
+                 "the step that has taken place.\n\nAs well as, a small description explaining that step."
+        text_2_label = Label(self, text=text_2, font=("Calibri", 14))
         text_2_label.pack()
 
-        text_3 = "Symmetric cryptographic algorithms use the same key for encryption and decryption.\nExamples " \
-                 "include Stream ciphers and Block Ciphers.\n"
-        text_3_label = Label(self, text=text_3, font=("Calibri", 13))
+        text_3 = "\nMost pages will also have the option of listening to the text by pressing on the title"
+        text_3_label = Label(self, text=text_3, font=("Calibri", 14))
         text_3_label.pack()
 
-        text_4 = "This program is a visualisation tool for Block Ciphers, specifically the DES and the AES block " \
-                 "ciphers. This means that the program will take a potential plaintext\nor ciphertext, as well as the" \
-                 " necessary keys,and will show how each step on the process to encryption or decryption changes the" \
-                 " data. For example, how the\narrangement of the data is changed based on a permutation order.\n"
-        text_4_label = Label(self, text=text_4, font=("Calibri", 13), justify='left')
+        text_4 = "Try it Now"
+        text_4_label = Label(self, text=text_4, font=("Calibri", 16))
         text_4_label.pack()
 
-        text_5 = "How to use this program:"
-        text_5_label = Label(self, text=text_5, font=("Calibri", 13), justify='left')
-        text_5_label.pack()
-
-        text_6 = "By selecting AES or DES on the Home screen, a small explanation of the Block Ciphers will show up, " \
-                 "next a diagram depicting the steps taken to encrypt and\ndecrypt will be displayed, and then a " \
-                 "small disclaimer about what each block cipher visualisation is actually visualising. The next " \
-                 "page will be the appropriate\ninput page for either the AES or DES cipher, where user input will " \
-                 "be requested so that the plaintext/ciphertext and the necessary keys can be entered. Once\n" \
-                 "completed, to start the visualisation either encrypt or decrypt can be pressed. The visualisation " \
-                 "shows each step with the value of the plaintext and the result\nof each stage. Each page has a " \
-                 "small description of the process to assist with the understanding."
-        text_6_label = Label(self, text=text_6, font=("Calibri", 13), justify='left')
-        text_6_label.pack()
-
-        # text_6 = "By selecting AES or DES on the Home screen, a small explanation of the Block Ciphers will show up," \
-        #          "next a diagram depicting the steps taken to encrypt and decrypt\nwill be displayed, and then a small"\
-        #          " disclaimer about what each block cipher visualisation is actually visualising."
-        # text_6_label = Label(self, text=text_6, font=("Calibri", 13), justify='left')
-        # text_6_label.pack()
-        #
-        # text_7 = "The next page will be the appropriate input page for either the AES or DES cipher, where user input" \
-        #          " will be requested so that the plaintext/ciphertext and the necessary\nkeys can be entered."
-        # text_7_label = Label(self, text=text_7, font=("Calibri", 13), justify='left')
-        # text_7_label.pack()
-
-        home_button = Button(self, text="HOME", font=("Arial", 10), bg='#cf3030', fg='white',
-                             command=lambda: controller.show_frame("Home_Page"))
-        home_button.pack(side='bottom')
+        next_button = Button(self, text="NEXT", font=("Arial", 10), bg="#df3030", fg="white",
+                             command=lambda: self.next_page())
+        next_button.pack(side='bottom')
 
     def updateText(self):
         pass
+
+    def next_page(self):
+        stop_sound()
+        self.controller.show_frame("Background")
+
+
+class Background(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
+        self.controller = controller
+
+        title_label = Button(self, text="Cryptography", font=("Arial", 25), bg="#df3030", fg="white",
+                             command=lambda: play('./Audio/cryptography.ogg'))
+        title_label.pack(fill='x', ipady=10)
+
+        text_1 = "\nCryptography is the encrypting and decrypting of information, to secure it from malicious " \
+                 "third-parties.\n\nThis is either done through asymmetric or symmetric encryption algorithms.\n"
+
+        text_1_label = Label(self, text=text_1, font=("Calibri", 14))
+        text_1_label.pack()
+
+        text_2 = "Asymmetric cryptographic algorithms use a pair of keys, known as the Public and the Private Key," \
+                 "\n\nwhere one key can only encrypt and the other one can only decrypt.\n\n" \
+                 "Examples include RSA, Diffie-Hellman and ECC.\n"
+        text_2_label = Label(self, text=text_2, font=("Calibri", 14))
+        text_2_label.pack()
+
+        text_3 = "Symmetric cryptographic algorithms use the same key for encryption and decryption.\n\nExamples " \
+                 "include Stream ciphers and Block Ciphers.\n"
+        text_3_label = Label(self, text=text_3, font=("Calibri", 14))
+        text_3_label.pack()
+
+        text_4 = "Block Ciphers are ciphers that encrypt block by block.\nBy segmenting data into blocks of " \
+                 "different sizes several operations are performed on them to encrypt them.\n\nExamples include DES, " \
+                 "AES and Blowfish."
+        text_4_label = Label(self, text=text_4, font=("Calibri", 14))
+        text_4_label.pack()
+
+        next_button = Button(self, text="NEXT", font=("Arial", 10), bg="#df3030", fg="white",
+                             command=lambda: self.next_page())
+        next_button.pack(side='bottom')
+
+    def updateText(self):
+        pass
+
+    def next_page(self):
+        stop_sound()
+        self.controller.show_frame("Home_Page")
 
 
 if __name__ == "__main__":
