@@ -57,6 +57,8 @@ contains all the functions necessary to encrypt and decrypt using the DES block 
 contains all the necessary functions to encrypt and decrypt using the AES block cipher
 4. [images](https://github.com/MBelegris/BlockCipherVisualisationTool/tree/master/main/images)
 folder contains all the images used in main.py
+5. [Audio](https://github.com/MBelegris/BlockCipherVisualisationTool/tree/master/main/Audio)
+folder contains all the audio used in main.py
 
 ### Usage
 
