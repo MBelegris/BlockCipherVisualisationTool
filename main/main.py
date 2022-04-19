@@ -188,6 +188,9 @@ class DES_Info_Page(Frame):
         each_round_label = Label(self, text=each_round_text, font=("Calibri", 15), justify='left')
         each_round_label.pack()
 
+        blank = Label(self)
+        blank.pack(fill='x', pady=1)
+
         next_button = Button(self, text="NEXT", command=lambda: self.next_page(controller),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side='right', expand=True)
@@ -228,6 +231,9 @@ class DES_Image_Page(Frame):
             print(os.listdir())
             label = Label(self, text="IMAGE MISSING", font=("Arial", 15))
             label.pack()
+
+        blank = Label(self)
+        blank.pack(fill='x', pady=10)
 
         next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("DES_Disclaimer_Page"),
                              font=("Arial", 10), bg="#cf3030", fg="white")
@@ -598,6 +604,9 @@ class DES_Encrypt_Page_4(Frame):
 
         border_frame.pack(pady=40, padx=40)
 
+        blank = Label(self)
+        blank.pack(fill='x', pady=15)
+
         next_button = Button(self, text="NEXT", command=lambda: self.next_page(controller),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side='right', expand=True)
@@ -841,6 +850,9 @@ class DES_Encrypt_Page_7(Frame):
 
         border_frame.pack(padx=40, pady=40)
 
+        blank = Label(self)
+        blank.pack(fill='x', pady=10)
+
         next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side='right', expand=True)
@@ -1077,7 +1089,11 @@ class DES_Decrypt_Page_3(Frame):
         xored_right_label = Label(border_frame)
         xored_right_label.pack(padx=1, pady=1)
         self.xored_right_label = xored_right_label
+
         border_frame.pack(pady=40, padx=40)
+
+        blank = Label(self)
+        blank.pack(fill='x', pady=10)
 
         next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
@@ -1306,7 +1322,11 @@ class DES_Decrypt_Page_6(Frame):
         visualisation_label = Label(border_frame)
         visualisation_label.pack(padx=1, pady=1)
         self.visualisation_label = visualisation_label
+
         border_frame.pack(pady=40, padx=40)
+
+        blank = Label(self)
+        blank.pack(fill='x', pady=12)
 
         next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
@@ -1489,6 +1509,9 @@ class AES_Image_Page(Frame):
             print(os.listdir())
             label = Label(self, text="IMAGE MISSING", font=("Arial", 15))
             label.pack()
+
+        blank = Label(self)
+        blank.pack(fill='x', pady=15)
 
         next_button = Button(self, text="NEXT", command=lambda: controller.show_frame("AES_Disclaimer_Page"),
                              font=("Arial", 10), bg="#cf3030", fg="white")
@@ -1675,7 +1698,7 @@ class AES_Encrypt_Page_1(Frame):
         x.pack(padx=40, pady=40, fill='x')
 
         blank = Label(self)
-        blank.pack(fill='x', pady=45)
+        blank.pack(fill='x', pady=50)
 
         next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
@@ -1940,7 +1963,8 @@ class AES_Encrypt_Page_3(Frame):
             else:
                 result_text += ']'
 
-        self.result_label.config(text=result_text, font=("Calibri", 15), justify='left')
+        self.result_label.config(text=result_text, font=("Calibri", 15), justify='left',
+                                 highlightbackground='orange', highlightcolor='orange', highlightthickness='2')
 
         result_bytes_text = "Substituted plaintext at [0,0]: " + result[0][0]
         self.result_bytes.config(text=result_bytes_text, font=("Calibri", 14))
@@ -2114,7 +2138,8 @@ class AES_Encrypt_Page_5(Frame):
                 result_text += ']\n'
             else:
                 result_text += ']'
-        self.result_label.config(text=result_text, font=("Calibri", 15), justify='left')
+        self.result_label.config(text=result_text, font=("Calibri", 15), justify='left',
+                                 highlightbackground='orange', highlightcolor='orange', highlightthickness='2')
 
         plaintext = aes_logic.inv_mix_columns(plaintext)
 
@@ -2170,13 +2195,17 @@ class AES_Encrypt_Page_6(Frame):
         result_label = Label(border_frame)
         result_label.pack(padx=1, pady=1)
         self.result_label = result_label
+
         border_frame.pack(pady=40, padx=40)
+
+        blank = Label(self)
+        blank.pack(fill='x', pady=15)
 
         next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         next_button.pack(side='right', expand=1)
 
-        back_button = Button(self, text="NEXT", command=lambda: self.back_page(),
+        back_button = Button(self, text="BACK", command=lambda: self.back_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         back_button.pack(side='left', expand=1)
 
@@ -2250,7 +2279,11 @@ class AES_Encrypt_Page_7(Frame):
         ciphertext_label = Label(border_frame)
         ciphertext_label.pack(padx=1, pady=1)
         self.ciphertext_label = ciphertext_label
+
         border_frame.pack(pady=40, padx=40)
+
+        blank = Label(self)
+        blank.pack(fill='x', pady=100)
 
         back_button = Button(self, text="BACK", command=lambda: self.back_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
@@ -2323,7 +2356,7 @@ class AES_Decrypt_Page_1(Frame):
         x.pack(pady=40, padx=40, fill='x')
 
         blank = Label(self)
-        blank.pack(fill='x', pady=45)
+        blank.pack(fill='x', pady=55)
 
         next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
@@ -2414,7 +2447,11 @@ class AES_Decrypt_Page_2(Frame):
         result_label = Label(border_frame)
         result_label.pack(padx=1, pady=1)
         self.result_label = result_label
+
         border_frame.pack(pady=40, padx=40)
+
+        blank = Label(self)
+        blank.pack(fill='x', pady=10)
 
         next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
@@ -2511,11 +2548,11 @@ class AES_Decrypt_Page_3(Frame):
 
         next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
-        next_button.grid(column=2, row=5, pady=140)
+        next_button.grid(column=2, row=5, pady=150)
 
         back_button = Button(self, text="BACK", command=lambda: self.back_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
-        back_button.grid(column=0, row=5, pady=140)
+        back_button.grid(column=0, row=5, pady=155)
 
     def updateText(self):
         ciphertext = self.controller.shared_data["AES_ciphertext_table"]
@@ -2547,7 +2584,8 @@ class AES_Decrypt_Page_3(Frame):
                 result_text += ']\n'
             else:
                 result_text += ']'
-        self.result_label.config(text=result_text, font=("Arial", 15), justify='left')
+        self.result_label.config(text=result_text, font=("Arial", 15), justify='left',
+                                 highlightbackground='orange', highlightcolor='orange', highlightthickness='2')
 
         ciphertext = aes_logic.mix_columns(ciphertext)
 
@@ -2609,7 +2647,11 @@ class AES_Decrypt_Page_4(Frame):
         result_label = Label(border_frame)
         result_label.pack(padx=1, pady=1)
         self.result_label = result_label
+
         border_frame.pack(padx=40, pady=10)
+
+        blank = Label(self)
+        blank.pack(fill='x', pady=10)
 
         next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
@@ -2788,7 +2830,8 @@ class AES_Decrypt_Page_5(Frame):
                 result_text += ']\n'
             else:
                 result_text += ']'
-        self.result_label.config(text=result_text, font=("Arial", 15), justify='left')
+        self.result_label.config(text=result_text, font=("Arial", 15), justify='left',
+                                 highlightbackground='orange', highlightcolor='orange', highlightthickness='2')
 
         result_bytes_text = "Substituted plaintext at [0,0]: " + result[0][0]
         self.result_bytes.config(text=result_bytes_text, font=("Calibri", 14))
@@ -2829,7 +2872,11 @@ class AES_Decrypt_Page_6(Frame):
         result_label = Label(border_frame)
         result_label.pack(pady=1, padx=1)
         self.result_label = result_label
+
         border_frame.pack(padx=40, pady=40)
+
+        blank = Label(self)
+        blank.pack(fill='x', pady=15)
 
         next_button = Button(self, text="NEXT", command=lambda: self.next_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
@@ -2912,6 +2959,9 @@ class AES_Decrypt_Page_7(Frame):
         blank = Label(self)
         blank.pack(fill='x', pady=75)
 
+        blank = Label(self)
+        blank.pack(fill='x', pady=15)
+
         back_button = Button(self, text="BACK", command=lambda: self.back_page(),
                              font=("Arial", 10), bg="#cf3030", fg="white")
         back_button.pack(side='left', expand=True)
@@ -2957,30 +3007,22 @@ class Explanation_Page(Frame):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        title_label = Button(self, text="How this Tool Works", font=("Arial", 25), bg="#df3030", fg="white",
+        title_label = Button(self, text="How this Tool Works - Press Here to Listen",
+                             font=("Arial", 25), bg="#df3030", fg="white",
                              command=lambda: play('./Audio/how_to_use_the_program.ogg'))
         title_label.pack(fill='x', ipady=10)
 
         text_1 = "\nBy selecting AES/DES on the home screen, a small explanation of each block cipher will appear." \
-                 "\n\nThen a diagram depicting each cipher will be displayed.\n\nThe next page is a small disclaimer " \
-                 "about what the visualisation tool is actually showing."
+                 "\n\n\nAfter that two Pages with diagrams showing the structure of each cipher will be depicted"
         text_1_label = Label(self, text=text_1, font=("Calibri", 14))
         text_1_label.pack()
 
-        text_2 = "\nThe following page will require user input to come up with the plaintext/ciphertext and the " \
-                 "necessary keys.\n\nOnce completed and selected either encryption or decryption, the visualisation " \
-                 "begins.\n\nEach unique step will be depicted by showing the original value and then the result of " \
-                 "the step that has taken place.\n\nAs well as, a small description explaining that step."
+        text_2 = "\nThe following page will require the user to enter the plaintext/ciphertext and the " \
+                 "necessary keys.\n\n\nOnce completed and selected either encryption or decryption, the visualisation " \
+                 "begins.\n\n\nEach unique step will be depicted by showing the original value and then the result of " \
+                 "the step that has taken place.\n\n\nAs well as, a small description explaining that step."
         text_2_label = Label(self, text=text_2, font=("Calibri", 14))
         text_2_label.pack()
-
-        text_3 = "\nMost pages will also have the option of listening to the text by pressing on the title"
-        text_3_label = Label(self, text=text_3, font=("Calibri", 14))
-        text_3_label.pack()
-
-        text_4 = "Try it Now"
-        text_4_label = Label(self, text=text_4, font=("Calibri", 16))
-        text_4_label.pack()
 
         next_button = Button(self, text="NEXT", font=("Arial", 10), bg="#df3030", fg="white",
                              command=lambda: self.next_page())
