@@ -308,6 +308,9 @@ def do_encrypt(plaintext, key_1, key_2):
     :param key_2: String made up of 16 bytes as hexadecimal values
     :return: ciphertext: String made up of 16 bytes as hexadecimal values
     """
+    plaintext = add_padding(plaintext, 32)
+    key_1 = add_padding(key_1, 32)
+    key_2 = add_padding(key_2, 32)
     ptxt = make_table(plaintext)
     k_1 = make_table(key_1)
     k_2 = make_table(key_2)
