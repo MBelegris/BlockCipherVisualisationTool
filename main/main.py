@@ -8,7 +8,6 @@ from tkinter import messagebox
 from PIL import Image, ImageTk
 import DES_logic_func as des_logic
 import AES_logic_func as aes_logic
-import DES_key_gen_func as des_key
 
 
 def get_decimal_value(binary_string):
