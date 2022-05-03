@@ -64,4 +64,6 @@ folder contains all the audio used in main.py
 
 ---
 1. Clone the repository
-2. Run the main.py
+2. For those using pip, you might need to upgrade it
+3. If PyGame is not installed then it will be necessary to run pip install pygame
+4. Run the main.py
